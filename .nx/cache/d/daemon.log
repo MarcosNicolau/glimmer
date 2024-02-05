@@ -1,0 +1,106 @@
+[NX Daemon Server] - 2024-02-05T13:25:34.289Z - Started listening on: /tmp/293a3c8042f5c6130b52/d.sock
+[NX Daemon Server] - 2024-02-05T13:25:34.290Z - [WATCHER]: Subscribed to changes within: /home/marcos/Documents/programming/glimmer (native)
+[NX Daemon Server] - 2024-02-05T13:25:34.292Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-02-05T13:25:34.293Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-02-05T13:25:34.294Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-02-05T13:25:34.295Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-02-05T13:25:34.296Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:25:34.296Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:25:34.296Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:25:34.456Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-02-05T13:25:34.457Z - Time taken for 'total for creating and serializing project graph' 160.799373ms
+[NX Daemon Server] - 2024-02-05T13:25:34.457Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-02-05T13:25:34.457Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 161. Response time: 1.
+[NX Daemon Server] - 2024-02-05T13:25:34.465Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2024-02-05T13:27:20.580Z - [WATCHER]: tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:27:20.581Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:27:20.682Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:27:20.682Z - [REQUEST]: tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:27:20.682Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:27:20.700Z - Time taken for 'hash changed files from watcher' 0.09888600000704173ms
+[NX Daemon Server] - 2024-02-05T13:27:22.507Z - [WATCHER]: tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:27:22.507Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:27:22.708Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:27:22.708Z - [REQUEST]: tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:27:22.708Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:27:22.724Z - Time taken for 'hash changed files from watcher' 0.08132800000021234ms
+[NX Daemon Server] - 2024-02-05T13:27:28.785Z - [WATCHER]: tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:27:28.786Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:27:29.187Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:27:29.187Z - [REQUEST]: tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:27:29.187Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:27:29.201Z - Time taken for 'hash changed files from watcher' 0.06759099999908358ms
+[NX Daemon Server] - 2024-02-05T13:27:39.052Z - [WATCHER]: tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:27:39.052Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:27:39.856Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:27:39.856Z - [REQUEST]: tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:27:39.856Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:27:39.902Z - Time taken for 'hash changed files from watcher' 0.2216329999937443ms
+[NX Daemon Server] - 2024-02-05T13:27:43.931Z - [WATCHER]: tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:27:43.931Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:27:45.537Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:27:45.537Z - [REQUEST]: tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:27:45.537Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:27:45.562Z - Time taken for 'hash changed files from watcher' 0.10189699998591095ms
+[NX Daemon Server] - 2024-02-05T13:28:01.684Z - [WATCHER]: tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:28:01.684Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:28:04.900Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:28:04.901Z - [REQUEST]: tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:28:04.901Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:28:04.935Z - Time taken for 'hash changed files from watcher' 0.24499500001547858ms
+[NX Daemon Server] - 2024-02-05T13:28:41.536Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:28:41.537Z - [WATCHER]: packages/gogol/tsconfig.json was created or restored
+[NX Daemon Server] - 2024-02-05T13:28:41.638Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:28:41.638Z - [REQUEST]: packages/gogol/tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:28:41.638Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:28:41.651Z - Time taken for 'hash changed files from watcher' 0.07626299999537878ms
+[NX Daemon Server] - 2024-02-05T13:28:42.449Z - [WATCHER]: packages/gogol/tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:28:42.449Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:28:42.650Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:28:42.650Z - [REQUEST]: packages/gogol/tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:28:42.651Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:28:42.699Z - Time taken for 'hash changed files from watcher' 0.23772900001495145ms
+[NX Daemon Server] - 2024-02-05T13:28:44.547Z - [WATCHER]: packages/gogol/tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:28:44.547Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:28:44.948Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:28:44.948Z - [REQUEST]: packages/gogol/tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:28:44.948Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:28:44.961Z - Time taken for 'hash changed files from watcher' 0.09898200002498925ms
+[NX Daemon Server] - 2024-02-05T13:29:04.045Z - [WATCHER]: packages/gogol/tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:29:04.045Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:29:04.850Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:29:04.850Z - [REQUEST]: packages/gogol/tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:29:04.850Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:29:04.897Z - Time taken for 'hash changed files from watcher' 0.23602699997718446ms
+[NX Daemon Server] - 2024-02-05T13:29:05.894Z - [WATCHER]: packages/gogol/tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:29:05.894Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:29:07.500Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:29:07.500Z - [REQUEST]: packages/gogol/tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:29:07.500Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:29:07.513Z - Time taken for 'hash changed files from watcher' 0.07135199999902397ms
+[NX Daemon Server] - 2024-02-05T13:29:08.964Z - [WATCHER]: packages/gogol/tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:29:08.965Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:29:12.180Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:29:12.180Z - [REQUEST]: packages/gogol/tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:29:12.180Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:29:12.196Z - Time taken for 'hash changed files from watcher' 0.06469699999433942ms
+[NX Daemon Server] - 2024-02-05T13:29:16.032Z - [WATCHER]: tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:29:16.033Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:29:22.458Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:29:22.459Z - [REQUEST]: tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:29:22.459Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:29:22.503Z - Time taken for 'hash changed files from watcher' 0.25243500000215136ms
+[NX Daemon Server] - 2024-02-05T13:29:32.844Z - [WATCHER]: tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:29:32.844Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:29:39.208Z - [WATCHER]: packages/gogol/tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:29:39.208Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:29:39.245Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:29:39.245Z - [REQUEST]: tsconfig.json,packages/gogol/tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:29:39.245Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:29:39.262Z - Time taken for 'hash changed files from watcher' 0.17611799997393973ms
+[NX Daemon Server] - 2024-02-05T13:29:40.210Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-02-05T13:29:40.210Z - [WATCHER]: packages/gogol/tsconfig.json was modified
+[NX Daemon Server] - 2024-02-05T13:29:46.643Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-02-05T13:29:46.643Z - [REQUEST]: packages/gogol/tsconfig.json
+[NX Daemon Server] - 2024-02-05T13:29:46.643Z - [REQUEST]: 
+[NX Daemon Server] - 2024-02-05T13:29:46.659Z - Time taken for 'hash changed files from watcher' 0.21906499998294748ms
