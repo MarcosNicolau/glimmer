@@ -19,13 +19,6 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": "./src",
-		"typeRoots": ["./src/types"],
-		"types": ["@types/jest", "jest"]
-	},
-	"files": [],
-	"references": [
-		{
-			"path": "./packages/gogol"
-		}
-	]
+		"typeRoots": ["./src/types"]
+	}
 }
