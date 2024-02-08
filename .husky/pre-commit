@@ -1,4 +1,2 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-npx lint-staged
+CURRENT_BRANCH=`git branch --show-current`
+npx nx affected -t test --base=$CURRENT_BRANCH
