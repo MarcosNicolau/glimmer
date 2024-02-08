@@ -96,14 +96,17 @@ export type SendOperationsData = {
 		sendTransport: WebRtcTransportConnData;
 	};
 	"@get-recv-tracks-done": {
+		roomId: string;
 		peerId: string;
 		consumers: ConsumeParams[];
 	};
-	"@new-track": {
-		roomId: string;
-		peerId: string;
-		consumerParams: ConsumeParams;
-	};
+	"@new-track":
+		| {
+				roomId: string;
+				peerId: string;
+				consumerParams: ConsumeParams;
+		  }
+		| { roomId: string; peerId: string; error: string };
 	"producer-closed": {
 		roomId: string;
 		producerId: string;
@@ -120,6 +123,6 @@ export type OperationsHandlers = {
 		d: ConsumeOperationsData[key],
 		uid: string,
 		send: Send,
-		defaultErr: (uid: string) => void
+		errBack: () => void
 	) => void;
 };

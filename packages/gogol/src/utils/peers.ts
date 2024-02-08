@@ -1,5 +1,5 @@
 import { RtpCapabilities } from "mediasoup/node/lib/types";
-import { mediasoupConfig } from "./../config/mediasoup";
+import { mediasoupConfig } from "../config/mediasoup";
 import {
 	ConsumeParams,
 	MyRouter,
@@ -9,12 +9,6 @@ import {
 } from "../types/mediasoup";
 import { WebRtcTransport } from "mediasoup/node/lib/WebRtcTransport";
 import { Room } from "../types/room";
-
-export const workerCapability = () => {};
-
-export const shouldScaleRoom = () => {};
-
-export const scaleRoom = () => {};
 
 export const createTransport = async (
 	router: MyRouter,
@@ -50,6 +44,7 @@ export const closePeer = async (room: Room, peerId: string) => {
 	// The same logic goes for the consumers and the recvTransport
 	peer.producer?.close();
 };
+
 export const createConsumer = async (
 	room: Room,
 	peerId: string,

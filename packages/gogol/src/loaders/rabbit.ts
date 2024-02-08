@@ -32,8 +32,15 @@ export const startRabbit = async (operationsHandlers: OperationsHandlers) => {
 		channel.sendToQueue(publishQueue.queue, Buffer.from(JSON.stringify(d)));
 	};
 
-	const defaultErr = (uid: string) => {
-		send<"error">({ op: "error", d: { message: "try again" }, uid });
+	const errBack = (uid: string) => () => {
+		send<"error">({
+			op: "error",
+			d: {
+				message:
+					"Unexpected error encountered. This probably means that the server went down and now is up again, please try again",
+			},
+			uid,
+		});
 	};
 
 	channel.consume(
@@ -43,12 +50,22 @@ export const startRabbit = async (operationsHandlers: OperationsHandlers) => {
 			try {
 				data = JSON.parse(msg?.content.toString() || "{}");
 			} catch (err) {
-				defaultErr(data?.uid || "");
+				console.error(`Could not parse msg. ${data}`);
+				errBack(data?.uid || Math.random().toString());
 			}
 			if (data && data.op) {
 				if (!operationsHandlers[data.op]) return;
-				// @ts-expect-error idk how to solve this, but the code works when passing the handlers :)
-				operationsHandlers[data.op](data.d, data.uid, send, defaultErr);
+				try {
+					operationsHandlers[data.op](
+						// @ts-expect-error idk how to solve this, but the code works when passing the handlers :)
+						data.d,
+						data.uid,
+						send,
+						errBack(data.uid)
+					);
+				} catch (err) {
+					console.error(`Operation ${data.op} failed`, err);
+				}
 			}
 		},
 		{ noAck: true }
