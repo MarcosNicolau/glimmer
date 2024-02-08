@@ -1,0 +1,8 @@
+name: gogol
+services:
+  rabbitmq:
+    image: bitnami/rabbitmq:latest
+    restart: always
+    ports:
+      - 15672:15772
+      - 5672:5672
