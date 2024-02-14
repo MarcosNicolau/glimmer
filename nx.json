@@ -1,7 +1,21 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "affected": {
-    "defaultBase": "master"
-  },
-  "nxCloudAccessToken": "MDRmYWY1NmYtOTUwOC00MjRhLTliNDgtMjM4ZGZmMTEwMTI1fHJlYWQtd3JpdGU="
+    "$schema": "./node_modules/nx/schemas/nx-schema.json",
+    "affected": {
+        "defaultBase": "master"
+    },
+    "nxCloudAccessToken": "MDRmYWY1NmYtOTUwOC00MjRhLTliNDgtMjM4ZGZmMTEwMTI1fHJlYWQtd3JpdGU=",
+    "plugins": [
+        {
+            "plugin": "@nx/eslint/plugin",
+            "options": {
+                "targetName": "lint"
+            }
+        },
+        {
+            "plugin": "@nx/jest/plugin",
+            "options": {
+                "targetName": "test"
+            }
+        }
+    ]
 }
