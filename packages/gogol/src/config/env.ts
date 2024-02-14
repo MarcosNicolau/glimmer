@@ -7,4 +7,5 @@ export const ENV_VARS = {
 	RABBIT_URL: process.env.AMQP_URL,
 	WEBRTC_LISTEN_IP: process.env.WEBRTC_LISTEN_IP,
 	WEBRTC_ANNOUNCEMENT_IP: process.env.WEBRTC_ANNOUNCEMENT_IP,
+	SERVER_ID: process.env.SERVER_ID,
 } as const;

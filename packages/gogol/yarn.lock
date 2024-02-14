@@ -124,10 +124,10 @@ isarray@0.0.1:
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
   integrity sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==
 
-mediasoup@^3.13.18:
-  version "3.13.18"
-  resolved "https://registry.yarnpkg.com/mediasoup/-/mediasoup-3.13.18.tgz#bd36bad14f019f405f275a262f74af66855949ac"
-  integrity sha512-8+EBFpYplyyODdxGfqbTuNyoRfZipomeoujDvL5HIZIexG9MUcClID3YNUdqyTp7eNaIRbThi7XQZfvx0PXQTw==
+mediasoup@^3.13.19:
+  version "3.13.19"
+  resolved "https://registry.yarnpkg.com/mediasoup/-/mediasoup-3.13.19.tgz#388cc972a231c06d3f0a0a43d43495b897dfc9c4"
+  integrity sha512-rNYZg1gcqGGzYPfKoGZq4NCrp/4YIiT0cdt+0oOdvu1vAcPCNqzaMWNRDg+i6EMCvan4PKhVStJOHoEwJg7Tdw==
   dependencies:
     debug "^4.3.4"
     flatbuffers "^23.5.26"

@@ -3,12 +3,12 @@ import { createWorkers, startRabbit } from "./loaders";
 import { Room } from "./types/room";
 import { handlers } from "./opHandlers";
 
-const main = async () => {
-	const rooms: Record<string, Room> = {};
+export const main = async () => {
+    const rooms: Record<string, Room> = {};
 
-	const workers = await createWorkers(mediasoupConfig.numWorkers);
+    const workers = await createWorkers(mediasoupConfig.numWorkers);
 
-	await startRabbit(handlers(rooms, workers));
+    await startRabbit(handlers(rooms, workers));
 };
 
 main();
