@@ -1,17 +1,19 @@
 import { User } from "./user";
 
 export type UserInRoom = User & {
-	id: string;
-	role: "creator" | "mod" | "speaker" | "listener";
+	role: "creator" | "mod" | "peer";
 	isDeafened: boolean;
 	isMuted?: boolean;
+	isSpeaker: boolean;
 };
 
 export type Room = {
 	id: string;
 	ownerId: string;
-	private?: {
-		code: string;
+	voiceServerId: string | null;
+	private: {
+		is: boolean;
+		code?: string;
 	};
 	users: UserInRoom[];
 };

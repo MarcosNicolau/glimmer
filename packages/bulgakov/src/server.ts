@@ -1,13 +1,14 @@
-import uws from "uWebSockets.js";
-import { socketBehav } from "./socket";
+import { loadRedis, loadRabbit, loadSocket } from "./loaders";
 
-const startServer = () => {
-	const app = uws.App();
-	const ws = app.ws("/*", socketBehav);
-
-	ws.listen(8000, (listening) => {
-		listening && console.log("listening on port 8000");
-	});
+const startServer = async () => {
+    try {
+        await loadRedis();
+        await loadRabbit();
+        loadSocket();
+    } catch (err) {
+        console.error("could not start server", err);
+        process.exit(1);
+    }
 };
 
 startServer();

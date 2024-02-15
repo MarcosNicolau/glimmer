@@ -1,30 +1,31 @@
-import { redisClient } from "../config/redis";
+import { redis } from "../config/redis";
 
-export const Redis = () => {
-	return {
-		hashes: {
-			set: async (key: string, field: string | number, value: string | number) =>
-				await redisClient.hSet(key, field, value),
-			setMultiple: async (
-				key: string,
-				values: Record<string | number, string | number | Buffer>
-			) => redisClient.hSet(key, values),
-			fieldExists: async (key: string, field: string) =>
-				await redisClient.hExists(key, field),
-			getSingleField: async (key: string, field: string) =>
-				await redisClient.hGet(key, field),
-			getAllFields: async <T extends { [key in string]: string }>(key: string): Promise<T> =>
-				//@ts-expect-error library does not allow to set a typed response type, so we refrain to this
-				await redisClient.hGetAll(key),
-			deleteField: async (key: string, field: string) => await redisClient.hDel(key, field),
-			deleteHash: async (key: string) => await redisClient.del(key),
-		},
+export const Redis = {
+	hashes: {
+		set: async (key: string, field: string | number, value: string | number) =>
+			await redis.hSet(key, field, value),
+		setMultiple: async (
+			key: string,
+			values: Record<string | number, string | number | Buffer>
+		) => redis.hSet(key, values),
+		fieldExists: async (key: string, field: string) => await redis.hExists(key, field),
+		getSingleField: async (key: string, field: string) => await redis.hGet(key, field),
+		getAllFields: async <T extends { [key in string]: string }>(key: string): Promise<T> =>
+			//@ts-expect-error library does not allow to set a typed response type, so we refrain to this
+			await redis.hGetAll(key),
+		deleteField: async (key: string, field: string) => await redis.hDel(key, field),
+		deleteHash: async (key: string) => await redis.del(key),
+	},
 
-		expire: {
-			expire: async (key: string, timeInSeconds: number) =>
-				await redisClient.expire(key, timeInSeconds),
-		},
+	json: {
+		set: async (key: string, path: string, json: string) =>
+			await redis.json.set(key, path, json),
+	},
 
-		deleteKey: async (key: string) => await redisClient.del(key),
-	};
+	expire: {
+		expire: async (key: string, timeInSeconds: number) =>
+			await redis.expire(key, timeInSeconds),
+	},
+
+	deleteKey: async (key: string) => await redis.del(key),
 };

@@ -1,112 +1,111 @@
-import { Room, UserInRoom } from "./room";
-import { User } from "./user";
+import {
+	ConsumeParams,
+	GogolMsgData,
+	GogolOperations,
+	TransportDirection,
+	WebRtcTransportConnData,
+} from "@glimmer/types";
+import { Room } from "./room";
+import { Auth } from "./auth";
+import { WebSocket } from "uWebSockets.js";
+
+export type MyWebSocket = WebSocket<unknown> & {
+	sendJson: <T extends OutgoingActions>(msg: OutgoingWsMessage<T>) => void;
+	broadcastToRoom: <T extends OutgoingActions>(roomId: string, msg: OutgoingWsMessage<T>) => void;
+	broadcastToUser: <T extends OutgoingActions>(userId: string, msg: OutgoingWsMessage<T>) => void;
+};
 
 export type IncomingActionsPayload = {
 	"@room:join": {
+		auth: Auth;
 		roomId: string;
-		user: User;
 	};
 	"@room:leave": {
-		auth: {
-			token: string;
-		};
+		auth: Auth;
+		roomId: string;
 	};
 	"@room:create": {
+		auth: Auth;
 		room: {
 			name: string;
 			description: string;
 			feat: string[];
 			tags: string[];
+			isPrivate: boolean;
 		};
 	};
 	"@room:delete": {
-		auth: {
-			token: string;
-		};
+		auth: Auth;
+		roomId: string;
 	};
 	"@room:add-speaker": {
-		auth: {
-			token: string;
-		};
-		userId: string;
+		auth: Auth;
+		speakerId: string;
+		roomId: string;
 	};
 	"@room:deafened": {
-		auth: {
-			token: string;
-		};
+		auth: Auth;
+		roomId: string;
 	};
 	"@room:mute-speaker": {
-		auth: {
-			token: string;
-		};
+		auth: Auth;
 		userId: string;
+		roomId: string;
 	};
 	"@room:mute-me": {
-		auth: {
-			token: string;
-		};
+		auth: Auth;
 	};
-	"connect-webRtcTransport": {
-		auth: {
-			token: string;
-		};
-		roomId: string;
-		direction: TransportDirection;
-		dtlsParameters: WebRtcTransport["dtlsParameters"];
-	};
-	"send-track": {
-		auth: {
-			token: string;
-		};
+	"@room:send-track": {
+		auth: Auth;
 		roomId: string;
 		produceParams: {
 			id: string;
-			kind: MediaKind;
-			rtpParameters: RtpParameters;
+			kind: ConsumeParams["kind"];
+			rtpParameters: ConsumeParams["rtpParameters"];
 			paused: boolean;
 		};
 	};
+	"@room:connect-webRtcTransport": {
+		auth: Auth;
+		roomId: string;
+		direction: TransportDirection;
+		dtlsParameters: WebRtcTransportConnData["dtlsParameters"];
+	};
 };
 
-export type OutgoingActionsPayload = {
-	"@room:created": {
-		// This tokens allows the user to performs owner actions
-		token: string;
+export type OutgoingActionsPayload = Omit<GogolMsgData, "@room:created"> & {
+	"@room:deleted": {
+		roomId: string;
 	};
-	"@room:you-joined": {
-		// This token will allow the user to perform actions
-		token: string;
+	"@room:created": {
+		roomId: string;
+	};
+	"@room:details": {
 		room: Pick<Room, "users" | "id">;
-		rtpCapabilities: RtpCapabilities;
-		recvTransport: WebRtcTransportConnData;
-		sendTransport: WebRtcTransportConnData | null;
-		consumers: ConsumeParams[];
 	};
 	"@room:new-user": {
-		user: UserInRoom;
-	};
-	"@room:you-are-now-a-speaker": {
-		rtpCapabilities: RtpCapabilities;
-		sendTransport: WebRtcTransportConnData;
+		userId: string;
 	};
 	"@room:new-speaker": {
-		user: UserInRoom;
-		consumerParams: ConsumeParams;
+		userId: string;
 	};
 	"@room:user-deafened": {
-		user: UserInRoom;
+		userId: string;
 	};
 	"@room:user-muted": {
-		user: UserInRoom;
+		userId: string;
 	};
 	"@room:user-left": {
-		user: UserInRoom;
+		userId: string;
+	};
+	"@auth:invalid-token": {
+		message: string;
 	};
 };
 
 export type IncomingActions = keyof IncomingActionsPayload;
 
-export type OutgoingActions = keyof OutgoingActionsPayload;
+export type OutgoingActions = keyof OutgoingActionsPayload | GogolOperations;
 
 export type IncomingWsMessage<T extends IncomingActions> = {
 	action: T;

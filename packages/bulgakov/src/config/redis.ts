@@ -1,7 +1,7 @@
 import { ENV_VARS } from "./env";
 import { createClient } from "redis";
 
-export const redisClient = createClient({
+export const redis = createClient({
 	socket: {
 		host: ENV_VARS.REDIS_HOST,
 		port: Number(ENV_VARS.REDIS_PORT),
