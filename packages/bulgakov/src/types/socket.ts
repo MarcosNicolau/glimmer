@@ -6,10 +6,10 @@ import {
 	WebRtcTransportConnData,
 } from "@glimmer/types";
 import { Room } from "./room";
-import { Auth } from "./auth";
 import { WebSocket } from "uWebSockets.js";
+import { User } from "./user";
 
-export type MyWebSocket = WebSocket<unknown> & {
+export type MyWebSocket = WebSocket<User> & {
 	sendJson: <T extends OutgoingActions>(msg: OutgoingWsMessage<T>) => void;
 	broadcastToRoom: <T extends OutgoingActions>(roomId: string, msg: OutgoingWsMessage<T>) => void;
 	broadcastToUser: <T extends OutgoingActions>(userId: string, msg: OutgoingWsMessage<T>) => void;
@@ -17,15 +17,12 @@ export type MyWebSocket = WebSocket<unknown> & {
 
 export type IncomingActionsPayload = {
 	"@room:join": {
-		auth: Auth;
 		roomId: string;
 	};
 	"@room:leave": {
-		auth: Auth;
 		roomId: string;
 	};
 	"@room:create": {
-		auth: Auth;
 		room: {
 			name: string;
 			description: string;
@@ -35,28 +32,23 @@ export type IncomingActionsPayload = {
 		};
 	};
 	"@room:delete": {
-		auth: Auth;
 		roomId: string;
 	};
 	"@room:add-speaker": {
-		auth: Auth;
 		speakerId: string;
 		roomId: string;
 	};
 	"@room:deafened": {
-		auth: Auth;
 		roomId: string;
 	};
 	"@room:mute-speaker": {
-		auth: Auth;
 		userId: string;
 		roomId: string;
 	};
 	"@room:mute-me": {
-		auth: Auth;
+		roomId: string;
 	};
 	"@room:send-track": {
-		auth: Auth;
 		roomId: string;
 		produceParams: {
 			id: string;
@@ -66,7 +58,6 @@ export type IncomingActionsPayload = {
 		};
 	};
 	"@room:connect-webRtcTransport": {
-		auth: Auth;
 		roomId: string;
 		direction: TransportDirection;
 		dtlsParameters: WebRtcTransportConnData["dtlsParameters"];

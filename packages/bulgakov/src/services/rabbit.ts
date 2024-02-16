@@ -1,6 +1,5 @@
 import { Channel, ConsumeMessage, connect } from "amqplib";
 import { ENV_VARS } from "../config/env";
-import { ws } from "../api/socket";
 import {
 	BulgakovOperations,
 	BulgakovQueueMessage,
@@ -13,6 +12,7 @@ import {
 } from "@glimmer/types";
 import { RABBIT } from "@glimmer/constants";
 import { Rooms } from "./room";
+import { MyWebSocket } from "../types/socket";
 
 export const RabbitService = () => {
 	let channel: Channel | null = null;
@@ -26,10 +26,10 @@ export const RabbitService = () => {
 			if (!channel) return;
 			channel.consume(queue, handler);
 		},
-		setupConsumers: () => {
+		setupConsumers: (ws: Pick<MyWebSocket, "broadcastToRoom" | "broadcastToUser">) => {
 			if (!channel) return;
 			channel.prefetch(1);
-			channel.consume(RABBIT.QUEUES.BULGAKOV_SERVER, (msg: any) => {
+			channel.consume(RABBIT.QUEUES.BULGAKOV_SERVER, async (msg: any) => {
 				let data: GogolQueueMessage<GogolOperations> | null = null;
 				try {
 					data = JSON.parse(msg?.content.toString() || "{}");
@@ -42,14 +42,14 @@ export const RabbitService = () => {
 					switch (data.op) {
 						case "@room:created":
 							const { roomId, serverId } = data.d as GogolMsgData["@room:created"];
-							Rooms.setVoiceServer({ roomId, voiceServerId: serverId });
+							await Rooms.setVoiceServer({ roomId, voiceServerId: serverId });
 							ws.broadcastToRoom(roomId, {
 								action: "@room:created",
 								payload: { roomId },
 							});
 							break;
 						case "error":
-							console.warn("Gogol error operation");
+							console.warn("Gogol error operation", data);
 							break;
 						default:
 							//@ts-expect-error idk why but it takes data as null, when is not
@@ -64,7 +64,7 @@ export const RabbitService = () => {
 							break;
 					}
 				} catch (err) {
-					console.error(err);
+					console.error("error while consuming", err);
 				}
 			});
 		},

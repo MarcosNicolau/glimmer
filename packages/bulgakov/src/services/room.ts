@@ -10,13 +10,22 @@ type CreateRoomParams = {
 	owner: User;
 };
 
+type GetUserFilter = `users[${string}].${keyof UserInRoom}`;
+
+type GetRoomFields = GetUserFilter | keyof Room;
+
+type GetRoom<T extends GetRoomFields> = {
+	[key in T extends GetUserFilter ? "users" : T]: Room[key];
+};
+
 export const Rooms = {
 	createRoom: async ({ room: { isPrivate, ...room }, owner }: CreateRoomParams) => {
-		const roomExists = await redis.json.get(REDIS.JSON_PATHS.room(room.id));
+		const roomExists = await redis.json.get(REDIS.JSON_PATHS.room(room.id), { path: "$.id" });
 		if (roomExists) return Promise.reject("room already exists");
 		const _room: Room = {
 			...room,
 			ownerId: owner.id,
+			createdAt: Date.now(),
 			users: [
 				{
 					...owner,
@@ -24,6 +33,7 @@ export const Rooms = {
 					isDeafened: false,
 					isMuted: false,
 					isSpeaker: true,
+					joinedAt: Date.now(),
 				},
 			],
 			voiceServerId: null,
@@ -32,20 +42,20 @@ export const Rooms = {
 		await redis.json.set(REDIS.JSON_PATHS.room(room.id), "$", _room);
 		return room;
 	},
-	getRoom: async (roomId: string): Promise<Room> => {
+	/**
+	 *
+	 * @param fields the fields you want to retrieve. if undefined, it defaults to all of them
+	 * @returns
+	 */
+	getRoom: async <T extends GetRoomFields>(roomId: string, fields?: T[]): Promise<GetRoom<T>> => {
 		//@ts-expect-error idk
-		const room: string | null = await redis.json.get(REDIS.JSON_PATHS.room(roomId));
+		const room: string | null = await redis.json.get(REDIS.JSON_PATHS.room(roomId), {
+			path: fields ? fields.map((field) => `$.${field}`).join(" ") : "",
+		});
 		if (room) return JSON.parse(room);
 		return Promise.reject("room does not exist");
 	},
-	getRoomVoiceServer: async (roomId: string) => {
-		//@ts-expect-error idk
-		const id: string | null = await redis.json.get(REDIS.JSON_PATHS.room(roomId), {
-			path: "$.voiceServerId",
-		});
-		if (id) return id;
-		return Promise.reject("room does not exist");
-	},
+
 	setVoiceServer: async ({
 		roomId,
 		voiceServerId,
@@ -61,6 +71,7 @@ export const Rooms = {
 			role: "peer",
 			isDeafened: false,
 			isSpeaker: false,
+			joinedAt: Date.now(),
 		};
 		await redis.json.arrAppend(REDIS.JSON_PATHS.room(roomId), "$.users", _user);
 		return _user;
@@ -88,4 +99,7 @@ export const Rooms = {
 		return ownerId === userId;
 	},
 	delete: async (roomId: string) => await redis.json.del(REDIS.JSON_PATHS.room(roomId)),
+	setRoomOwner: async (roomId: string, newOwnerId: string) => {
+		await redis.json.set(REDIS.JSON_PATHS.room(roomId), "$.ownerId", newOwnerId);
+	},
 };
