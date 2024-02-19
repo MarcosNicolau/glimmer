@@ -4,11 +4,17 @@ import { Room } from "./types/room";
 import { handlers } from "./opHandlers";
 
 export const main = async () => {
-    const rooms: Record<string, Room> = {};
+	const rooms: Record<string, Room> = {};
 
-    const workers = await createWorkers(mediasoupConfig.numWorkers);
+	const workers = await createWorkers(mediasoupConfig.numWorkers);
 
-    await startRabbit(handlers(rooms, workers));
+	try {
+		await startRabbit(handlers(rooms, workers));
+		console.log("Rabbit started");
+	} catch (err) {
+		console.error("err while starting rabbit", err);
+		process.exit(1);
+	}
 };
 
 main();

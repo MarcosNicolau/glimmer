@@ -1,4 +1,4 @@
-import mediasoup from "mediasoup";
+import { createWorker } from "mediasoup";
 import { mediasoupConfig } from "../config/mediasoup";
 import { MyWorker } from "../types/mediasoup";
 
@@ -6,7 +6,7 @@ export const createWorkers = async (numWorkers: number): Promise<MyWorker[]> => 
 	const workers: MyWorker[] = [];
 	for (let i = 0; i < numWorkers; i++) {
 		try {
-			const worker: MyWorker = await mediasoup.createWorker({
+			const worker: MyWorker = await createWorker({
 				...mediasoupConfig.worker,
 				appData: { id: i.toString() },
 			});
