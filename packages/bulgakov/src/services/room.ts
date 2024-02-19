@@ -37,7 +37,7 @@ export const Rooms = {
 				},
 			],
 			voiceServerId: null,
-			private: { is: isPrivate, code: isPrivate ? generateRandomCode(6) : "" },
+			private: { is: isPrivate, code: isPrivate ? await generateRandomCode(6) : "" },
 		};
 		await redis.json.set(REDIS.JSON_PATHS.room(room.id), "$", _room);
 		return room;

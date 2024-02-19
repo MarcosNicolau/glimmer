@@ -12,7 +12,7 @@ import {
 } from "@glimmer/types";
 import { RABBIT } from "@glimmer/constants";
 import { Rooms } from "./room";
-import { MyWebSocket } from "../types/socket";
+import { TemplatedApp } from "uWebSockets.js";
 
 export const RabbitService = () => {
 	let channel: Channel | null = null;
@@ -26,10 +26,13 @@ export const RabbitService = () => {
 			if (!channel) return;
 			channel.consume(queue, handler);
 		},
-		setupConsumers: (ws: Pick<MyWebSocket, "broadcastToRoom" | "broadcastToUser">) => {
+		setupConsumers: async (ws: TemplatedApp) => {
 			if (!channel) return;
 			channel.prefetch(1);
-			channel.consume(RABBIT.QUEUES.BULGAKOV_SERVER, async (msg: any) => {
+			const { queue: bulgakovQueue } = await channel.assertQueue(
+				RABBIT.QUEUES.BULGAKOV_SERVER
+			);
+			channel.consume(bulgakovQueue, async (msg: any) => {
 				let data: GogolQueueMessage<GogolOperations> | null = null;
 				try {
 					data = JSON.parse(msg?.content.toString() || "{}");

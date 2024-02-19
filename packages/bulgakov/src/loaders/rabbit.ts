@@ -1,10 +1,10 @@
+import { TemplatedApp } from "uWebSockets.js";
 import { Rabbit } from "../services";
-import { MyWebSocket } from "../types/socket";
 
-export const loadRabbit = async (ws: Pick<MyWebSocket, "broadcastToRoom" | "broadcastToUser">) => {
+export const loadRabbit = async (ws: TemplatedApp) => {
 	try {
 		await Rabbit.connect();
-		Rabbit.setupConsumers(ws);
+		await Rabbit.setupConsumers(ws);
 		console.log("rabbit connected");
 	} catch (err) {
 		console.error("could not connect with rabbit", err);

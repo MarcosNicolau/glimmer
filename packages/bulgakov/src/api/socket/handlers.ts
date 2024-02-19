@@ -1,14 +1,16 @@
-import { IncomingActions, IncomingActionsPayload, MyWebSocket } from "../../types/socket";
+import { IncomingActions, IncomingActionsPayload } from "../../types/socket";
 import { Rooms, Rabbit } from "../../services";
 import { SOCKET_TOPICS } from "../../constants";
 import { z } from "zod";
 import { generateRandomId } from "../../utils/crypto";
+import { WebSocket } from "uWebSockets.js";
+import { User } from "../../types/user";
 
-type Handlers = (ws: MyWebSocket) => {
+type Handlers = (ws: WebSocket<User>) => {
 	[key in IncomingActions]: (payload: IncomingActionsPayload[key]) => void;
 };
 
-export const socketHandlers: Handlers = (ws: MyWebSocket) => {
+export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 	const validateRoom = async (roomId: string) => await z.string().parseAsync(roomId);
 
 	return {
@@ -23,7 +25,7 @@ export const socketHandlers: Handlers = (ws: MyWebSocket) => {
 					isPrivate: z.boolean(),
 				})
 				.parseAsync(room);
-			const roomId = generateRandomId(10);
+			const roomId = generateRandomId();
 			await Rooms.createRoom({ room: { id: roomId, ...room }, owner: user });
 			Rabbit.publishToVoiceServer(null, { op: "@room:create", d: { roomId } });
 		},

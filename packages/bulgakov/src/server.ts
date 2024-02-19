@@ -1,17 +1,19 @@
+import { v1Router } from "./api/rest/v1/routes";
 import { ENV_VARS } from "./config/env";
-import { buildWsUtils } from "./api/socket/index";
-import { App } from "uWebSockets.js";
 import { loadRedis, loadRabbit } from "./loaders";
 import { wsBehaviour } from "./api/socket";
+import { App } from "./utils/uws";
 
 const startServer = async () => {
 	try {
-		const app = App();
-		const ws = buildWsUtils(app.ws("/*", wsBehaviour));
+		const app = App({});
 		await loadRedis();
-		await loadRabbit(ws);
+		await loadRabbit(app);
+		// Set up server
+		app.ws("/*", wsBehaviour);
+		v1Router("/v1/rooms", app);
 		const port = ENV_VARS.PORT || 8000;
-		ws.listen(port, (listening) => {
+		app.listen(port, (listening) => {
 			listening && console.log(`listening on port ${port}`);
 		});
 	} catch (err) {

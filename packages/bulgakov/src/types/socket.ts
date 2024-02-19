@@ -6,14 +6,6 @@ import {
 	WebRtcTransportConnData,
 } from "@glimmer/types";
 import { Room } from "./room";
-import { WebSocket } from "uWebSockets.js";
-import { User } from "./user";
-
-export type MyWebSocket = WebSocket<User> & {
-	sendJson: <T extends OutgoingActions>(msg: OutgoingWsMessage<T>) => void;
-	broadcastToRoom: <T extends OutgoingActions>(roomId: string, msg: OutgoingWsMessage<T>) => void;
-	broadcastToUser: <T extends OutgoingActions>(userId: string, msg: OutgoingWsMessage<T>) => void;
-};
 
 export type IncomingActionsPayload = {
 	"@room:join": {
