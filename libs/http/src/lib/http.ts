@@ -21,10 +21,10 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 		aborted = true;
 	});
 	// With that in mind, we just redefined the end method so that is always safe :)
-	const _end = res.end;
+	res._end = res.end;
 	res.end = (body) => {
 		if (aborted) return res;
-		else return _end(body);
+		else return res.cork(() => res._end(body));
 	};
 
 	res.send = ({ status, message, result = {} }) =>
@@ -43,12 +43,17 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 		new Promise((resolve) => {
 			let buffer: Buffer;
 			res.onData((chunk, isLast) => {
-				const curBuf = Buffer.from(chunk);
-				if (isLast)
-					return buffer
-						? resolve(JSON.parse(Buffer.concat([buffer, curBuf]).toString()))
-						: resolve(JSON.parse(Buffer.concat([curBuf]).toString()));
-				buffer = buffer ? Buffer.concat([buffer, curBuf]) : Buffer.concat([curBuf]);
+				try {
+					const curBuf = Buffer.from(chunk);
+					if (isLast)
+						return buffer
+							? resolve(JSON.parse(Buffer.concat([buffer, curBuf]).toString()))
+							: resolve(JSON.parse(Buffer.concat([curBuf]).toString()));
+					buffer = buffer ? Buffer.concat([buffer, curBuf]) : Buffer.concat([curBuf]);
+				} catch (err) {
+					if (!aborted) res.send({ status: 500 });
+					console.error("Could not read body, are you sure this is a post request?", err);
+				}
 			});
 		});
 	const headers: Record<string, string> = {};
@@ -70,10 +75,36 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 };
 
 export const Router = (prefix: string | null, app: TemplatedApp) => {
+	/**
+	 * This seems pretty weird, I know. Let me explain you,
+	 * In theory, once a function has been defined, it is not possible to mutate it.
+	 * However, as most cases, there is a dirty workaround...
+	 * The only way for a variable which references a function to reference a different function would be to assign it to a new property inside an object.
+	 * For example:
+	 * 	if we have const foo = (...args) => {...}, to not loose the function when reassigning it, we do:
+	 * 	const holder = { a: foo } And then,
+	 * 	holder.b = holder.a. Finally we can just do,
+	 *  holder.a = () => {...} //Our new function.
+	 * 	This way, we can keep the original function that a was holding, which is what are doing below.
+	 */
+
+	//@ts-expect-error explained above, but basically we don't to type the holder properties
+	if (!app._get) app._get = app.get;
+
+	//@ts-expect-error explained above
+	if (!app._post) app._post = app.post;
+
+	//@ts-expect-error explained above
+	if (!app._put) app._put = app.put;
+
+	//@ts-expect-error explained above
+	if (!app._del) app._del = app.del;
+
 	const handle =
 		(method: "get" | "post" | "put" | "del") =>
 		(route: RecognizedString, ...handlers: HttpHandler[]) =>
-			app[method](prefix ? `${prefix}/${route}` : route, async (res, req) => {
+			//@ts-expect-error dsad
+			app[`_${method}`](prefix ? prefix + route : route, async (res, req) => {
 				await runHandlers(res, req, ...handlers);
 			});
 
@@ -81,7 +112,7 @@ export const Router = (prefix: string | null, app: TemplatedApp) => {
 		get: handle("get"),
 		post: handle("post"),
 		put: handle("put"),
-		delete: handle("del"),
+		del: handle("del"),
 	};
 };
 
@@ -91,7 +122,7 @@ const buildApp = (app: TemplatedApp): TemplatedApp => {
 	app.get = router.get;
 	app.post = router.post;
 	app.put = router.put;
-	app.del = router.delete;
+	app.del = router.del;
 
 	return app;
 };
