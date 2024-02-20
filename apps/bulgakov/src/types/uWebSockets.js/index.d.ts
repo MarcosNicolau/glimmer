@@ -5,11 +5,11 @@ declare module "uWebSockets.js" {
 		broadcastToRoom: <T extends OutgoingActions>(
 			roomId: string,
 			msg: OutgoingWsMessage<T>
-		) => void;
+		) => Promise<boolean>;
 		broadcastToUser: <T extends OutgoingActions>(
 			userId: string,
 			msg: OutgoingWsMessage<T>
-		) => void;
+		) => boolean;
 	}
 
 	export interface WebSocket extends uws.WebSocket {
@@ -17,10 +17,10 @@ declare module "uWebSockets.js" {
 		broadcastToRoom: <T extends OutgoingActions>(
 			roomId: string,
 			msg: OutgoingWsMessage<T>
-		) => void;
+		) => Promise<boolean>;
 		broadcastToUser: <T extends OutgoingActions>(
 			userId: string,
 			msg: OutgoingWsMessage<T>
-		) => void;
+		) => boolean;
 	}
 }

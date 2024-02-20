@@ -47,15 +47,18 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 				ws.subscribe(SOCKET_TOPICS.ROOM(roomId));
 			ws.broadcastToUser(userId, {
 				action: "@room:details",
-				payload: { room: { id: roomId, users } },
+				payload: { roomId, room: { id: roomId, users } },
 			});
-			ws.broadcastToRoom(roomId, { action: "@room:new-user", payload: { userId: user.id } });
+			await ws.broadcastToRoom(roomId, {
+				action: "@room:new-user",
+				payload: { roomId, userId: user.id },
+			});
 		},
 		"@room:leave": async ({ roomId }) => {
 			await validateRoom(roomId);
 			const { id: userId } = ws.getUserData();
 			ws.unsubscribe(SOCKET_TOPICS.ROOM(roomId));
-			ws.broadcastToRoom(roomId, { action: "@room:user-left", payload: { userId } });
+			ws.broadcastToRoom(roomId, { action: "@room:user-left", payload: { roomId, userId } });
 			await Rooms.leaveRoom(roomId, userId);
 			const { voiceServerId } = await Rooms.getRoom(roomId, ["voiceServerId"]);
 			Rabbit.publishToVoiceServer(voiceServerId, {
@@ -96,7 +99,7 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 			});
 			ws.broadcastToRoom(roomId, {
 				action: "@room:new-speaker",
-				payload: { userId: speakerId },
+				payload: { roomId, userId: speakerId },
 			});
 		},
 		"@room:delete": async ({ roomId }) => {

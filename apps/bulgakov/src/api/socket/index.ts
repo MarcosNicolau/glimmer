@@ -37,4 +37,5 @@ export const wsBehaviour: uws.WebSocketBehavior<User> = {
 	close(ws) {
 		ws.unsubscribe(SOCKET_TOPICS.USER(ws.getUserData().id));
 	},
+	sendPingsAutomatically: true,
 };

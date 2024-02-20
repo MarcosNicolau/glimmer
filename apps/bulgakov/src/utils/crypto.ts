@@ -10,3 +10,8 @@ export const generateRandomCode = (length = 6) =>
 // I believe this is the most efficient and the least blocking, form of generating the UUID.
 // We should not be concerned about blocking the event loop too much.
 export const generateRandomId = () => crypto.randomUUID();
+
+export const generateRandomString = (length = 6) =>
+	Math.random()
+		.toString(20)
+		.substring(2, length + 2);

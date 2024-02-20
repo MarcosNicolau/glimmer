@@ -64,21 +64,27 @@ export type OutgoingActionsPayload = Omit<GogolMsgData, "@room:created"> & {
 		roomId: string;
 	};
 	"@room:details": {
+		roomId: string;
 		room: Pick<Room, "users" | "id">;
 	};
 	"@room:new-user": {
+		roomId: string;
 		userId: string;
 	};
 	"@room:new-speaker": {
+		roomId: string;
 		userId: string;
 	};
 	"@room:user-deafened": {
+		roomId: string;
 		userId: string;
 	};
 	"@room:user-muted": {
+		roomId: string;
 		userId: string;
 	};
 	"@room:user-left": {
+		roomId: string;
 		userId: string;
 	};
 	"@auth:invalid-token": {

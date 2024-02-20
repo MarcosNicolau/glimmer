@@ -2,10 +2,10 @@ import { Channel, ConsumeMessage, connect } from "amqplib";
 import { ENV_VARS } from "../config/env";
 import {
 	BulgakovOperations,
-	BulgakovQueueMessage,
+	BulgakovMessage,
 	GogolMsgData,
 	GogolOperations,
-	GogolQueueMessage,
+	GogolMessage,
 	broadcastToRoomOps,
 	BroadcastToRoomOps,
 	BroadcastToUserOps,
@@ -13,8 +13,10 @@ import {
 import { RABBIT } from "@glimmer/constants";
 import { Rooms } from "./room";
 import { TemplatedApp } from "uWebSockets.js";
+import { OutgoingActions, OutgoingWsMessage } from "../types/socket";
+import { generateRandomString } from "../utils/crypto";
 
-export const RabbitService = () => {
+export const RabbitService = (appId: string) => {
 	let channel: Channel | null = null;
 
 	return {
@@ -32,8 +34,36 @@ export const RabbitService = () => {
 			const { queue: bulgakovQueue } = await channel.assertQueue(
 				RABBIT.QUEUES.BULGAKOV_SERVER
 			);
-			channel.consume(bulgakovQueue, async (msg: any) => {
-				let data: GogolQueueMessage<GogolOperations> | null = null;
+			// This queue is used as Pub/Sub for signaling internally between the bulgakov servers.
+			// We are using this when broadcasting to the rooms.
+			const { queue: internalQueue } = await channel.assertQueue("", {
+				exclusive: true,
+			});
+			const { exchange } = await channel.assertExchange(
+				RABBIT.EXCHANGES.INTERNAL_BULGAKOV,
+				"fanout",
+				{
+					durable: false,
+				}
+			);
+			await channel.bindQueue(internalQueue, exchange, "");
+			channel.consume(internalQueue, (msg) => {
+				if (msg?.properties.appId === appId) return;
+				let data: OutgoingWsMessage<
+					Exclude<OutgoingActions, "@auth:invalid-token" | "error">
+				> | null = null;
+				try {
+					data = JSON.parse(msg?.content.toString() || "{}");
+				} catch (err) {
+					console.error(`Could not parse internal msg. ${err}`);
+					return;
+				}
+				if (!data || !data.payload?.roomId || !data.action) return;
+				ws.broadcastToRoom(data.payload.roomId, data);
+			});
+
+			channel.consume(bulgakovQueue, async (msg) => {
+				let data: GogolMessage<GogolOperations> | null = null;
 				try {
 					data = JSON.parse(msg?.content.toString() || "{}");
 				} catch (err) {
@@ -76,17 +106,28 @@ export const RabbitService = () => {
 		 */
 		publishToVoiceServer: async <T extends BulgakovOperations>(
 			id: string | null,
-			msg: BulgakovQueueMessage<T>
+			msg: BulgakovMessage<T>
 		) => {
 			if (!channel) return;
 			const _msg = Buffer.from(JSON.stringify(msg));
 			if (id) {
 				const { queue } = await channel.assertQueue(RABBIT.QUEUES.VOICE_SERVER(id));
-				channel.sendToQueue(queue, _msg);
+				channel.sendToQueue(queue, _msg, { appId });
 				return;
 			}
 			const { queue } = await channel.assertQueue(RABBIT.QUEUES.GENERAL_VOICE_SERVER);
-			channel.sendToQueue(queue, _msg);
+			channel.sendToQueue(queue, _msg, { appId });
+		},
+		publishToBulgakovExchange: async <T extends OutgoingActions>(msg: OutgoingWsMessage<T>) => {
+			if (!channel) return;
+			const { exchange } = await channel.assertExchange(
+				RABBIT.EXCHANGES.INTERNAL_BULGAKOV,
+				"fanout",
+				{
+					durable: false,
+				}
+			);
+			channel.publish(exchange, "", Buffer.from(JSON.stringify(msg)), { appId });
 		},
 		send: async (queue: string, msg: object) => {
 			if (!channel) return;
@@ -98,4 +139,4 @@ export const RabbitService = () => {
 	};
 };
 
-export const Rabbit = RabbitService();
+export const Rabbit = RabbitService(generateRandomString());
