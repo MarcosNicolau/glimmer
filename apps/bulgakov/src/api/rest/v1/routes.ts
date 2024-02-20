@@ -5,5 +5,5 @@ import { TemplatedApp } from "uWebSockets.js";
 export const v1Router = (pattern: string, app: TemplatedApp) => {
 	const authRouter = Router(`${pattern}/auth`, app);
 
-	authRouter.get("/token", getToken);
+	authRouter.post("/token", getToken);
 };

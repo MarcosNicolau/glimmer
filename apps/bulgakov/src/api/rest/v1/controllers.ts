@@ -1,5 +1,5 @@
-import { Token } from "packages/bulgakov/src/services";
-import { generateRandomId } from "packages/bulgakov/src/utils/crypto";
+import { Token } from "../../../services";
+import { generateRandomId } from "../../../utils/crypto";
 import { HttpHandler } from "uWebSockets.js";
 
 export const getToken: HttpHandler = async (res, req) => {

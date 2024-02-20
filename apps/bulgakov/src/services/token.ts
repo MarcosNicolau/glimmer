@@ -1,10 +1,11 @@
 import * as jwt from "jsonwebtoken";
 import * as fs from "fs";
+import { ENV_VARS } from "../config/env";
 
 export const Token = {
 	issue: async (payload: jwt.JwtPayload) => {
 		try {
-			const cert = await fs.promises.readFile("./jwtRS256.key");
+			const cert = await fs.promises.readFile(ENV_VARS.JWT_PRIVATE_KEY || "");
 			const token = await new Promise<string>((resolve, reject) =>
 				jwt.sign(
 					payload,
@@ -28,7 +29,7 @@ export const Token = {
 
 	verify: async (token: string) => {
 		try {
-			const cert = await fs.promises.readFile("./jwt.key.pub");
+			const cert = await fs.promises.readFile(ENV_VARS.JWT_PUBLIC_KEY || "");
 			const { isValid, payload } = await new Promise<{
 				isValid: boolean;
 				payload: string | jwt.JwtPayload | undefined;

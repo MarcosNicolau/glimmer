@@ -11,7 +11,7 @@ const startServer = async () => {
 		await loadRabbit(app);
 		// Set up server
 		app.ws("/*", wsBehaviour);
-		v1Router("/v1/rooms", app);
+		v1Router("/v1", app);
 		const port = ENV_VARS.PORT || 8000;
 		app.listen(port, (listening) => {
 			listening && console.log(`listening on port ${port}`);

@@ -7,4 +7,6 @@ export const ENV_VARS = {
 	REDIS_PASSWORD: process.env.REDIS_PASSWORD,
 	RABBIT_URL: process.env.RABBIT_URL,
 	PORT: Number(process.env.PORT),
+	JWT_PUBLIC_KEY: process.env.JWT_PUBLIC_KEY,
+	JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY,
 } as const;
