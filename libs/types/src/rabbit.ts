@@ -98,10 +98,6 @@ export type BulgakovMsgData = {
 		roomId: string;
 		userId: string;
 	};
-	"@socket:broadcast-to-room": {
-		roomId: string;
-		[key: string]: any;
-	};
 };
 
 export type BulgakovOperations = keyof BulgakovMsgData;

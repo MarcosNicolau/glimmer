@@ -1,7 +1,7 @@
 import { ENV_VARS } from "./../config/env";
 import * as amqp from "amqplib";
 import { Send, OperationsHandlers } from "../types/operations";
-import { BulgakovMsgData, BulgakovOperations, BulgakovQueueMessage } from "@glimmer/types";
+import { BulgakovMsgData, BulgakovOperations, BulgakovMessage } from "@glimmer/types";
 
 export type IncomingQueueMessage<T extends BulgakovOperations> = {
 	op: T;
@@ -9,13 +9,13 @@ export type IncomingQueueMessage<T extends BulgakovOperations> = {
 	uid: string;
 };
 
-const onMessage = (
+const onMessage = <T extends BulgakovOperations>(
 	msg: amqp.ConsumeMessage | null,
 	handlers: OperationsHandlers,
 	send: Send,
 	errBack: () => void
 ) => {
-	let data: BulgakovQueueMessage<BulgakovOperations> | undefined;
+	let data: BulgakovMessage<T> | undefined;
 	try {
 		data = JSON.parse(msg?.content.toString() || "{}");
 	} catch (err) {
@@ -26,12 +26,7 @@ const onMessage = (
 	if (data && data.op) {
 		if (!handlers[data.op]) return;
 		try {
-			handlers[data.op](
-				// @ts-expect-error idk how to solve this, but the code works when passing the handlers :)
-				data.d,
-				send,
-				errBack
-			);
+			handlers[data.op](data.d, send, errBack);
 		} catch (err) {
 			console.error(`Operation ${data.op} failed`, err);
 		}

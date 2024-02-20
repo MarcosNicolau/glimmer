@@ -1,11 +1,16 @@
 import { OperationsHandlers } from "./types/operations";
 import { mediasoupConfig } from "./config/mediasoup";
-import { closePeer, createConsumer, createTransport, getTransportConnData } from "./utils/peers";
+import {
+	closePeer,
+	createConsumer,
+	createTransport,
+	getAllConsumers,
+	getTransportConnData,
+} from "./utils/peers";
 import { MyWorker } from "./types/mediasoup";
 import { createRoom } from "./utils/rooms";
 import { Room } from "./types/room";
 import { ENV_VARS } from "./config/env";
-import { ConsumeParams } from "@glimmer/types";
 
 export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): OperationsHandlers => {
 	let workerIdx = 0;
@@ -68,6 +73,8 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 				producer: null,
 			};
 
+			const consumers = await getAllConsumers(userId, room);
+
 			send({
 				op: "@room:you-joined",
 				d: {
@@ -76,7 +83,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 					recvTransport: getTransportConnData(recvTransport),
 					sendTransport: sendTransport && getTransportConnData(sendTransport),
 					rtpCapabilities: room.router.rtpCapabilities,
-					consumers: [],
+					consumers,
 				},
 			});
 		},
@@ -144,18 +151,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			const peer = room.state.peers[userId];
 			if (!peer) return errBack();
 
-			const consumers: ConsumeParams[] = [];
-
-			for await (const _peer of Object.values(room.state.peers)) {
-				if (userId === _peer.id || !_peer.producer) continue;
-				const consumer = await createConsumer(room, userId, {
-					producerId: _peer.producer.id,
-					producerPaused: _peer.producer.paused,
-					rtpCapabilities: room.router.rtpCapabilities,
-				});
-				if (!consumer) continue;
-				consumers.push(consumer);
-			}
+			const consumers = await getAllConsumers(userId, room);
 
 			send({ op: "@room:get-recv-tracks-done", d: { consumers, userId, roomId } });
 		},
