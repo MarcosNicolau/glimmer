@@ -27,6 +27,7 @@ declare module "uWebSockets.js" {
 		post(pattern: RecognizedString, ...handler: HttpHandler[]): TemplatedApp;
 		put(pattern: RecognizedString, ...handler: HttpHandler[]): TemplatedApp;
 		del(pattern: RecognizedString, ...handler: HttpHandler[]): TemplatedApp;
+		[key: string]: any;
 	}
 }
 

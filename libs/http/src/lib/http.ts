@@ -88,16 +88,12 @@ export const Router = (prefix: string | null, app: TemplatedApp) => {
 	 * 	This way, we can keep the original function that a was holding, which is what are doing below.
 	 */
 
-	//@ts-expect-error explained above, but basically we don't to type the holder properties
 	if (!app._get) app._get = app.get;
 
-	//@ts-expect-error explained above
 	if (!app._post) app._post = app.post;
 
-	//@ts-expect-error explained above
 	if (!app._put) app._put = app.put;
 
-	//@ts-expect-error explained above
 	if (!app._del) app._del = app.del;
 
 	const handle =
