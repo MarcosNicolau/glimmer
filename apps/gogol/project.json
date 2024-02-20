@@ -1,0 +1,56 @@
+{
+	"name": "gogol",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/gogol/src",
+	"projectType": "application",
+	"targets": {
+		"build": {
+			"executor": "@nx/esbuild:esbuild",
+			"outputs": ["{options.outputPath}"],
+			"defaultConfiguration": "production",
+			"options": {
+				"platform": "node",
+				"outputPath": "dist/apps/gogol",
+				"format": ["cjs"],
+				"bundle": false,
+				"main": "apps/gogol/src/main.ts",
+				"tsConfig": "apps/gogol/tsconfig.app.json",
+				"assets": ["apps/gogol/src/assets"],
+				"generatePackageJson": true,
+				"esbuildOptions": {
+					"sourcemap": true,
+					"outExtension": {
+						".js": ".js"
+					}
+				}
+			},
+			"configurations": {
+				"development": {},
+				"production": {
+					"esbuildOptions": {
+						"sourcemap": false,
+						"outExtension": {
+							".js": ".js"
+						}
+					}
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"options": {
+				"buildTarget": "gogol:build"
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "gogol:build:development"
+				},
+				"production": {
+					"buildTarget": "gogol:build:production"
+				}
+			}
+		}
+	},
+	"tags": []
+}

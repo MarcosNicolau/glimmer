@@ -1,34 +1,25 @@
 {
-    "ts-node": {
-        "files": true
-    },
-    "compilerOptions": {
-        "noUnusedLocals": true,
-        "sourceMap": true,
-        "importHelpers": true,
-        "target": "es2015",
-        "module": "esnext",
-        "lib": ["es2017", "dom"],
-        "moduleResolution": "node",
-        "allowJs": false,
-        "allowSyntheticDefaultImports": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "resolveJsonModule": true,
-        "declaration": true,
-        "outDir": "dist",
-        "skipDefaultLibCheck": true,
-        "skipLibCheck": true,
-        "composite": true,
-        "strict": true,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "rootDir": ".",
-        "typeRoots": ["node_modules/@types"],
-        "paths": {
-            "@glimmer/types": ["./libs/types/src/index.ts"],
-            "@glimmer/constants": ["./libs/constants/src/index.ts"]
-        }
-    },
-    "exclude": ["node_modules", "tmp"]
+	"compileOnSave": false,
+	"compilerOptions": {
+		"rootDir": ".",
+		"sourceMap": true,
+		"declaration": false,
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"importHelpers": true,
+		"target": "es2015",
+		"module": "esnext",
+		"lib": ["es2020", "dom"],
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": true,
+		"baseUrl": ".",
+		"strict": true,
+		"paths": {
+			"@glimmer/constants": ["libs/constants/src/index.ts"],
+			"@glimmer/http": ["libs/http/src/index.ts"],
+			"@glimmer/types": ["libs/types/src/index.ts"]
+		}
+	},
+	"exclude": ["node_modules", "tmp"]
 }

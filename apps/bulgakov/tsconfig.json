@@ -1,9 +1,16 @@
 {
-    "extends": "../../tsconfig.base.json",
-    "include": [
-        "src",
-        "package.json",
-        "../../libs/types/src/index.ts",
-        "../../libs/constants/src/index.ts"
-    ]
+	"extends": "../../tsconfig.base.json",
+	"files": [],
+	"include": [],
+	"references": [
+		{
+			"path": "./tsconfig.app.json"
+		},
+		{
+			"path": "./tsconfig.spec.json"
+		}
+	],
+	"compilerOptions": {
+		"esModuleInterop": true
+	}
 }

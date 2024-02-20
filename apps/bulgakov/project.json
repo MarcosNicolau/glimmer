@@ -1,0 +1,56 @@
+{
+	"name": "bulgakov",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/bulgakov/src",
+	"projectType": "application",
+	"targets": {
+		"build": {
+			"executor": "@nx/esbuild:esbuild",
+			"outputs": ["{options.outputPath}"],
+			"defaultConfiguration": "production",
+			"options": {
+				"platform": "node",
+				"outputPath": "dist/apps/bulgakov",
+				"format": ["cjs"],
+				"bundle": false,
+				"main": "apps/bulgakov/src/main.ts",
+				"tsConfig": "apps/bulgakov/tsconfig.app.json",
+				"assets": ["apps/bulgakov/src/assets"],
+				"generatePackageJson": true,
+				"esbuildOptions": {
+					"sourcemap": true,
+					"outExtension": {
+						".js": ".js"
+					}
+				}
+			},
+			"configurations": {
+				"development": {},
+				"production": {
+					"esbuildOptions": {
+						"sourcemap": false,
+						"outExtension": {
+							".js": ".js"
+						}
+					}
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"options": {
+				"buildTarget": "bulgakov:build"
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "bulgakov:build:development"
+				},
+				"production": {
+					"buildTarget": "bulgakov:build:production"
+				}
+			}
+		}
+	},
+	"tags": []
+}

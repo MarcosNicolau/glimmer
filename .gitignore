@@ -2,8 +2,17 @@
 node_modules
 .pnp
 .pnp.js
+
 # testing
 coverage
+jest.debug.config.js
+
+# nx
+tmp
+.tool-versions
+/.nx-cache
+/.nx
+
 
 # production
 build
@@ -37,3 +46,5 @@ yarn-error.log*
 *.mobileprovision
 *.orig.*
 web-build/
+
+.nx/cache

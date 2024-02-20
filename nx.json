@@ -1,21 +1,37 @@
 {
-    "$schema": "./node_modules/nx/schemas/nx-schema.json",
-    "affected": {
-        "defaultBase": "master"
-    },
-    "nxCloudAccessToken": "MDRmYWY1NmYtOTUwOC00MjRhLTliNDgtMjM4ZGZmMTEwMTI1fHJlYWQtd3JpdGU=",
-    "plugins": [
-        {
-            "plugin": "@nx/eslint/plugin",
-            "options": {
-                "targetName": "lint"
-            }
-        },
-        {
-            "plugin": "@nx/jest/plugin",
-            "options": {
-                "targetName": "test"
-            }
-        }
-    ]
+	"$schema": "./node_modules/nx/schemas/nx-schema.json",
+	"affected": {
+		"defaultBase": "main"
+	},
+	"plugins": [
+		{
+			"plugin": "@nx/eslint/plugin",
+			"options": {
+				"targetName": "lint"
+			}
+		},
+		{
+			"plugin": "@nx/jest/plugin",
+			"options": {
+				"targetName": "test"
+			}
+		}
+	],
+	"targetDefaults": {
+		"build": {
+			"inputs": ["production", "^production"],
+			"dependsOn": ["^build"],
+			"executor": "@nrwl/js:tsc",
+			"options": {
+				"main": "{projectRoot}/src/index.ts"
+			},
+			"cache": true
+		},
+		"@nx/esbuild:esbuild": {
+			"cache": true,
+			"dependsOn": ["^build"],
+			"inputs": ["default", "^default"]
+		}
+	},
+	"nxCloudAccessToken": "Y2EzMmJkNzAtNGYzMS00MzAyLThmZTEtMTZhM2M0ODhmYTA5fHJlYWQtd3JpdGU="
 }
