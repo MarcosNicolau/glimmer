@@ -42,7 +42,7 @@ export const closePeer = async (room: Room, userId: string) => {
 	peer.sendTransport?.close();
 	// In theory, the producer gets closed when its associated transport is closed (sendTransport).
 	// The same logic goes for the consumers and the recvTransport
-	peer.producer?.close();
+	peer.producer.audio?.close();
 };
 
 export const createConsumer = async (
@@ -77,10 +77,10 @@ export const getAllConsumers = async (userId: string, room: Room) => {
 	const consumers: ConsumeParams[] = [];
 
 	for await (const _peer of Object.values(room.state.peers)) {
-		if (userId === _peer.id || !_peer.producer) continue;
+		if (userId === _peer.id || !_peer.producer.audio) continue;
 		const consumer = await createConsumer(room, userId, {
-			producerId: _peer.producer.id,
-			producerPaused: _peer.producer.paused,
+			producerId: _peer.producer.audio.id,
+			producerPaused: _peer.producer.audio.paused,
 			rtpCapabilities: room.router.rtpCapabilities,
 		});
 		if (!consumer) continue;

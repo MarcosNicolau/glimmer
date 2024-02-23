@@ -54,7 +54,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			// If the peer is already in the room, we close it to restart its connection
 			if (room.state.peers[userId]) {
 				// Save the producer id (if it was a producer)
-				const producerId = room.state.peers[userId].producer?.id;
+				const producerId = room.state.peers[userId].producer.audio?.id;
 				closePeer(room, userId);
 				// If it was a producer, signal that it has been closed
 				producerId && send({ op: "@room:speaker-closed", d: { roomId, producerId } });
@@ -70,7 +70,9 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 				recvTransport,
 				sendTransport,
 				consumers: [],
-				producer: null,
+				producer: {
+					audio: null,
+				},
 			};
 
 			const consumers = await getAllConsumers(userId, room);
@@ -92,7 +94,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			if (!room) return;
 			if (room.state.peers[userId]) {
 				// Save the producer id
-				const producerId = room.state.peers[userId].producer?.id;
+				const producerId = room.state.peers[userId].producer.audio?.id;
 				closePeer(room, userId);
 				// If it was a producer, signal that it has been closed
 				producerId && send({ op: "@room:speaker-closed", d: { roomId, producerId } });
@@ -115,16 +117,16 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 					d: { roomId, userId, error: "you need to create a send transport first" },
 				});
 
-			if (peer.producer) {
+			if (peer.producer.audio) {
 				send({
 					op: "@room:speaker-closed",
-					d: { producerId: peer.producer.id, roomId },
+					d: { producerId: peer.producer.audio.id, roomId },
 				});
-				peer.producer.close();
+				peer.producer.audio.close();
 			}
 
 			const producer = await peer.sendTransport.produce(produceParams);
-			peer.producer = producer;
+			peer.producer.audio = producer;
 
 			// We need to add tell each peer to consume the new producer
 			for await (const _peer of Object.values(room.state.peers)) {
@@ -200,10 +202,10 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			if (!room) return errBack();
 			const peer = room.state.peers[userId];
 			if (!peer) return errBack();
-			if (!peer.producer) return;
+			if (!peer.producer.audio) return;
 
-			const producerId = peer.producer.id;
-			peer.producer.close();
+			const producerId = peer.producer.audio.id;
+			peer.producer.audio.close();
 
 			send({
 				op: "@room:speaker-closed",
@@ -218,14 +220,14 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			if (!room) return errBack();
 			const peer = room.state.peers[userId];
 			if (!peer) return errBack();
-			peer.producer?.pause();
+			peer.producer.audio?.pause();
 		},
 		"@room:resume-producer": ({ roomId, userId }, send, errBack) => {
 			const room = rooms[roomId];
 			if (!room) return errBack();
 			const peer = room.state.peers[userId];
 			if (!peer) return errBack();
-			peer.producer?.resume();
+			peer.producer.audio?.resume();
 		},
 	};
 };

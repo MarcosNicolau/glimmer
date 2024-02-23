@@ -11,7 +11,7 @@ export type PeerState = {
 	id: string;
 	recvTransport: WebRtcTransport;
 	sendTransport: WebRtcTransport | null;
-	producer: Producer | null;
+	producer: Record<"audio", Producer | null>;
 	consumers: Consumer[];
 };
 
