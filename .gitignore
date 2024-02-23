@@ -48,3 +48,6 @@ yarn-error.log*
 web-build/
 
 .nx/cache
+
+# Next.js
+.next

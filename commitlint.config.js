@@ -8,7 +8,7 @@ const config = {
 			require("@commitlint/types").RuleConfigSeverity.Warning,
 			"always",
 			// List all the repo packages here
-			["global", "gogol", "bulgakov", "libs"],
+			["global", "gogol", "bulgakov", "dostoevsky", "libs"],
 		],
 	},
 	prompt: {

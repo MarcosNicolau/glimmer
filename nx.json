@@ -15,6 +15,20 @@
 			"options": {
 				"targetName": "test"
 			}
+		},
+		{
+			"plugin": "@nx/next/plugin",
+			"options": {
+				"buildTargetName": "build",
+				"devTargetName": "dev",
+				"startTargetName": "start"
+			}
+		},
+		{
+			"plugin": "@nx/playwright/plugin",
+			"options": {
+				"targetName": "e2e"
+			}
 		}
 	],
 	"targetDefaults": {
@@ -33,5 +47,16 @@
 			"inputs": ["default", "^default"]
 		}
 	},
-	"nxCloudAccessToken": "Y2EzMmJkNzAtNGYzMS00MzAyLThmZTEtMTZhM2M0ODhmYTA5fHJlYWQtd3JpdGU="
+	"nxCloudAccessToken": "Y2EzMmJkNzAtNGYzMS00MzAyLThmZTEtMTZhM2M0ODhmYTA5fHJlYWQtd3JpdGU=",
+	"generators": {
+		"@nx/next": {
+			"application": {
+				"style": "css",
+				"linter": "eslint"
+			}
+		},
+		"@nx/react": {
+			"library": {}
+		}
+	}
 }

@@ -1,0 +1,8 @@
+{
+	"name": "dostoevsky",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/dostoevsky",
+	"projectType": "application",
+	"targets": {},
+	"tags": []
+}
