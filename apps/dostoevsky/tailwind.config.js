@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require("tailwindcss/defaultTheme");
+import defaultTheme from "tailwindcss/defaultTheme";
 
-module.exports = {
+export default {
 	content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
 	theme: {
 		screens: {
@@ -11,6 +11,7 @@ module.exports = {
 			xl: "1440px",
 		},
 		colors: {
+			transparent: "transparent",
 			red: "rgb(var(--color-red) / <alpha-value>)",
 			white: "rgb(var(--color-white) / <alpha-value>)",
 			black: "rgb(var(--color-black) / <alpha-value>)",
@@ -57,6 +58,7 @@ module.exports = {
 			0: "0px",
 		},
 		borderRadius: {
+			s: "4px",
 			DEFAULT: "6px",
 		},
 		spacing: {
