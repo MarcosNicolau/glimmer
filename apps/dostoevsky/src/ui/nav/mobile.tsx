@@ -11,17 +11,20 @@ import {
 	UserGroupIcon,
 	UserIcon,
 } from "apps/dostoevsky/src/ui/icons";
+import { LanguageSwitcher } from "apps/dostoevsky/src/ui/nav/LanguageSwitcher";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export const MobileNavContent: React.FC = () => {
 	const [isSearch, toggle] = useToggle(false);
+	const t = useTranslations();
 
 	if (isSearch)
 		return (
 			<div className="flex w-full gap-5">
 				<IconBtn onClick={toggle} icon={() => <Arrow direction="left" />} />
 				<div className="w-full">
-					<Input icon={SearchIcon} placeholder="Search for rooms, users, categories" />
+					<Input icon={SearchIcon} placeholder={t("nav.search-bar-placeholder")} />
 				</div>
 			</div>
 		);
@@ -39,6 +42,7 @@ export const MobileNavContent: React.FC = () => {
 				<IconBtn icon={CreateRoomIcon} />
 				<IconBtn icon={MoonIcon} />
 				<IconBtn icon={UserIcon} />
+				<LanguageSwitcher />
 			</div>
 		</>
 	);

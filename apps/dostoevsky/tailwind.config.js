@@ -5,12 +5,13 @@ export default {
 	content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
 	theme: {
 		screens: {
-			sm: "480px",
-			md: "768px",
-			lg: "976px",
-			xl: "1440px",
+			"big-desktop": { min: "1226px" },
+			desktop: { max: "1125px", min: "1025px" },
+			tablet: { max: "1024px", min: "768px" },
+			mobile: { max: "767px" },
 		},
 		colors: {
+			inherit: "inherit",
 			transparent: "transparent",
 			red: "rgb(var(--color-red) / <alpha-value>)",
 			white: "rgb(var(--color-white) / <alpha-value>)",
