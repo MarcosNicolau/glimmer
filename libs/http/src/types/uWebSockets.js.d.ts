@@ -1,3 +1,5 @@
+import { WithOptional } from "@glimmer/types";
+import { APIResponse } from "./index";
 import * as uws from "uWebSockets.js";
 
 declare module "uWebSockets.js" {
@@ -13,13 +15,15 @@ declare module "uWebSockets.js" {
 		/**
 		 * Use this method to safely end the response
 		 */
-		send: ({}: { status: string | number; message?: string; result?: object }) => void;
+		send: <T extends object>({}: WithOptional<APIResponse<T>, "message" | "result">) => void;
 	}
+
+	export type HttpNext = () => void;
 
 	export type HttpHandler = (
 		res: HttpResponse,
 		req: HttpRequest,
-		next: () => void
+		next: HttpNext
 	) => void | Promise<void>;
 
 	export interface TemplatedApp extends uws.TemplatedApp {

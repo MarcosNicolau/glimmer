@@ -26,7 +26,6 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 		if (aborted) return res;
 		else return res.cork(() => res._end(body));
 	};
-
 	res.send = ({ status, message, result = {} }) =>
 		// Sure we are corking babe
 		res.cork(() => {
@@ -65,7 +64,8 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 	try {
 		for await (const handler of handlers) {
 			let shouldRunNext = false;
-			await handler(res, req, () => (shouldRunNext = true));
+			const next = () => (shouldRunNext = true);
+			await handler(res, req, next);
 			if (!shouldRunNext) break;
 		}
 	} catch (err) {
@@ -96,10 +96,12 @@ export const Router = (prefix: string | null, app: TemplatedApp) => {
 
 	if (!app._del) app._del = app.del;
 
+	if (!app._options) app._options = app.options;
+
 	const handle =
-		(method: "get" | "post" | "put" | "del") =>
+		(method: "get" | "post" | "put" | "del" | "options") =>
 		(route: RecognizedString, ...handlers: HttpHandler[]) =>
-			//@ts-expect-error dsad
+			//@ts-expect-error idk
 			app[`_${method}`](prefix ? prefix + route : route, async (res, req) => {
 				await runHandlers(res, req, ...handlers);
 			});
@@ -109,6 +111,7 @@ export const Router = (prefix: string | null, app: TemplatedApp) => {
 		post: handle("post"),
 		put: handle("put"),
 		del: handle("del"),
+		options: handle("options"),
 	};
 };
 
@@ -119,6 +122,7 @@ const buildApp = (app: TemplatedApp): TemplatedApp => {
 	app.post = router.post;
 	app.put = router.put;
 	app.del = router.del;
+	app.options = router.options;
 
 	return app;
 };
