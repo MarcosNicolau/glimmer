@@ -3,6 +3,7 @@ import { Nav } from "apps/dostoevsky/src/ui/nav";
 import "apps/dostoevsky/src/styles/globals.css";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { Providers } from "apps/dostoevsky/src/providers";
+import { Auth } from "apps/dostoevsky/src/modules/Auth";
 
 const RootLayout = ({
 	children,
@@ -24,7 +25,7 @@ const RootLayout = ({
 					<Providers>
 						<NextIntlClientProvider locale={locale} messages={messages}>
 							<Nav />
-							{children}
+							<Auth>{children}</Auth>
 						</NextIntlClientProvider>
 					</Providers>
 				</div>
