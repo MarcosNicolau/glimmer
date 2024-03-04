@@ -3,9 +3,11 @@ import { Select } from "apps/dostoevsky/src/ui/form/Selector";
 import { MoonIcon, SunIcon, ComputerIcon } from "apps/dostoevsky/src/ui/icons";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export const ThemeSwitcher = () => {
 	const { setTheme, resolvedTheme, theme } = useTheme();
+	const t = useTranslations();
 	const [mounted, setMounted] = useState(false);
 
 	// useEffect only runs on the client, so now we can safely show the UI
@@ -23,12 +25,22 @@ export const ThemeSwitcher = () => {
 				options={[
 					{
 						value: "system",
-						text: "system",
+						text: t("nav.theme-switcher.system"),
 						icon: ComputerIcon,
 						isSelected: theme === "system",
 					},
-					{ value: "light", text: "light", icon: SunIcon, isSelected: theme === "light" },
-					{ value: "dark", text: "dark", icon: MoonIcon, isSelected: theme === "dark" },
+					{
+						value: "light",
+						text: t("nav.theme-switcher.light"),
+						icon: SunIcon,
+						isSelected: theme === "light",
+					},
+					{
+						value: "dark",
+						text: t("nav.theme-switcher.dark"),
+						icon: MoonIcon,
+						isSelected: theme === "dark",
+					},
 				]}
 			>
 				<IconBtn icon={resolvedTheme === "dark" ? MoonIcon : SunIcon} />

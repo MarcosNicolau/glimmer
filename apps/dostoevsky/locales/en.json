@@ -1,6 +1,11 @@
 {
 	"nav": {
 		"create-room": "Create room",
-		"search-bar-placeholder": "Search for rooms, users, categories"
+		"search-bar-placeholder": "Search for rooms, users, categories",
+		"theme-switcher": {
+			"dark": "Dark",
+			"light": "Light",
+			"system": "System"
+		}
 	}
 }

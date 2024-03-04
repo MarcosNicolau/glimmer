@@ -1,6 +1,11 @@
 {
 	"nav": {
 		"create-room": "Crear cuarto",
-		"search-bar-placeholder": "Buscar cuartos, usuarios, categorías"
+		"search-bar-placeholder": "Buscar cuartos, usuarios, categorías",
+		"theme-switcher": {
+			"dark": "Oscuro",
+			"light": "Claro",
+			"system": "Sistema"
+		}
 	}
 }
