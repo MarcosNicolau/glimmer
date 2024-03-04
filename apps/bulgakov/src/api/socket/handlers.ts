@@ -1,10 +1,9 @@
-import { IncomingActions, IncomingActionsPayload } from "../../types/socket";
 import { Rooms, Rabbit } from "../../services";
 import { SOCKET_TOPICS } from "../../constants";
 import { z } from "zod";
 import { generateRandomId } from "../../utils/crypto";
 import { WebSocket } from "uWebSockets.js";
-import { User } from "../../types/user";
+import { User, IncomingActions, IncomingActionsPayload } from "@glimmer/bulgakov";
 
 type Handlers = (ws: WebSocket<User>) => {
 	[key in IncomingActions]: (payload: IncomingActionsPayload[key]) => void;
@@ -30,7 +29,7 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 			Rabbit.publishToVoiceServer(null, { op: "@room:create", d: { roomId } });
 		},
 		"@room:join": async ({ roomId }) => {
-			const { id: userId, name } = ws.getUserData();
+			const { id: userId } = ws.getUserData();
 			await validateRoom(roomId);
 			const { voiceServerId, users } = await Rooms.getRoom(roomId, [
 				"voiceServerId",
@@ -38,7 +37,7 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 			]);
 			// Maybe wants to re-stablish connection so he is already in the room
 			let user = await Rooms.getUser(roomId, userId);
-			if (!user) user = await Rooms.joinRoom(roomId, { id: userId, name });
+			if (!user) user = await Rooms.joinRoom(roomId, { id: userId });
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:join",
 				d: { roomId, willProduce: user.isSpeaker, userId: user.id },
@@ -119,5 +118,6 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 		"@room:deafened": () => {},
 		"@room:mute-me": () => {},
 		"@room:mute-speaker": () => {},
+		"@auth:register": () => {},
 	};
 };

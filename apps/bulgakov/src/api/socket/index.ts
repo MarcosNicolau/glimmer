@@ -1,10 +1,11 @@
 import { SOCKET_TOPICS } from "./../../constants/socket";
-import { IncomingActions, IncomingWsMessage } from "../../types/socket";
 import { socketHandlers } from "./handlers";
 import * as uws from "uWebSockets.js";
 import { authMiddleware } from "./middlewares";
-import { User } from "../../types/user";
+import { User, IncomingActions, IncomingWsMessage } from "@glimmer/bulgakov";
 import { buildSocket } from "../../utils/uws";
+import { SocketData } from "apps/bulgakov/src/types/socket";
+import { Users } from "apps/bulgakov/src/services/user";
 
 export const wsBehaviour: uws.WebSocketBehavior<User> = {
 	message(ws, message) {
@@ -20,14 +21,16 @@ export const wsBehaviour: uws.WebSocketBehavior<User> = {
 		}
 	},
 	open(ws) {
-		ws.subscribe(SOCKET_TOPICS.USER(ws.getUserData().id));
+		const user = ws.getUserData();
+		ws.subscribe(SOCKET_TOPICS.USER(user.id));
+		Users.createUser(user);
 	},
 	upgrade: async (res, req, context) => {
 		const succeeded = await authMiddleware(req, res);
 		if (!succeeded) return;
-		const user: User = res.user;
-		res.upgrade<User>(
-			{ id: user.id, name: user.name },
+		const user: SocketData = res.user;
+		res.upgrade<SocketData>(
+			{ id: user.id },
 			req.getHeader("sec-websocket-key"),
 			req.getHeader("sec-websocket-protocol"),
 			req.getHeader("sec-websocket-extensions"),
@@ -35,7 +38,9 @@ export const wsBehaviour: uws.WebSocketBehavior<User> = {
 		);
 	},
 	close(ws) {
-		ws.unsubscribe(SOCKET_TOPICS.USER(ws.getUserData().id));
+		const { id } = ws.getUserData();
+		ws.unsubscribe(SOCKET_TOPICS.USER(id));
+		Users.removeUser(id);
 	},
 	sendPingsAutomatically: true,
 };

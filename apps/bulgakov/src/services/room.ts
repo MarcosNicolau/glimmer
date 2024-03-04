@@ -1,13 +1,11 @@
 import { Redis } from "../services";
 import { REDIS } from "../constants";
-import { Room, UserInRoom } from "../types/room";
-import { IncomingActionsPayload } from "../types/socket";
-import { User } from "../types/user";
+import { User, Room, UserInRoom, IncomingActionsPayload } from "@glimmer/bulgakov";
 import { generateRandomCode } from "../utils/crypto";
 
 type CreateRoomParams = {
 	room: Pick<IncomingActionsPayload["@room:create"], "room">["room"] & { id: string };
-	owner: User;
+	owner: Pick<User, "id">;
 };
 
 type GetUserFilter = `users[${string}].${keyof UserInRoom}`;
@@ -65,7 +63,7 @@ export const Rooms = {
 	}) => {
 		await Redis.json.set(REDIS.JSON_PATHS.room(roomId), "$.voiceServerId", voiceServerId);
 	},
-	joinRoom: async (roomId: string, user: User): Promise<UserInRoom> => {
+	joinRoom: async (roomId: string, user: Pick<User, "id">): Promise<UserInRoom> => {
 		const _user: UserInRoom = {
 			...user,
 			role: "peer",

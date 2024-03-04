@@ -20,7 +20,6 @@ export const authMiddleware = async (req: HttpRequest, res: HttpResponse): Promi
 		res.user = await z
 			.object({
 				id: z.string(),
-				name: z.string(),
 			})
 			.parseAsync(decoded);
 		return true;
