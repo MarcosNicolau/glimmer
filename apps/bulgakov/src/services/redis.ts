@@ -26,9 +26,15 @@ export const Redis = {
 	// btw, that is why we are redefining the type, it will always return an string in our app, OF provided we use json paths
 	json: {
 		set: async (key: string, path: string, json: RedisJSON) => redis.json.set(key, path, json),
-		get: async <T extends RedisJSON>(key: string, path?: string): Promise<T[] | null> =>
-			//@ts-expect-error library does not allow to set a typed response type, so we refrain to this
-			redis.json.get(key, field, { path: path || "$" }),
+		get: async <T extends RedisJSON>(key: string, path?: string): Promise<T[] | null> => {
+			try {
+				//@ts-expect-error library does not allow to set a typed response type, so we refrain to this
+				return await redis.json.get(key, field, { path: path || "$" });
+			} catch (err: any) {
+				if (err.message === "field is not defined") return null;
+				return Promise.reject(err);
+			}
+		},
 		del: async (key: string, path: string) => await redis.json.del(key, path),
 		arrAppend: async (key: string, path: string, json: RedisJSON) =>
 			redis.json.arrAppend(key, path, json),

@@ -9,8 +9,7 @@ import {
 	App as _App,
 } from "uWebSockets.js";
 
-// We are wrapping the handlers following express like api
-const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: HttpHandler[]) => {
+export const buildSafeResHandler = (res: HttpResponse) => {
 	/**
 	 * In uWebsockets, request must be ended, otherwise the server will hangup forever until the client closes it.
 	 * But if the client has closed it and we tried to end the req then we are in big problems!!
@@ -26,6 +25,11 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 		if (aborted) return res;
 		else return res.cork(() => res._end(body));
 	};
+};
+
+export const buildHttpHandler = (res: HttpResponse, req: HttpRequest) => {
+	buildSafeResHandler(res);
+
 	res.send = ({ status, message, result = {} }) =>
 		// Sure we are corking babe
 		res.cork(() => {
@@ -50,7 +54,7 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 							: resolve(JSON.parse(Buffer.concat([curBuf]).toString()));
 					buffer = buffer ? Buffer.concat([buffer, curBuf]) : Buffer.concat([curBuf]);
 				} catch (err) {
-					if (!aborted) res.send({ status: 500 });
+					res.send({ status: 500 });
 					console.error("Could not read body, are you sure this is a post request?", err);
 				}
 			});
@@ -60,6 +64,11 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 		headers[key] = value;
 	});
 	req.headers = headers;
+};
+
+// We are wrapping the handlers following express like api
+const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: HttpHandler[]) => {
+	buildHttpHandler(res, req);
 
 	try {
 		for await (const handler of handlers) {
@@ -69,7 +78,7 @@ const runHandlers = async (res: HttpResponse, req: HttpRequest, ...handlers: Htt
 			if (!shouldRunNext) break;
 		}
 	} catch (err) {
-		if (!aborted) res.writeStatus("500").end();
+		res.send({ status: 500 });
 		console.error("A handler has not ended as expected", err);
 	}
 };

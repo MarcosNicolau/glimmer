@@ -6,7 +6,7 @@ import { REDIS } from "../constants";
 type GetUserFields = keyof User;
 
 type GetUser<T extends GetUserFields> = {
-	[key in T]: User[key];
+	[key in T]: Required<User>[key];
 };
 
 export const Users = {

@@ -36,7 +36,7 @@ export const Token = {
 			}>((resolve) =>
 				jwt.verify(token, cert, (err, decoded) => {
 					resolve({
-						isValid: !!err,
+						isValid: !err,
 						payload: decoded,
 					});
 				})

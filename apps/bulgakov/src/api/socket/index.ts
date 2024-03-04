@@ -6,6 +6,7 @@ import { User, IncomingActions, IncomingWsMessage } from "@glimmer/bulgakov";
 import { buildSocket } from "../../utils/uws";
 import { SocketData } from "../../types/socket";
 import { Users } from "./../../services/user";
+import { buildHttpHandler } from "@glimmer/http";
 
 export const wsBehaviour: uws.WebSocketBehavior<User> = {
 	message(ws, message) {
@@ -26,20 +27,20 @@ export const wsBehaviour: uws.WebSocketBehavior<User> = {
 		Users.createUser(user);
 	},
 	upgrade: async (res, req, context) => {
-		const succeeded = await authMiddleware(req, res);
-		if (!succeeded) return;
-		const user: SocketData = res.user;
-		res.upgrade<SocketData>(
-			{ id: user.id },
+		buildHttpHandler(res, req);
+		const headers = [
 			req.getHeader("sec-websocket-key"),
 			req.getHeader("sec-websocket-protocol"),
 			req.getHeader("sec-websocket-extensions"),
-			context
-		);
+		];
+		const succeeded = await authMiddleware(req, res);
+		if (!succeeded) return;
+		const user: SocketData = res.user;
+		//@ts-expect-error complains about the spread, but it works
+		res.cork(() => res.upgrade<SocketData>(user, ...headers, context));
 	},
 	close(ws) {
 		const { id } = ws.getUserData();
-		ws.unsubscribe(SOCKET_TOPICS.USER(id));
 		Users.removeUser(id);
 	},
 	sendPingsAutomatically: true,
