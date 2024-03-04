@@ -1,7 +1,9 @@
-"use-client";
+"use client";
 
-import { ReactResponsiveProvider } from "apps/dostoevsky/src/providers/responsive";
+import { ThemeProvider } from "next-themes";
 
 export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-	<ReactResponsiveProvider>{children}</ReactResponsiveProvider>
+	<ThemeProvider storageKey="theme" themes={["dark", "light"]} enableSystem>
+		{children}
+	</ThemeProvider>
 );

@@ -1,5 +1,4 @@
 "use client";
-
 import { useScreenType } from "apps/dostoevsky/src/hooks/useScreenType";
 import { DesktopNavContent } from "./desktop";
 import { MobileNavContent } from "./mobile";

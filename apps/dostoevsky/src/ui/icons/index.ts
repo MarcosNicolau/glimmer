@@ -6,3 +6,5 @@ export * from "./UserGroup";
 export * from "./CreateRoom";
 export * from "./User";
 export * from "./Arrow";
+export * from "./Sun";
+export * from "./Computer";

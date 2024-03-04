@@ -27,8 +27,8 @@ export const Option: React.FC<Props> = ({ isSelected, onClick, text, icon: Icon 
 			/>
 		)}
 		<p
-			className={clsx("whitespace-nowrap font-bold text-inherit transition", {
-				"text-text-100": isSelected,
+			className={clsx("whitespace-nowrap  text-inherit transition", {
+				"text-text-100 font-bold": isSelected,
 			})}
 		>
 			{text}

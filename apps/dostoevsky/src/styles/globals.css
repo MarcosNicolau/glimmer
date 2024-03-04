@@ -32,7 +32,7 @@
 		--color-text-link: 128 76 199;
 	}
 
-	:root [data-theme="dark"] {
+	:root[data-theme="dark"] {
 		--color-bg: 35 31 41;
 		--color-accent-100: 245 233 189;
 		--color-accent-200: 255 255 255;
