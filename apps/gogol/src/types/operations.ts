@@ -1,4 +1,4 @@
-import { BulgakovMsgData, BulgakovOperations, GogolMessage, GogolOperations } from "@glimmer/types";
+import { BulgakovMsgData, BulgakovOperations, GogolMessage, GogolOperations } from "@glimmer/gogol";
 
 export type Send = <T extends GogolOperations>({}: GogolMessage<T>) => void;
 

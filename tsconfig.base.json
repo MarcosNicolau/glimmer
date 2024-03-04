@@ -16,10 +16,11 @@
 		"baseUrl": ".",
 		"strict": true,
 		"paths": {
+			"@glimmer/bulgakov": ["libs/bulgakov/api/src/index.ts"],
 			"@glimmer/constants": ["libs/constants/src/index.ts"],
+			"@glimmer/gogol": ["libs/gogol/rabbit/src/index.ts"],
 			"@glimmer/http": ["libs/http/src/index.ts"],
 			"@glimmer/types": ["libs/types/src/index.ts"],
-			"@glimmer/bulgakov": ["libs/bulgakov/api/src/index.ts"],
 			"@glimmer/ui/web/components": ["libs/ui/web/components/src/index.ts"],
 			"@glimmer/ui/web/components/server": ["libs/ui/web/components/src/server.ts"]
 		}

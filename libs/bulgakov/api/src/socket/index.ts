@@ -4,7 +4,7 @@ import {
 	GogolOperations,
 	TransportDirection,
 	WebRtcTransportConnData,
-} from "@glimmer/types";
+} from "@glimmer/gogol";
 import { User, Room } from "@glimmer/bulgakov";
 
 export type IncomingActionsPayload = {
@@ -89,9 +89,6 @@ export type OutgoingActionsPayload = Omit<GogolMsgData, "@room:created"> & {
 	"@room:user-left": {
 		roomId: string;
 		userId: string;
-	};
-	"@auth:token": {
-		token: string;
 	};
 	"@auth:invalid-token": {
 		message: string;

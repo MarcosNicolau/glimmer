@@ -9,11 +9,11 @@ import {
 	broadcastToRoomOps,
 	BroadcastToRoomOps,
 	BroadcastToUserOps,
-} from "@glimmer/types";
+} from "@glimmer/gogol";
 import { RABBIT } from "@glimmer/constants";
 import { Rooms } from "./room";
 import { TemplatedApp } from "uWebSockets.js";
-import { OutgoingActions, OutgoingWsMessage } from "../types/socket";
+import { OutgoingActions, OutgoingWsMessage } from "@glimmer/bulgakov";
 import { generateRandomString } from "../utils/crypto";
 
 export const RabbitService = (appId: string) => {
@@ -50,7 +50,7 @@ export const RabbitService = (appId: string) => {
 			channel.consume(internalQueue, (msg) => {
 				if (msg?.properties.appId === appId) return;
 				let data: OutgoingWsMessage<
-					Exclude<OutgoingActions, "@auth:invalid-token" | "error">
+					Exclude<OutgoingActions, "@auth:invalid-token" | "@auth:register" | "error">
 				> | null = null;
 				try {
 					data = JSON.parse(msg?.content.toString() || "{}");

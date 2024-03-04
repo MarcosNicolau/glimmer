@@ -1,0 +1,8 @@
+{
+	"name": "rabbit",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/gogol/rabbit/src",
+	"projectType": "library",
+	"targets": {},
+	"tags": []
+}

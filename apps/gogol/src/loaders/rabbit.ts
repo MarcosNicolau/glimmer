@@ -1,7 +1,7 @@
 import { ENV_VARS } from "./../config/env";
 import * as amqp from "amqplib";
 import { Send, OperationsHandlers } from "../types/operations";
-import { BulgakovMsgData, BulgakovOperations, BulgakovMessage } from "@glimmer/types";
+import { BulgakovMsgData, BulgakovOperations, BulgakovMessage } from "@glimmer/gogol";
 
 export type IncomingQueueMessage<T extends BulgakovOperations> = {
 	op: T;

@@ -5,7 +5,7 @@ import {
 	MyWebRtcTransport,
 	TransportDirection,
 	WebRtcTransportConnData,
-} from "@glimmer/types";
+} from "@glimmer/gogol";
 import { WebRtcTransport } from "mediasoup/node/lib/WebRtcTransport";
 import { Room } from "../types/room";
 import { MyRouter } from "../types/mediasoup";

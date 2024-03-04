@@ -4,8 +4,8 @@ import * as uws from "uWebSockets.js";
 import { authMiddleware } from "./middlewares";
 import { User, IncomingActions, IncomingWsMessage } from "@glimmer/bulgakov";
 import { buildSocket } from "../../utils/uws";
-import { SocketData } from "apps/bulgakov/src/types/socket";
-import { Users } from "apps/bulgakov/src/services/user";
+import { SocketData } from "../../types/socket";
+import { Users } from "./../../services/user";
 
 export const wsBehaviour: uws.WebSocketBehavior<User> = {
 	message(ws, message) {
