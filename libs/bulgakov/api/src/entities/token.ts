@@ -1,5 +1,4 @@
-import { User } from "./user";
 import { z } from "zod";
 
-export const TokenPayload = User;
+export const TokenPayload = z.object({ id: z.string() });
 export type TokenPayload = z.infer<typeof TokenPayload>;
