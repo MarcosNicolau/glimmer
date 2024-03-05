@@ -1,4 +1,6 @@
 import { useIsMounted } from "apps/dostoevsky/src/hooks/useIsMounted";
+import { useOnKeyDown } from "apps/dostoevsky/src/hooks/useKeyDown";
+import { useOnClickOutside } from "apps/dostoevsky/src/hooks/useOnClickOutside";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
@@ -22,6 +24,13 @@ export const Modal: React.FC<Props> = ({
 	shouldCloseOnOutsideClick = true,
 }) => {
 	const mounted = useIsMounted();
+	useOnKeyDown(({ key }) => {
+		if (!shouldCloseOnEsc) return;
+		if (key === "Escape") setOpen(false);
+	});
+	const [ref] = useOnClickOutside<HTMLDivElement>(
+		() => shouldCloseOnOutsideClick && setOpen(false)
+	);
 
 	useEffect(() => {
 		if (!mounted) return;
@@ -29,26 +38,13 @@ export const Modal: React.FC<Props> = ({
 		if (!open) onClose && onClose();
 	}, [mounted, open, onOpen, onClose]);
 
-	useEffect(() => {
-		const onClick = (e: MouseEvent) => {
-			if (e.target?.id === "outside") setOpen(false);
-		};
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === "Escape") setOpen(false);
-		};
-		shouldCloseOnOutsideClick && window.addEventListener("click", onClick);
-		shouldCloseOnEsc && window.addEventListener("keydown", onKeyDown);
-		return () => {
-			window.removeEventListener("click", onClick);
-			window.removeEventListener("keydown", onKeyDown);
-		};
-	}, [shouldCloseOnOutsideClick]);
-
 	if (!open) return null;
 	return createPortal(
-		<div id="outside" className="p-10 mobile:p-6 h-full w-full bg-black/20 inset-0 absolute">
-			<div id="outside" className="flex items-center justify-center h-full">
-				<div id="content">{children}</div>
+		<div className="p-10 mobile:p-6 h-full w-full bg-black/20 inset-0 absolute">
+			<div className="flex items-center justify-center h-full">
+				<div ref={ref} id="content">
+					{children}
+				</div>
 			</div>
 		</div>,
 		document.body

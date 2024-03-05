@@ -1,3 +1,5 @@
+import { useOnKeyDown } from "apps/dostoevsky/src/hooks";
+import { useOnClickOutside } from "apps/dostoevsky/src/hooks/useOnClickOutside";
 import { useToggle } from "apps/dostoevsky/src/hooks/useToggle";
 import { Option, Props as OptionProps } from "apps/dostoevsky/src/ui/form/Option";
 import { useEffect, useState } from "react";
@@ -13,7 +15,9 @@ export const Select: React.FC<Props> = ({ options, onChange, children }) => {
 	const [selectedOption, setSelectedOption] = useState(
 		options.find((option) => option.isSelected) || options[0]
 	);
-	const [showOptions, toggle] = useToggle();
+	const [showOptions, toggle, setShowOptions] = useToggle();
+	const [ref] = useOnClickOutside<HTMLDivElement>(() => setShowOptions(false));
+	useOnKeyDown(({ key }) => key === "Escape" && setShowOptions(false));
 
 	useEffect(() => {
 		onChange(selectedOption.value);
@@ -21,24 +25,32 @@ export const Select: React.FC<Props> = ({ options, onChange, children }) => {
 	}, [selectedOption]);
 
 	return (
-		<div className="relative flex flex-col items-center">
-			<div onClick={toggle} className="flex cursor-pointer items-center gap-4">
-				{children ? (
-					children
-				) : (
-					<>
-						{selectedOption?.icon && <selectedOption.icon />}
-						<p className="text-lg">{selectedOption?.displayText}</p>
-					</>
+		<>
+			<div ref={ref} className="relative flex flex-col items-center">
+				<div onClick={toggle} className="flex cursor-pointer items-center gap-4">
+					{children ? (
+						children
+					) : (
+						<>
+							{selectedOption?.icon && <selectedOption.icon />}
+							{selectedOption.displayText && (
+								<p className="text-lg">{selectedOption.displayText}</p>
+							)}
+						</>
+					)}
+				</div>
+				{showOptions && (
+					<div className="border-contrast-300 absolute top-0 mt-8 flex max-h-[150px] flex-col overflow-auto rounded border">
+						{options.map((option, idx) => (
+							<Option
+								key={idx}
+								onClick={() => setSelectedOption(option)}
+								{...option}
+							/>
+						))}
+					</div>
 				)}
 			</div>
-			{showOptions && (
-				<div className="border-contrast-300 absolute top-0 mt-8 flex max-h-[150px] flex-col overflow-auto rounded border">
-					{options.map((option, idx) => (
-						<Option key={idx} onClick={() => setSelectedOption(option)} {...option} />
-					))}
-				</div>
-			)}
-		</div>
+		</>
 	);
 };

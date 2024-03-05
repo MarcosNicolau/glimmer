@@ -63,6 +63,7 @@ export const LoadUser: React.FC<{ children: React.ReactNode }> = ({ children }) 
 						{...register("name", {
 							required: { value: true, message: "" },
 						})}
+						tabIndex={0}
 					/>
 				</ModalForm>
 			</Modal>
