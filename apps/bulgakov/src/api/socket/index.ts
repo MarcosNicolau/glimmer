@@ -8,7 +8,7 @@ import { SocketData } from "../../types/socket";
 import { Users } from "./../../services/user";
 import { buildHttpHandler } from "@glimmer/http";
 
-export const wsBehaviour: uws.WebSocketBehavior<User> = {
+export const wsBehaviour: uws.WebSocketBehavior<Required<Pick<User, "id">>> = {
 	message(ws, message) {
 		const myWs = buildSocket(ws);
 		const parsedMessage: IncomingWsMessage<IncomingActions> = JSON.parse(
@@ -24,7 +24,8 @@ export const wsBehaviour: uws.WebSocketBehavior<User> = {
 	open(ws) {
 		const user = ws.getUserData();
 		ws.subscribe(SOCKET_TOPICS.USER(user.id));
-		Users.createUser(user);
+		console.log("new connection open id", user.id);
+		Users.create(user);
 	},
 	upgrade: async (res, req, context) => {
 		buildHttpHandler(res, req);
@@ -41,7 +42,7 @@ export const wsBehaviour: uws.WebSocketBehavior<User> = {
 	},
 	close(ws) {
 		const { id } = ws.getUserData();
-		Users.removeUser(id);
+		Users.remove(id);
 	},
 	sendPingsAutomatically: true,
 };

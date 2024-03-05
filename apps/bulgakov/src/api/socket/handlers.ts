@@ -1,4 +1,4 @@
-import { Rooms, Rabbit } from "../../services";
+import { Rooms, Rabbit, Users } from "../../services";
 import { SOCKET_TOPICS } from "../../constants";
 import { z } from "zod";
 import { generateRandomId } from "../../utils/crypto";
@@ -118,6 +118,10 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 		"@room:deafened": () => {},
 		"@room:mute-me": () => {},
 		"@room:mute-speaker": () => {},
-		"@auth:register": () => {},
+		"@user:send-profile": async ({ user }) => {
+			const { id } = ws.getUserData();
+			const _user = await User.omit({ id: true }).parseAsync(user);
+			Users.update(id, _user);
+		},
 	};
 };

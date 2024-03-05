@@ -54,8 +54,8 @@ export type IncomingActionsPayload = {
 		direction: TransportDirection;
 		dtlsParameters: WebRtcTransportConnData["dtlsParameters"];
 	};
-	"@auth:register": {
-		user: User;
+	"@user:send-profile": {
+		user: Partial<Omit<User, "id">>;
 	};
 };
 

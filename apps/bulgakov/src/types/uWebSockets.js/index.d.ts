@@ -1,4 +1,5 @@
-import { OutgoingActions, OutgoingWsMessage } from "../socket";
+import { HttpRequest as Request } from "@glimmer/http";
+import { OutgoingActions, OutgoingWsMessage } from "@glimmer/bulgakov";
 
 declare module "uWebSockets.js" {
 	export interface TemplatedApp extends uws.TemplatedApp {
@@ -22,5 +23,11 @@ declare module "uWebSockets.js" {
 			userId: string,
 			msg: OutgoingWsMessage<T>
 		) => boolean;
+	}
+
+	export interface HttpRequest extends Request {
+		user: {
+			id: string;
+		};
 	}
 }

@@ -5,6 +5,7 @@ import { NextIntlClientProvider, useMessages } from "next-intl";
 import { Providers } from "apps/dostoevsky/src/providers";
 import { Auth } from "apps/dostoevsky/src/modules/Auth";
 import { LoadUser } from "apps/dostoevsky/src/modules/LoadUser";
+import { ConnectToWs } from "apps/dostoevsky/src/modules/ConnectToWs";
 
 const RootLayout = ({
 	children,
@@ -27,7 +28,9 @@ const RootLayout = ({
 						<NextIntlClientProvider locale={locale} messages={messages}>
 							<Nav />
 							<Auth>
-								<LoadUser>{children}</LoadUser>
+								<LoadUser>
+									<ConnectToWs>{children}</ConnectToWs>
+								</LoadUser>
 							</Auth>
 						</NextIntlClientProvider>
 					</Providers>

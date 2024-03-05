@@ -6,27 +6,29 @@ import { REDIS } from "../constants";
 type GetUserFields = keyof User;
 
 type GetUser<T extends GetUserFields> = {
-	[key in T]: Required<User>[key];
+	[key in T]: User[key];
 };
 
 export const Users = {
-	createUser: async (user: WithRequired<User, "id">) => {
+	create: async (user: WithRequired<Partial<User>, "id">) => {
 		const userExists = await Redis.json.get(REDIS.JSON_PATHS.user(user.id), "$.id");
 		if (userExists) return;
-		Redis.json.set(`user:${user.id}`, "$", user);
+		return Redis.json.set(`user:${user.id}`, "$", user);
 	},
-	removeUser: (id: string) => {
-		Redis.json.del(`user:${id}`, "$");
+	remove: (id: string) => {
+		return Redis.json.del(`user:${id}`, "$");
 	},
-	getUser: async <T extends GetUserFields>(id: string, fields?: GetUserFields[]) => {
+	get: async <T extends GetUserFields>(id: string, fields?: GetUserFields[]) => {
 		const user = await Redis.json.get<GetUser<T>>(
 			REDIS.JSON_PATHS.user(id),
 			fields ? fields.map((field) => `$.${field}`).join(" ") : undefined
 		);
-		if (!user || !user[0]) return Promise.reject("user does not exist");
+		if (!user || !user[0]) return null;
 		return user[0];
 	},
-	updateUser: (id: string, user: Partial<Omit<User, "id">>) => {
-		Redis.json.set(`user:${id}`, "$", user);
+	update: async (id: string, _user: Partial<Omit<User, "id">>) => {
+		for await (const user of Object.entries(_user)) {
+			await Redis.json.set(`user:${id}`, `$.${user[0]}`, user[1]);
+		}
 	},
 };
