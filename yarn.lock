@@ -1405,6 +1405,67 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.56.0.tgz#ef20350fec605a7f7035a01764731b2de0f3782b"
   integrity sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==
 
+"@formatjs/ecma402-abstract@1.11.4":
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.11.4.tgz#b962dfc4ae84361f9f08fbce411b4e4340930eda"
+  integrity sha512-EBikYFp2JCdIfGEb5G9dyCkTGDmC57KSHhRQOC3aYxoPWVZvfWCDjZwkGYHN7Lis/fmuWl906bnNTJifDQ3sXw==
+  dependencies:
+    "@formatjs/intl-localematcher" "0.2.25"
+    tslib "^2.1.0"
+
+"@formatjs/ecma402-abstract@^1.11.4":
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.18.2.tgz#bf103712a406874eb1e387858d5be2371ab3aa14"
+  integrity sha512-+QoPW4csYALsQIl8GbN14igZzDbuwzcpWrku9nyMXlaqAlwRBgl5V+p0vWMGFqHOw37czNXaP/lEk4wbLgcmtA==
+  dependencies:
+    "@formatjs/intl-localematcher" "0.5.4"
+    tslib "^2.4.0"
+
+"@formatjs/fast-memoize@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@formatjs/fast-memoize/-/fast-memoize-1.2.1.tgz#e6f5aee2e4fd0ca5edba6eba7668e2d855e0fc21"
+  integrity sha512-Rg0e76nomkz3vF9IPlKeV+Qynok0r7YZjL6syLz4/urSg0IbjPZCB/iYUMNsYA643gh4mgrX3T7KEIFIxJBQeg==
+  dependencies:
+    tslib "^2.1.0"
+
+"@formatjs/icu-messageformat-parser@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-2.1.0.tgz#a54293dd7f098d6a6f6a084ab08b6d54a3e8c12d"
+  integrity sha512-Qxv/lmCN6hKpBSss2uQ8IROVnta2r9jd3ymUEIjm2UyIkUCHVcbUVRGL/KS/wv7876edvsPe+hjHVJ4z8YuVaw==
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.11.4"
+    "@formatjs/icu-skeleton-parser" "1.3.6"
+    tslib "^2.1.0"
+
+"@formatjs/icu-skeleton-parser@1.3.6":
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-1.3.6.tgz#4ce8c0737d6f07b735288177049e97acbf2e8964"
+  integrity sha512-I96mOxvml/YLrwU2Txnd4klA7V8fRhb6JG/4hm3VMNmeJo1F03IpV2L3wWt7EweqNLES59SZ4d6hVOPCSf80Bg==
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.11.4"
+    tslib "^2.1.0"
+
+"@formatjs/intl-localematcher@0.2.25":
+  version "0.2.25"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.25.tgz#60892fe1b271ec35ba07a2eb018a2dd7bca6ea3a"
+  integrity sha512-YmLcX70BxoSopLFdLr1Ds99NdlTI2oWoLbaUW2M406lxOIPzE1KQhRz2fPUkq34xVZQaihCoU29h0KK7An3bhA==
+  dependencies:
+    tslib "^2.1.0"
+
+"@formatjs/intl-localematcher@0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.5.4.tgz#caa71f2e40d93e37d58be35cfffe57865f2b366f"
+  integrity sha512-zTwEpWOzZ2CiKcB93BLngUX59hQkuZjT2+SAQEscSm52peDW/getsawMcWF1rGRpMCX6D7nSJA3CzJ8gn13N/g==
+  dependencies:
+    tslib "^2.4.0"
+
+"@formatjs/intl-localematcher@^0.2.32":
+  version "0.2.32"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.32.tgz#00d4d307cd7d514b298e15a11a369b86c8933ec1"
+  integrity sha512-k/MEBstff4sttohyEpXxCmC3MqbUn9VvHGlZ8fauLzkbwXmVrEeyzS+4uhrvAk9DWU9/7otYWxyDox4nT/KVLQ==
+  dependencies:
+    tslib "^2.4.0"
+
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.14"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.14.tgz#d78e481a039f7566ecc9660b4ea7fe6b1fec442b"
@@ -2479,6 +2540,18 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
+"@tanstack/query-core@5.24.8":
+  version "5.24.8"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.24.8.tgz#b407546a726ecd4d60b8682dec2ca84ac9eab81e"
+  integrity sha512-yH7KnfXMf10p1U5GffTQzFi2Miiw6WJZImGYGdV7eqa5ZbKO8qVx9lOA9SfhIaJXomrMp1Yz5w/CBhVM3yWeTA==
+
+"@tanstack/react-query@^5.24.8":
+  version "5.24.8"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.24.8.tgz#9de1423a710bcdfce90df82acaf494659edb6221"
+  integrity sha512-jB3JS9SzDmBySk9VVOTPt/0ixWEb3K3dy9IExlVl/1NouY3N7HzAqG/1d4m6E9eFfKJoLvA/hBksaLu0lw627A==
+  dependencies:
+    "@tanstack/query-core" "5.24.8"
+
 "@testing-library/dom@^9.0.0":
   version "9.3.4"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-9.3.4.tgz#50696ec28376926fec0a1bf87d9dbac5e27f60ce"
@@ -2824,6 +2897,13 @@
   version "18.2.19"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.2.19.tgz#b84b7c30c635a6c26c6a6dfbb599b2da9788be58"
   integrity sha512-aZvQL6uUbIJpjZk4U8JZGbau9KDeAwMfmhyWorxgBkqDIEf6ROjRozcmPIicqsUwPUjbkDfHKgGee1Lq65APcA==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-modal@^3.16.3":
+  version "3.16.3"
+  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.16.3.tgz#250f32c07f1de28e2bcf9c3e84b56adaa6897013"
+  integrity sha512-xXuGavyEGaFQDgBv4UVm8/ZsG+qxeQ7f77yNrW3n+1J6XAstUy5rYHeIHPh1KzsGc6IkCIdu6lQ2xWzu1jBTLg==
   dependencies:
     "@types/react" "*"
 
@@ -6665,6 +6745,16 @@ internal-slot@^1.0.4, internal-slot@^1.0.5, internal-slot@^1.0.7:
     hasown "^2.0.0"
     side-channel "^1.0.4"
 
+intl-messageformat@^9.3.18:
+  version "9.13.0"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-9.13.0.tgz#97360b73bd82212e4f6005c712a4a16053165468"
+  integrity sha512-7sGC7QnSQGa5LZP7bXLDhVDtQOeKGeBFGHF2Y8LVBwYZoQZCgWeKoPGTa5GMG8g/TzDgeXuYJQis7Ggiw2xTOw==
+  dependencies:
+    "@formatjs/ecma402-abstract" "1.11.4"
+    "@formatjs/fast-memoize" "1.2.1"
+    "@formatjs/icu-messageformat-parser" "2.1.0"
+    tslib "^2.1.0"
+
 ipaddr.js@1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
@@ -8296,7 +8386,7 @@ needle@^3.1.0:
     iconv-lite "^0.6.3"
     sax "^1.2.4"
 
-negotiator@0.6.3:
+negotiator@0.6.3, negotiator@^0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
@@ -8305,6 +8395,20 @@ neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+next-intl@^3.9.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-3.9.1.tgz#514ef39a2d41bedc7e1d8bc30719b8b1832ec609"
+  integrity sha512-1j+5lLTY5kHshqnVoeAep+gQO1xX1KlJU3irZkdCOhr0woo562qLKOsGGVh+7bB5luBMu9qQBQy7ZwNK81Z2Ig==
+  dependencies:
+    "@formatjs/intl-localematcher" "^0.2.32"
+    negotiator "^0.6.3"
+    use-intl "^3.9.1"
+
+next-themes@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/next-themes/-/next-themes-0.2.1.tgz#0c9f128e847979daf6c67f70b38e6b6567856e45"
+  integrity sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==
 
 next@14.0.4:
   version "14.0.4"
@@ -9430,6 +9534,11 @@ react-dom@18.2.0:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
+
+react-hook-form@^7.51.0:
+  version "7.51.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.51.0.tgz#757ae71b37c26e00590bd3788508287dcc5ecdaf"
+  integrity sha512-BggOy5j58RdhdMzzRUHGOYhSz1oeylFAv6jUSG86OvCIvlAvS7KvnRY7yoAf2pfEiPN7BesnR0xx73nEk3qIiw==
 
 react-is@^16.13.1:
   version "16.13.1"
@@ -11083,6 +11192,19 @@ url-parse@^1.5.3, url-parse@~1.5.10:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
+use-intl@^3.9.1:
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/use-intl/-/use-intl-3.9.1.tgz#b5c7a240d389404ae345000203f0bef81efa799e"
+  integrity sha512-tWcT636/jYC0hILyFTLmiuE+ovbvPPBXwN/OOQxxE+4bssHXeeksdWXzpDsKqE37aV62DFrQ2jhumV8udecjNA==
+  dependencies:
+    "@formatjs/ecma402-abstract" "^1.11.4"
+    intl-messageformat "^9.3.18"
+
+use-sync-external-store@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
+  integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
+
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
@@ -11521,3 +11643,10 @@ zod@^3.22.4:
   version "3.22.4"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
   integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==
+
+zustand@^4.5.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.5.2.tgz#fddbe7cac1e71d45413b3682cdb47b48034c3848"
+  integrity sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==
+  dependencies:
+    use-sync-external-store "1.2.0"
