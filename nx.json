@@ -29,6 +29,15 @@
 			"options": {
 				"targetName": "e2e"
 			}
+		},
+		{
+			"plugin": "@nx/storybook/plugin",
+			"options": {
+				"buildStorybookTargetName": "build-storybook",
+				"serveStorybookTargetName": "storybook",
+				"testStorybookTargetName": "test-storybook",
+				"staticStorybookTargetName": "static-storybook"
+			}
 		}
 	],
 	"targetDefaults": {
@@ -57,6 +66,13 @@
 		},
 		"@nx/react": {
 			"library": {}
+		}
+	},
+	"tasksRunnerOptions": {
+		"default": {
+			"options": {
+				"cacheableOperations": ["build-storybook"]
+			}
 		}
 	}
 }
