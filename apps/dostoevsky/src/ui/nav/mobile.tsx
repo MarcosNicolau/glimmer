@@ -1,7 +1,7 @@
 "use client";
 import { useToggle } from "apps/dostoevsky/src/hooks/useToggle";
 import { IconBtn } from "apps/dostoevsky/src/ui/btns/Icon";
-import { Input } from "apps/dostoevsky/src/ui/form/input";
+import { Input } from "apps/dostoevsky/src/ui/form/Input";
 import {
 	Arrow,
 	CreateRoomIcon,

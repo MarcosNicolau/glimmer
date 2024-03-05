@@ -7,5 +7,15 @@
 			"light": "Light",
 			"system": "System"
 		}
+	},
+	"forms": {
+		"min-field": "{field} is too short",
+		"submit-btn": "Enter",
+		"cancel-btn": "Cancel"
+	},
+	"load-user-modal": {
+		"title": "Who are you?",
+		"description": "Before hanging out in the rooms, people need to know your name at least",
+		"name-input-placeholder": "My name is..."
 	}
 }

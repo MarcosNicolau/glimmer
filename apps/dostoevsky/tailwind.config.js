@@ -11,7 +11,9 @@ export default {
 			mobile: { max: "767px" },
 		},
 		colors: {
+			none: "none",
 			inherit: "inherit",
+			current: "currentColor",
 			transparent: "transparent",
 			red: "rgb(var(--color-red) / <alpha-value>)",
 			white: "rgb(var(--color-white) / <alpha-value>)",
@@ -61,6 +63,7 @@ export default {
 		borderRadius: {
 			s: "4px",
 			DEFAULT: "6px",
+			l: "8px",
 		},
 		spacing: {
 			0: "0px",

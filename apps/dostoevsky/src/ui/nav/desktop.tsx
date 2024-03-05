@@ -3,7 +3,7 @@
 import { useScreenType } from "apps/dostoevsky/src/hooks/useScreenType";
 import { IconBtn } from "apps/dostoevsky/src/ui/btns/Icon";
 import { Button } from "apps/dostoevsky/src/ui/btns/btn";
-import { Input } from "apps/dostoevsky/src/ui/form/input";
+import { Input } from "apps/dostoevsky/src/ui/form/Input";
 import { GithubIcon, LogoIcon, SearchIcon, UserIcon } from "apps/dostoevsky/src/ui/icons";
 import { LanguageSwitcher } from "apps/dostoevsky/src/ui/nav/LanguageSwitcher";
 import { ThemeSwitcher } from "apps/dostoevsky/src/ui/nav/ThemeSwitcher";
