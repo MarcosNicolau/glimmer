@@ -21,8 +21,9 @@
 			"@glimmer/gogol": ["libs/gogol/rabbit/src/index.ts"],
 			"@glimmer/http": ["libs/http/src/index.ts"],
 			"@glimmer/types": ["libs/types/src/index.ts"],
-			"@glimmer/ui/web/components": ["libs/ui/web/components/src/index.ts"],
-			"@glimmer/ui/web/components/server": ["libs/ui/web/components/src/server.ts"]
+			"@glimmer/hooks": ["libs/hooks/src/index.ts"],
+			"@glimmer/ui/web/components": ["libs/ui/web/src/components/index.ts"],
+			"@glimmer/ui/web/globals.css": ["libs/ui/web/src/styles/globals.css"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
