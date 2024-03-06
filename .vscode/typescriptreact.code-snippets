@@ -1,0 +1,18 @@
+{
+	"story preset": {
+		"prefix": "story",
+		"body": [
+			"import type { Meta, StoryObj } from \"@storybook/react\"\n",
+			"const meta: Meta = {",
+			"\tcomponent: ${1/([^,]+)([,\\s]*|)/attr_reader :$1\n/g},",
+			"}",
+			"export default meta;\n",
+			"type Story = StoryObj<typeof ${1/([^,]+)([,\\s]*|)/attr_reader :$1\n/g}>;\n",
+			"export const Primary: Story = {",
+			"\targs: {\n",
+			"\t},",
+			"}"
+		],
+		"description": "Creates default template for writing a story"
+	}
+}

@@ -2,6 +2,7 @@
 import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
+	content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
 	theme: {
 		screens: {
 			"big-desktop": { min: "1226px" },
