@@ -3,7 +3,6 @@
 import { Card } from "../Card";
 import { IconBtn, Button } from "../Buttons";
 import { CrossIcon } from "../Icons";
-import { useTranslations } from "next-intl";
 import { Dispatch, SetStateAction } from "react";
 
 type Props = {
@@ -12,7 +11,8 @@ type Props = {
 	setOpen: Dispatch<SetStateAction<boolean>>;
 	showCloseBtn?: boolean;
 	showCancelBtn?: boolean;
-	btnText?: string;
+	btnText: string;
+	cancelBtnText: string;
 	children?: React.ReactNode;
 	onSubmit: () => void;
 	disabled?: boolean;
@@ -24,6 +24,7 @@ export const ModalForm: React.FC<Props> = ({
 	setOpen,
 	title,
 	btnText,
+	cancelBtnText,
 	showCancelBtn = true,
 	showCloseBtn = true,
 	onSubmit,
@@ -31,9 +32,8 @@ export const ModalForm: React.FC<Props> = ({
 	isLoading,
 	children,
 }) => {
-	const t = useTranslations();
 	return (
-		<Card>
+		<Card className="min-w-[600px]">
 			{showCloseBtn && (
 				<div className="absolute right-5 top-5 cursor-pointer">
 					<IconBtn icon={CrossIcon} onClick={() => setOpen(false)} />
@@ -48,7 +48,7 @@ export const ModalForm: React.FC<Props> = ({
 				<div className="flex">
 					{showCancelBtn && (
 						<Button variant="text" className="w-1/2" onClick={() => setOpen(false)}>
-							{t("forms.cancel-btn")}
+							{cancelBtnText}
 						</Button>
 					)}
 					<Button
@@ -58,7 +58,7 @@ export const ModalForm: React.FC<Props> = ({
 						type="submit"
 						onClick={onSubmit}
 					>
-						{btnText || t("forms.submit-btn")}
+						{btnText}
 					</Button>
 				</div>
 			</form>

@@ -49,6 +49,8 @@ export const LoadUser: React.FC<{ children: React.ReactNode }> = ({ children }) 
 				<ModalForm
 					title={t("load-user-modal.title")}
 					description={t("load-user-modal.description")}
+					btnText={t("forms.submit-btn")}
+					cancelBtnText={t("forms.cancel-btn")}
 					showCancelBtn={false}
 					showCloseBtn={false}
 					setOpen={setOpen}

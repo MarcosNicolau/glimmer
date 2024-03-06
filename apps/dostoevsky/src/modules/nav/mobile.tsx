@@ -3,7 +3,7 @@ import { useToggle } from "@glimmer/hooks";
 import {
 	Input,
 	IconBtn,
-	Arrow,
+	ArrowIcon,
 	CreateRoomIcon,
 	LogoIcon,
 	MoonIcon,
@@ -22,7 +22,7 @@ export const MobileNavContent: React.FC = () => {
 	if (isSearch)
 		return (
 			<div className="flex w-full gap-5">
-				<IconBtn onClick={toggle} icon={() => <Arrow direction="left" />} />
+				<IconBtn onClick={toggle} icon={() => <ArrowIcon direction="left" />} />
 				<div className="w-full">
 					<Input icon={SearchIcon} placeholder={t("nav.search-bar-placeholder")} />
 				</div>

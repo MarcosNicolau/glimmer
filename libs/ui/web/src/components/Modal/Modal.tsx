@@ -39,10 +39,8 @@ export const Modal: React.FC<Props> = ({
 	if (!open) return null;
 	return createPortal(
 		<div className="p-10 mobile:p-6 h-full w-full bg-black/20 inset-0 absolute">
-			<div className="flex items-center justify-center h-full">
-				<div ref={ref} id="content">
-					{children}
-				</div>
+			<div ref={ref} className="flex items-center justify-center h-full w-full">
+				{children}
 			</div>
 		</div>,
 		document.body
