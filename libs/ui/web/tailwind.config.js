@@ -11,8 +11,8 @@ export default {
 	theme: {
 		screens: {
 			"big-desktop": { min: "1226px" },
-			desktop: { max: "1125px", min: "1025px" },
-			tablet: { max: "1024px", min: "768px" },
+			desktop: { min: "1025px" },
+			tablet: { max: "1024px" },
 			mobile: { max: "767px" },
 		},
 		colors: {

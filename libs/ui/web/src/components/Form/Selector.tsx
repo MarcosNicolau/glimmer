@@ -1,3 +1,5 @@
+"use client";
+
 import { useOnKeyDown, useOnClickOutside, useToggle } from "@glimmer/hooks";
 import { Option, Props as OptionProps } from "../Form";
 import { useEffect, useRef, useState } from "react";
@@ -52,8 +54,8 @@ export const Select: React.FC<Props> = ({
 			{/* wait till the width has been set to prevent a weird flash */}
 			{(matchOptionsWidth ? width : true) && (
 				<div
-					className={clsx("cursor-pointer flex justify-center gap-4 items-center p-2", {
-						"bg-contrast-300 rounded-s": variant === "filled",
+					className={clsx("cursor-pointer flex justify-center gap-4 items-center", {
+						"bg-contrast-300 rounded-s p-2": variant === "filled",
 						"justify-between": showArrow,
 					})}
 					style={{ width: matchOptionsWidth ? width : "auto" }}
@@ -83,8 +85,12 @@ export const Select: React.FC<Props> = ({
 
 			<div
 				className={clsx(
-					"transition opacity-100 visible border-contrast-300 absolute mt-[50px] flex max-h-[150px] flex-col overflow-auto rounded border",
-					{ "opacity-[0] invisible": !showOptions }
+					"transition opacity-100 visible z-10 top-0 border-contrast-300 absolute mt-[50px] flex max-h-[150px] flex-col overflow-auto rounded border",
+					{
+						"opacity-[0] invisible": !showOptions,
+						"mt-[45px]": variant === "filled",
+						"mt-[32px]": variant !== "filled",
+					}
 				)}
 				ref={optionsRef}
 			>

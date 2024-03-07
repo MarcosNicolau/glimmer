@@ -22,9 +22,11 @@ export const DesktopNavContent: React.FC = () => {
 
 	return (
 		<>
-			<Link href="/">
-				<LogoIcon height={50} width={50} />
-			</Link>
+			<div className="flex-1">
+				<Link href="/">
+					<LogoIcon height={50} width={50} />
+				</Link>
+			</div>
 			<div
 				className={clsx("flex w-1/2 items-stretch justify-between gap-2", {
 					"w-1/2": isDesktop,
@@ -36,7 +38,7 @@ export const DesktopNavContent: React.FC = () => {
 				</div>
 				<Button>{t("nav.create-room")}</Button>
 			</div>
-			<div className="flex flex-row items-center gap-5">
+			<div className="flex flex-1 justify-end flex-row items-center gap-5">
 				<ThemeSwitcher />
 				<IconBtn icon={GithubIcon} />
 				<LanguageSwitcher />
