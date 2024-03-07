@@ -1,5 +1,5 @@
 import { abrilFatface, inter } from "apps/dostoevsky/src/libs/loadFonts";
-import { Nav } from "apps/dostoevsky/src/modules/nav";
+import { Nav } from "apps/dostoevsky/src/modules/Nav";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { Providers } from "apps/dostoevsky/src/providers";
 import { Auth } from "apps/dostoevsky/src/modules/Auth";

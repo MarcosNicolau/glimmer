@@ -11,7 +11,7 @@ import {
 	UserGroupIcon,
 	UserIcon,
 } from "@glimmer/ui/web/components";
-import { LanguageSwitcher } from "apps/dostoevsky/src/modules/nav/LanguageSwitcher";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 

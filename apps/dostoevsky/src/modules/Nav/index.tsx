@@ -1,7 +1,8 @@
 "use client";
+
 import { useScreenType } from "@glimmer/hooks";
-import { DesktopNavContent } from "./desktop";
-import { MobileNavContent } from "./mobile";
+import { DesktopNavContent } from "./Desktop";
+import { MobileNavContent } from "./Mobile";
 
 export const Nav: React.FC = () => {
 	const { isMobile, isTablet } = useScreenType();

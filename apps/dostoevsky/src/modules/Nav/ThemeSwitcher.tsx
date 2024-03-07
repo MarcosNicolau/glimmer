@@ -40,6 +40,7 @@ export const ThemeSwitcher = () => {
 						isSelected: theme === "dark",
 					},
 				]}
+				variant="no-fill"
 			>
 				<IconBtn icon={resolvedTheme === "dark" ? MoonIcon : SunIcon} />
 			</Select>

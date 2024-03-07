@@ -21,6 +21,7 @@ export const LanguageSwitcher = () => {
 				value: _locale,
 				displayText: localesFlagEmoji[_locale],
 			}))}
+			variant="no-fill"
 		/>
 	);
 };

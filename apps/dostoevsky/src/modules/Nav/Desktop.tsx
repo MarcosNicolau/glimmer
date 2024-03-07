@@ -10,8 +10,8 @@ import {
 	SearchIcon,
 	UserIcon,
 } from "@glimmer/ui/web/components";
-import { LanguageSwitcher } from "apps/dostoevsky/src/modules/nav/LanguageSwitcher";
-import { ThemeSwitcher } from "apps/dostoevsky/src/modules/nav/ThemeSwitcher";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
