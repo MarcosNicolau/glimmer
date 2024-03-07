@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 import defaultTheme from "tailwindcss/defaultTheme";
+import { join } from "path";
+import { createGlobPatternsForDependencies } from "@nx/react/tailwind";
 
 export default {
-	content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+	content: [
+		join(__dirname, "src/**/*!(*.stories|*.spec).{ts,tsx,html}"),
+		...createGlobPatternsForDependencies(__dirname),
+	],
 	theme: {
 		screens: {
 			"big-desktop": { min: "1226px" },

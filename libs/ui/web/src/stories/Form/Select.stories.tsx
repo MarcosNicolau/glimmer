@@ -32,6 +32,7 @@ export const Text: Story = {
 		],
 		variant: "filled",
 		showArrow: true,
+		matchOptionsWidth: true,
 		onChange: () => null,
 	},
 };
@@ -63,6 +64,7 @@ export const TextAndIcon: Story = {
 		],
 		variant: "filled",
 		showArrow: true,
+		matchOptionsWidth: true,
 		onChange: () => null,
 	},
 };
