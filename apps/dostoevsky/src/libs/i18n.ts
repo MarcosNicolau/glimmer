@@ -10,9 +10,11 @@ export const localesFlagEmoji: { [key in LocalesUnion]: string } = {
 	es: "🇪🇸",
 };
 
+export const defaultLang: LocalesUnion = "en";
+
 export default getRequestConfig(async ({ locale }) => {
 	// Validate that the incoming `locale` parameter is valid
-	if (!locales.includes(locale as any)) redirect(`/en`);
+	if (!locales.includes(locale as any)) redirect(`/${defaultLang}`);
 
 	return {
 		messages: (await import(`../../locales/${locale}.json`)).default,

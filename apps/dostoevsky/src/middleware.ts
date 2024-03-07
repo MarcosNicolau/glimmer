@@ -1,11 +1,11 @@
-import { locales } from "apps/dostoevsky/src/libs/i18n";
+import { defaultLang, locales } from "apps/dostoevsky/src/libs/i18n";
 import createMiddleware from "next-intl/middleware";
 
 export default createMiddleware({
 	// A list of all locales that are supported
 	locales,
 	// Used when no locale matches
-	defaultLocale: "en",
+	defaultLocale: defaultLang,
 });
 
 export const config = {
