@@ -4,13 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { FilledArrowIcon } from "../Icons/FilledArrow";
 
+type Option = Omit<OptionProps, "onClick"> & {
+	/**
+	 * If not provided, defaults to text value
+	 */
+	textWhenSelected?: string;
+};
+
 type Props = {
-	options: Omit<OptionProps, "onClick">[];
+	options: Option[];
 	onChange: (value: string) => void;
 	variant?: "filled" | "no-fill";
 	matchOptionsWidth?: boolean;
 	showArrow?: boolean;
 	children?: React.ReactNode;
+	selectedRender?: (selectedOption: Option) => React.ReactNode;
 };
 
 export const Select: React.FC<Props> = ({
@@ -19,7 +27,7 @@ export const Select: React.FC<Props> = ({
 	showArrow,
 	variant = "filled",
 	matchOptionsWidth,
-	children,
+	selectedRender,
 }) => {
 	const [selectedOption, setSelectedOption] = useState(
 		options.find((option) => option.isSelected) || options[0]
@@ -51,14 +59,14 @@ export const Select: React.FC<Props> = ({
 					style={{ width: matchOptionsWidth ? width : "auto" }}
 					onClick={toggle}
 				>
-					{children ? (
-						children
+					{selectedRender ? (
+						selectedRender(selectedOption)
 					) : (
 						<div className="flex items-center justify-center gap-2">
 							{selectedOption?.icon && <selectedOption.icon />}
-							{selectedOption.displayText && (
+							{(selectedOption.textWhenSelected || selectedOption.text) && (
 								<p className="text-md text-text-100">
-									{selectedOption.displayText}
+									{selectedOption.textWhenSelected || selectedOption.text}
 								</p>
 							)}
 						</div>

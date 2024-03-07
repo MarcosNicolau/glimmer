@@ -19,7 +19,7 @@ export const LanguageSwitcher = () => {
 				isSelected: _locale === locale,
 				text: `${localesFlagEmoji[_locale]} ${_locale}`,
 				value: _locale,
-				displayText: localesFlagEmoji[_locale],
+				textWhenSelected: localesFlagEmoji[_locale],
 			}))}
 			variant="no-fill"
 		/>

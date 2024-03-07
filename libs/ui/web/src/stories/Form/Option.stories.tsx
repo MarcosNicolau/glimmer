@@ -12,7 +12,6 @@ export const Primary: Story = {
 	args: {
 		value: "",
 		icon: ComputerIcon,
-		displayText: "Computer",
 		isSelected: false,
 		text: "Computer",
 	},

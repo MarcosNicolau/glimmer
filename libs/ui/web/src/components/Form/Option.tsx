@@ -6,7 +6,6 @@ export type Props = {
 	value: string;
 	text: string;
 	isSelected: boolean;
-	displayText?: string;
 	onClick: () => void;
 };
 
