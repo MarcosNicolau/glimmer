@@ -17,5 +17,9 @@
 		"title": "Who are you?",
 		"description": "Before hanging out in the rooms, people need to know your name at least",
 		"name-input-placeholder": "My name is..."
+	},
+	"online-users": {
+		"header": "Online people",
+		"subtitle": "{num} currently hanging around..."
 	}
 }

@@ -9,3 +9,4 @@ export * from "./Arrow";
 export * from "./Sun";
 export * from "./Computer";
 export * from "./Cross";
+export * from "./FilledCircle";

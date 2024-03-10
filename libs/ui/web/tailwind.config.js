@@ -10,10 +10,23 @@ export default {
 	],
 	theme: {
 		screens: {
-			"big-desktop": { min: "1226px" },
-			desktop: { min: "1025px" },
-			tablet: { max: "1024px" },
-			mobile: { max: "767px" },
+			"only-big-desktop": { min: "1226px" },
+			"max-big-desktop": { max: "1226px" },
+
+			"only-desktop": { min: "1151px", max: "1225px" },
+			"min-desktop": { min: "1151px" },
+			"max-desktop": { max: "1151px" },
+
+			"only-small-desktop": { min: "1025px", max: "1150px" },
+			"max-small-desktop": { max: "1150px" },
+			"min-small-desktop": { min: "1025px" },
+
+			"only-tablet": { max: "1024px", min: "768px" },
+			"max-tablet": { max: "1024px" },
+			"min-tablet": { min: "768px" },
+
+			"only-mobile": { max: "767px" },
+			"min-mobile": { min: "767px" },
 		},
 		colors: {
 			none: "none",

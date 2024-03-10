@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 export const DesktopNavContent: React.FC = () => {
-	const { isTablet, isDesktop } = useScreenType();
+	const { isTablet } = useScreenType();
 	const t = useTranslations();
 
 	return (
@@ -28,10 +28,9 @@ export const DesktopNavContent: React.FC = () => {
 				</Link>
 			</div>
 			<div
-				className={clsx("flex w-1/2 items-stretch justify-between gap-2", {
-					"w-1/2": isDesktop,
-					"w-3/4": isTablet,
-				})}
+				className={clsx(
+					"flex items-stretch justify-between gap-2 only-big-desktop:w-1/2 max-big-desktop:w-[70%]"
+				)}
 			>
 				<div className="flex-1">
 					<Input icon={SearchIcon} placeholder={t("nav.search-bar-placeholder")} />

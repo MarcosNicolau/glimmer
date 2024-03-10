@@ -17,5 +17,9 @@
 		"title": "Y Vos... ¿quién Sos?",
 		"description": "Antes de pasar el rato en los cuartos, la gente tiene que por lo menos saber tu nombre",
 		"name-input-placeholder": "Mi nombre es..."
+	},
+	"online-users": {
+		"header": "Personas online",
+		"subtitle": "{num} personas conectadas..."
 	}
 }

@@ -1,14 +1,12 @@
 import { APIResponse } from "@glimmer/http";
 import { QueryClient, QueryFunctionContext } from "@tanstack/react-query";
 import { API_URL } from "apps/dostoevsky/src/libs/constants";
+import { APIBaseFetch } from "apps/dostoevsky/src/libs/fetch";
 import axios from "axios";
 
-const defaultQueryFn = async <T extends APIResponse["result"]>({
+export const defaultQueryFn = async <T extends APIResponse["result"]>({
 	queryKey,
-}: QueryFunctionContext): Promise<T> => {
-	const res = await axios.get<APIResponse<T>>(`${API_URL}${queryKey[0]}`);
-	return res.data.result;
-};
+}: QueryFunctionContext): Promise<T> => APIBaseFetch("get", `${queryKey[0]}`);
 
 export const defaultMutationFn =
 	<Result extends APIResponse["result"], Payload extends object>(path: string) =>
