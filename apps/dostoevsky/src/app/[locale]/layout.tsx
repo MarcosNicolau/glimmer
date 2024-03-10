@@ -1,8 +1,12 @@
-import { Nav } from "apps/dostoevsky/src/modules/Nav";
+import dynamic from "next/dynamic";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { Auth } from "apps/dostoevsky/src/modules/Auth";
 import { LoadUser } from "apps/dostoevsky/src/modules/LoadUser";
 import { ConnectToWs } from "apps/dostoevsky/src/modules/ConnectToWs";
+
+const Nav = dynamic(() => import("../../modules/Nav"), {
+	ssr: false,
+});
 
 const RootLayout = ({
 	children,

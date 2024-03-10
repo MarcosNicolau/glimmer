@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Nav } from "../modules/Nav";
+import Nav from "../modules/Nav/";
 
 const meta: Meta = {
 	component: Nav,

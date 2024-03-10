@@ -3,7 +3,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { Preview } from "@storybook/react";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 import enLocales from "../locales/en.json";
-import { inter, abrilFatface } from "../src/libs/loadFonts";
 import "@glimmer/ui/web/globals.css";
 
 const preview: Preview = {
