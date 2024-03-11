@@ -8,10 +8,22 @@
 			"}",
 			"export default meta;\n",
 			"type Story = StoryObj<typeof ${1/([^,]+)([,\\s]*|)/attr_reader :$1\n/g}>;\n",
-			"export const Primary: Story = {",
+			"export const Default: Story = {",
 			"\targs: {\n",
 			"\t},",
 			"}"
+		],
+		"description": "Creates default template for writing a story"
+	},
+	"icon preset": {
+		"prefix": "icon",
+		"body": [
+			"import { AppSvg, SvgProps } from \"libs/ui/web/src/components/Icons/Svg\";\n",
+			"export const ${TM_FILENAME_BASE}Icon = (props: SvgProps) => (",
+			"\t<AppSvg {...props}>",
+			"\t\t${1/([^,]+)([,\\s]*|)/attr_reader :$1\n/g}",
+			"\t</AppSvg>",
+			")"
 		],
 		"description": "Creates default template for writing a story"
 	}

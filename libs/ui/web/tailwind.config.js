@@ -82,6 +82,7 @@ export default {
 			s: "4px",
 			DEFAULT: "6px",
 			l: "8px",
+			full: "100%",
 		},
 		spacing: {
 			0: "0px",

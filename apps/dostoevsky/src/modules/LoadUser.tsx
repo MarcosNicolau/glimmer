@@ -21,7 +21,7 @@ export const LoadUser: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.USER) || "{}");
-		const { success } = User.omit({ id: true }).safeParse(user);
+		const { success } = User.omit({ id: true, roomId: true }).safeParse(user);
 		if (success) {
 			setUser(user);
 			setIsLoaded(true);
@@ -45,6 +45,7 @@ export const LoadUser: React.FC<{ children: React.ReactNode }> = ({ children }) 
 				setOpen={setOpen}
 				shouldCloseOnEsc={false}
 				shouldCloseOnOutsideClick={false}
+				showCloseButton
 			>
 				<ModalForm
 					title={t("load-user-modal.title")}
@@ -52,7 +53,6 @@ export const LoadUser: React.FC<{ children: React.ReactNode }> = ({ children }) 
 					btnText={t("forms.submit-btn")}
 					cancelBtnText={t("forms.cancel-btn")}
 					showCancelBtn={false}
-					showCloseBtn={false}
 					setOpen={setOpen}
 					onSubmit={handleSubmit(onSubmit)}
 					disabled={!isValid}

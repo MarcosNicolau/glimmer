@@ -1,3 +1,4 @@
+"use client";
 import { GetOnlineUsers } from "@glimmer/bulgakov";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { APIBaseFetch } from "apps/dostoevsky/src/libs/fetch";
@@ -15,5 +16,9 @@ export const useOnlineUsers = () => {
 	});
 	const users = useMemo(() => data?.pages.flatMap((page) => page.users), [data]);
 
-	return { users, data, ...rest };
+	return {
+		users,
+		data,
+		...rest,
+	};
 };

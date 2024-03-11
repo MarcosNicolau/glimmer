@@ -1,4 +1,4 @@
-export * from "./Github";
+export * from "./Svg";
 export * from "./Logo";
 export * from "./Search";
 export * from "./Moon";
@@ -10,3 +10,4 @@ export * from "./Sun";
 export * from "./Computer";
 export * from "./Cross";
 export * from "./FilledCircle";
+export * from "./SocialMedia";

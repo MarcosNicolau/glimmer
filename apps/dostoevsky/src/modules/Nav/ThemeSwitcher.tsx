@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 export const ThemeSwitcher = () => {
-	const { setTheme, theme } = useTheme();
+	const { setTheme, theme, resolvedTheme } = useTheme();
 	const t = useTranslations();
 	const [mounted, setMounted] = useState(false);
 
@@ -41,8 +41,8 @@ export const ThemeSwitcher = () => {
 					},
 				]}
 				variant="no-fill"
-				selectedRender={(option) => (
-					<IconBtn icon={option.value === "dark" ? MoonIcon : SunIcon} />
+				selectedRender={() => (
+					<IconBtn icon={resolvedTheme === "dark" ? MoonIcon : SunIcon} />
 				)}
 			></Select>
 		</div>

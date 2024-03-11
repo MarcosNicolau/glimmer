@@ -1,8 +1,7 @@
 "use client";
 
 import { Card } from "../Card";
-import { IconBtn, Button } from "../Buttons";
-import { CrossIcon } from "../Icons";
+import { Button } from "../Buttons";
 import { Dispatch, SetStateAction } from "react";
 
 type Props = {
@@ -26,7 +25,6 @@ export const ModalForm: React.FC<Props> = ({
 	btnText,
 	cancelBtnText,
 	showCancelBtn = true,
-	showCloseBtn = true,
 	onSubmit,
 	disabled = false,
 	isLoading,
@@ -34,11 +32,6 @@ export const ModalForm: React.FC<Props> = ({
 }) => {
 	return (
 		<Card className="min-w-[600px]">
-			{showCloseBtn && (
-				<div className="absolute right-5 top-5 cursor-pointer">
-					<IconBtn icon={CrossIcon} onClick={() => setOpen(false)} />
-				</div>
-			)}
 			<div className="mb-8">
 				<h5 className="mb-6">{title}</h5>
 				<p>{description}</p>

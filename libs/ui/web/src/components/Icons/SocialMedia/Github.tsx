@@ -1,4 +1,4 @@
-import { AppSvg, SvgProps } from "./Svg";
+import { AppSvg, SvgProps } from "../Svg";
 
 export const GithubIcon: React.FC<SvgProps> = (props) => {
 	return (

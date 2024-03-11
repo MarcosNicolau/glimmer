@@ -6,13 +6,14 @@ export const useOnClickOutside = <T extends HTMLElement>(cb: () => void) => {
 	useEffect(() => {
 		if (!ref.current) return;
 		const onClick = (e: MouseEvent) => {
-			//@ts-expect-error idk tbh
+			e.preventDefault();
+			//@ts-expect-error i think this is an incorrect type from react
 			if (!ref.current?.contains(e.target)) cb();
 		};
-		document.addEventListener("click", onClick, { capture: true });
+		document.addEventListener("click", onClick);
 
 		return () => document.removeEventListener("click", onClick);
-	}, [ref]);
+	}, [ref.current]);
 
 	return [ref];
 };

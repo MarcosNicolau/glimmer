@@ -6,7 +6,7 @@ export const HomePage = () => (
 		leftComponent={<LeftComponent />}
 		leftSideBar={<LeftSidebar />}
 		rightComponent={
-			<Card>
+			<Card className="p-6">
 				<h5>Right</h5>
 			</Card>
 		}

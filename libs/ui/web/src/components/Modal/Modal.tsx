@@ -1,6 +1,8 @@
 "use client";
 
 import { useIsMounted, useOnKeyDown, useOnClickOutside } from "@glimmer/hooks";
+import { IconBtn } from "libs/ui/web/src/components/Buttons";
+import { CrossIcon } from "libs/ui/web/src/components/Icons";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
@@ -11,6 +13,7 @@ type Props = {
 	onClose?: () => void;
 	shouldCloseOnEsc?: boolean;
 	shouldCloseOnOutsideClick?: boolean;
+	showCloseButton?: boolean;
 	children?: React.ReactNode;
 };
 
@@ -20,6 +23,7 @@ export const Modal: React.FC<Props> = ({
 	onClose,
 	onOpen,
 	children,
+	showCloseButton = false,
 	shouldCloseOnEsc = true,
 	shouldCloseOnOutsideClick = true,
 }) => {
@@ -40,9 +44,16 @@ export const Modal: React.FC<Props> = ({
 
 	if (!open) return null;
 	return createPortal(
-		<div className="p-10 mobile:p-6 h-full w-full bg-black/20 inset-0 absolute">
-			<div ref={ref} className="flex items-center justify-center h-full w-full">
-				{children}
+		<div className="p-10 mobile:p-6 h-full w-full bg-black/20 inset-0 absolute z-20">
+			<div className="flex items-center justify-center h-full w-full">
+				<div ref={ref} className="content relative">
+					{showCloseButton && (
+						<div className="absolute right-5 top-5 cursor-pointer z-30">
+							<IconBtn icon={CrossIcon} onClick={() => setOpen(false)} />
+						</div>
+					)}
+					{children}
+				</div>
 			</div>
 		</div>,
 		document.body
