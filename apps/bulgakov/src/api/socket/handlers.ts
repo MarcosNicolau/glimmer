@@ -1,7 +1,6 @@
 import { Rooms, Rabbit, Users } from "../../services";
 import { SOCKET_TOPICS } from "../../constants";
 import { z } from "zod";
-import { generateRandomId } from "../../utils/crypto";
 import { WebSocket } from "uWebSockets.js";
 import { User, IncomingActions, IncomingActionsPayload } from "@glimmer/bulgakov";
 
@@ -24,51 +23,68 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 					isPrivate: z.boolean(),
 				})
 				.parseAsync(room);
-			const roomId = generateRandomId();
-			await Rooms.createRoom({ room: { id: roomId, ...room }, owner: user });
+			const roomId = await Rooms.createRoom(room, user.id);
 			Rabbit.publishToVoiceServer(null, { op: "@room:create", d: { roomId } });
 		},
 		"@room:join": async ({ roomId }) => {
 			const { id: userId } = ws.getUserData();
 			await validateRoom(roomId);
-			const { voiceServerId, users } = await Rooms.getRoom(roomId, [
-				"voiceServerId",
-				"users[*].id",
-			]);
+			const { voiceServerId, peers } = await Rooms.getRoom(roomId, {
+				voiceServerId: true,
+				peers: {
+					select: {
+						user: {
+							select: {
+								id: true,
+								image: true,
+								name: true,
+							},
+						},
+						askedToSpeak: true,
+						isDeafened: true,
+						isMuted: true,
+						isSpeaker: true,
+						role: true,
+					},
+				},
+			});
 			// Maybe wants to re-stablish connection so he is already in the room
-			let user = await Rooms.getUser(roomId, userId);
-			if (!user) user = await Rooms.joinRoom(roomId, { id: userId });
+			let peer = await Rooms.getPeer(userId);
+			if (!peer) peer = await Rooms.joinRoom(roomId, userId);
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:join",
-				d: { roomId, willProduce: user.isSpeaker, userId: user.id },
+				d: { roomId, willProduce: peer.isSpeaker, userId: peer.user.id },
 			});
 			if (!ws.isSubscribed(SOCKET_TOPICS.ROOM(roomId)))
 				ws.subscribe(SOCKET_TOPICS.ROOM(roomId));
 			ws.broadcastToUser(userId, {
 				action: "@room:details",
-				payload: { roomId, room: { id: roomId, users } },
+				payload: { roomId, room: { id: roomId, peers } },
 			});
 			await ws.broadcastToRoom(roomId, {
 				action: "@room:new-user",
-				payload: { roomId, userId: user.id },
+				payload: { roomId, userId: peer.user.id },
 			});
 		},
 		"@room:leave": async ({ roomId }) => {
 			await validateRoom(roomId);
-			const { id: userId } = ws.getUserData();
+			const { id: peerId } = ws.getUserData();
 			ws.unsubscribe(SOCKET_TOPICS.ROOM(roomId));
-			ws.broadcastToRoom(roomId, { action: "@room:user-left", payload: { roomId, userId } });
-			await Rooms.leaveRoom(roomId, userId);
-			const { voiceServerId } = await Rooms.getRoom(roomId, ["voiceServerId"]);
+			ws.broadcastToRoom(roomId, {
+				action: "@room:user-left",
+				payload: { roomId, userId: peerId },
+			});
+			await Rooms.leaveRoom(peerId);
+			const { voiceServerId } = await Rooms.getRoom(roomId, { voiceServerId: true });
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:leave",
-				d: { roomId, userId },
+				d: { roomId, userId: peerId },
 			});
 		},
 		"@room:send-track": async ({ roomId, produceParams }) => {
 			await validateRoom(roomId);
 			const user = ws.getUserData();
-			const { voiceServerId } = await Rooms.getRoom(roomId, ["voiceServerId"]);
+			const { voiceServerId } = await Rooms.getRoom(roomId, { voiceServerId: true });
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:send-track",
 				d: { roomId, userId: user.id, produceParams },
@@ -78,7 +94,7 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 			const user = ws.getUserData();
 			await validateRoom(roomId);
 			await z.object({ direction: z.string(), dtlsParameters: z.string() }).parseAsync(rest);
-			const { voiceServerId } = await Rooms.getRoom(roomId, ["voiceServerId"]);
+			const { voiceServerId } = await Rooms.getRoom(roomId, { voiceServerId: true });
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:connect-webRtcTransport",
 				d: { userId: user.id, roomId, ...rest },
@@ -88,10 +104,10 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 			const user = ws.getUserData();
 			await validateRoom(roomId);
 			// In the future this will be based on the roles
-			const canAdd = await Rooms.canManageRoom(roomId, user.id);
+			const canAdd = await Rooms.canManageRoom(user.id);
 			if (!canAdd) return;
-			const { voiceServerId } = await Rooms.getRoom(roomId, ["voiceServerId"]);
-			await Rooms.addSpeaker(roomId, speakerId);
+			const { voiceServerId } = await Rooms.getRoom(roomId, { voiceServerId: true });
+			await Rooms.addSpeaker(speakerId);
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:add-producer",
 				d: { roomId, userId: speakerId },
@@ -104,9 +120,9 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 		"@room:delete": async ({ roomId }) => {
 			const user = ws.getUserData();
 			await validateRoom(roomId);
-			const canManage = await Rooms.canManageRoom(roomId, user.id);
+			const canManage = await Rooms.canManageRoom(user.id);
 			if (!canManage) return;
-			const { voiceServerId } = await Rooms.getRoom(roomId, ["voiceServerId"]);
+			const { voiceServerId } = await Rooms.getRoom(roomId, { voiceServerId: true });
 			await Rooms.delete(roomId);
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:delete",
@@ -120,7 +136,7 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 		"@room:mute-speaker": () => {},
 		"@user:send-profile": async ({ user }) => {
 			const { id } = ws.getUserData();
-			const _user = await User.omit({ id: true }).parseAsync(user);
+			const _user = await User.omit({ id: true, room: true }).parseAsync(user);
 			Users.update(id, _user);
 		},
 	};

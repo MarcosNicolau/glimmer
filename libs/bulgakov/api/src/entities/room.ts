@@ -1,20 +1,25 @@
 import { z } from "zod";
-import { User } from "./user";
 
-export const UserInRoom = z
-	.object({
-		role: z.enum(["creator", "mod", "peer"]),
-		joinedAt: z.number(),
-		isDeafened: z.boolean(),
-		isMuted: z.boolean().optional(),
-		isSpeaker: z.boolean(),
-	})
-	.merge(User.pick({ id: true }));
+export const UserInRoom = z.object({
+	user: z.object({
+		id: z.string(),
+		name: z.string(),
+		image: z.string().nullable(),
+	}),
+
+	role: z.enum(["creator", "mod", "member"]),
+	isDeafened: z.boolean(),
+	isMuted: z.boolean(),
+	isSpeaker: z.boolean(),
+	askedToSpeak: z.boolean(),
+});
 
 export type UserInRoom = z.infer<typeof UserInRoom>;
 
 export const Room = z.object({
 	id: z.string(),
+	name: z.string(),
+	description: z.string(),
 	ownerId: z.string(),
 	voiceServerId: z.string().nullable(),
 	createdAt: z.number(),
@@ -22,7 +27,7 @@ export const Room = z.object({
 		is: z.boolean(),
 		code: z.string().optional(),
 	}),
-	users: UserInRoom.array(),
+	peers: UserInRoom.array(),
 });
 
 export type Room = z.infer<typeof Room>;

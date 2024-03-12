@@ -1,5 +1,5 @@
 import { redis } from "../config/redis";
-import { RedisJSON } from "redis";
+import { RediSearchSchema, RedisJSON, SearchOptions } from "redis";
 
 export const Redis = {
 	hashes: {
@@ -43,6 +43,57 @@ export const Redis = {
 	expire: {
 		expire: async (key: string, timeInSeconds: number) =>
 			await redis.expire(key, timeInSeconds),
+	},
+
+	ft: {
+		create: async (
+			idx: string,
+			schema: RediSearchSchema,
+			options: Parameters<typeof redis.ft.create>["3"]
+		) => {
+			try {
+				return await redis.ft.create(idx, schema, options);
+			} catch (err: any) {
+				if (err.message === "Index already exists") return;
+				return Promise.reject(err);
+			}
+		},
+		search: async <T extends object>(
+			idx: string,
+			query: string,
+			options?: SearchOptions
+		): Promise<{
+			total: number;
+			documents: {
+				id: string;
+				value: T;
+			};
+		}> =>
+			//@ts-expect-error same as above
+			redis.ft.search(idx, query, options),
+		aggregate: async <T extends object>(
+			idx: string,
+			query: string,
+			options?: Parameters<typeof redis.ft.aggregate>["3"]
+		): Promise<{ total: number; results: T[] }> =>
+			//@ts-expect-error same as above
+			redis.ft.aggregate(idx, query, options),
+		aggregateWithCursor: async <T extends object>(
+			idx: string,
+			query: string,
+			options?: Parameters<typeof redis.ft.aggregateWithCursor>["3"]
+		): Promise<{ total: number; results: T[]; cursor: number }> =>
+			//@ts-expect-error same as above
+			redis.ft.aggregateWithCursor(idx, query, options),
+		cursorRead: async <T extends object>(
+			idx: string,
+			cursor: number,
+			options?: Parameters<typeof redis.ft.cursorRead>["3"]
+		): Promise<{ total: number; results: T[]; cursor: number }> =>
+			//@ts-expect-error same as above
+			await redis.ft.cursorRead(idx, cursor, options),
+		count: async (idx: string) =>
+			(await redis.ft.search(idx, "*", { LIMIT: { from: 0, size: 0 } })).total,
 	},
 
 	deleteKey: async (key: string) => await redis.del(key),

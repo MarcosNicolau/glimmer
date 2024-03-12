@@ -75,7 +75,7 @@ export const RabbitService = (appId: string) => {
 					switch (data.op) {
 						case "@room:created":
 							const { roomId, serverId } = data.d as GogolMsgData["@room:created"];
-							await Rooms.setVoiceServer({ roomId, voiceServerId: serverId });
+							await Rooms.setVoiceServer({ id: roomId, voiceServerId: serverId });
 							ws.broadcastToRoom(roomId, {
 								action: "@room:created",
 								payload: { roomId },
@@ -85,8 +85,9 @@ export const RabbitService = (appId: string) => {
 							console.warn("Gogol error operation", data);
 							break;
 						default:
-							//@ts-expect-error idk why but it takes data as null, when is not
-							const broadcastToRoom = broadcastToRoomOps.find((op) => op === data.op);
+							const broadcastToRoom = broadcastToRoomOps.find(
+								(op) => op === data?.op
+							);
 							if (broadcastToRoom) {
 								const d = data.d as GogolMsgData[BroadcastToRoomOps];
 								ws.broadcastToRoom(d.roomId, { action: data.op, payload: d });

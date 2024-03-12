@@ -1,104 +1,114 @@
-import { Redis } from "../services";
-import { REDIS } from "../constants";
-import { User, Room, UserInRoom, IncomingActionsPayload } from "@glimmer/bulgakov";
-import { generateRandomCode } from "../utils/crypto";
-
-type CreateRoomParams = {
-	room: Pick<IncomingActionsPayload["@room:create"], "room">["room"] & { id: string };
-	owner: Pick<User, "id">;
-};
-
-type GetUserFilter = `users[${string}].${keyof UserInRoom}`;
-
-type GetRoomFields = GetUserFilter | keyof Room;
-
-type GetRoom<T extends GetRoomFields> = {
-	[key in T extends GetUserFilter ? "users" : T]: Room[key];
-};
+import { prisma } from "apps/bulgakov/src/config/prisma";
+import { Prisma } from "@prisma/client";
 
 export const Rooms = {
-	createRoom: async ({ room: { isPrivate, ...room }, owner }: CreateRoomParams) => {
-		const roomExists = await Redis.json.get(REDIS.JSON_PATHS.room(room.id), "$.id");
-		if (!roomExists) return Promise.reject("room already exists");
-		const _room: Room = {
-			...room,
-			ownerId: owner.id,
-			createdAt: Date.now(),
-			users: [
-				{
-					...owner,
-					role: "creator",
-					isDeafened: false,
-					isMuted: false,
-					isSpeaker: true,
-					joinedAt: Date.now(),
+	createRoom: async ({ ...room }: Prisma.RoomCreateArgs["data"], userId: string) => {
+		const res = await prisma.room.create({
+			data: {
+				...room,
+				voiceServerId: null,
+				peers: {
+					create: {
+						userId,
+						role: "creator",
+						isDeafened: false,
+						isMuted: false,
+						isSpeaker: true,
+						askedToSpeak: false,
+					},
 				},
-			],
-			voiceServerId: null,
-			private: { is: isPrivate, code: isPrivate ? await generateRandomCode(6) : "" },
-		};
-		await Redis.json.set(REDIS.JSON_PATHS.room(room.id), "$", _room);
+			},
+		});
+		return res.id;
+	},
+	getRoom: async <T extends Prisma.RoomSelect>(
+		id: string,
+		select: Prisma.Subset<T, Prisma.RoomSelect>
+	) => {
+		const room = await prisma.room.findUnique<{ select: T; where: { id: string } }>({
+			where: { id },
+			select,
+		});
+		if (!room) return Promise.reject("room does not exist");
 		return room;
 	},
-	/**
-	 *
-	 * @param fields the fields you want to retrieve. if undefined, it defaults to all of them
-	 * @returns
-	 */
-	getRoom: async <T extends GetRoomFields>(roomId: string, fields?: T[]): Promise<GetRoom<T>> => {
-		const room = await Redis.json.get<GetRoom<T>>(
-			REDIS.JSON_PATHS.room(roomId),
-			fields ? fields.map((field) => `$.${field}`).join(" ") : undefined
-		);
-		if (!room || !room[0]) return Promise.reject("room does not exist");
-		return room[0];
-	},
+	setVoiceServer: async ({ id, voiceServerId }: { voiceServerId: string; id: string }) =>
+		await prisma.room.update({ where: { id }, data: { voiceServerId } }),
+	joinRoom: async (id: string, userId: string) =>
+		await prisma.peer.create({
+			data: {
+				userId,
+				isDeafened: false,
+				isSpeaker: false,
+				askedToSpeak: false,
+				isMuted: false,
+				roomId: id,
+			},
+			select: {
+				askedToSpeak: true,
+				isDeafened: true,
+				isMuted: true,
+				isSpeaker: true,
+				role: true,
+				user: {
+					select: {
+						id: true,
+						name: true,
+						image: true,
+					},
+				},
+			},
+		}),
 
-	setVoiceServer: async ({
-		roomId,
-		voiceServerId,
-	}: {
-		voiceServerId: string;
-		roomId: string;
-	}) => {
-		await Redis.json.set(REDIS.JSON_PATHS.room(roomId), "$.voiceServerId", voiceServerId);
-	},
-	joinRoom: async (roomId: string, user: Pick<User, "id">): Promise<UserInRoom> => {
-		const _user: UserInRoom = {
-			...user,
-			role: "peer",
-			isDeafened: false,
-			isSpeaker: false,
-			joinedAt: Date.now(),
-		};
-		await Redis.json.arrAppend(REDIS.JSON_PATHS.room(roomId), "$.users", _user);
-		return _user;
-	},
-	leaveRoom: async (roomId: string, userId: string) => {
-		await Redis.json.del(REDIS.JSON_PATHS.room(roomId), `$.users[?(@.id==${userId})]`);
-	},
-	getUser: async (roomId: string, userId: string): Promise<UserInRoom | null> => {
-		//@ts-expect-error ids are string!
-		const user: string[] = await Redis.json.get(REDIS.JSON_PATHS.room(roomId), {
-			path: `$.users[?(@.id==${userId})]`,
+	leaveRoom: async (userId: string) => await prisma.peer.delete({ where: { userId } }),
+	getPeer: async (userId: string) => {
+		const peer = await prisma.peer.findUnique({
+			where: { userId },
+			select: {
+				user: {
+					select: {
+						id: true,
+						image: true,
+						name: true,
+					},
+				},
+				askedToSpeak: true,
+				isDeafened: true,
+				isMuted: true,
+				isSpeaker: true,
+				role: true,
+			},
 		});
-		if (!user || !user[0]) return null;
-		return JSON.parse(user[0]);
+		return peer;
 	},
-	addSpeaker: async (roomId: string, userId: string) => {
-		await Redis.json.set(
-			REDIS.JSON_PATHS.room(roomId),
-			`$.users[?(@.id=="${userId}")].isSpeaker`,
-			true
-		);
+	addSpeaker: async (userId: string) => {
+		await prisma.peer.update({ where: { userId }, data: { isSpeaker: true } });
 	},
-	canManageRoom: async (roomId: string, userId: string) => {
-		const ownerId = await Redis.json.get<string>(REDIS.JSON_PATHS.room(roomId), "$.ownerId");
-		if (!ownerId) return false;
-		return ownerId[0] === userId;
+	setAskedToSpeaker: async (userId: string, askedToSpeak: boolean) => {
+		await prisma.peer.update({ where: { userId }, data: { askedToSpeak } });
 	},
-	delete: async (roomId: string) => await Redis.json.del(REDIS.JSON_PATHS.room(roomId), "$"),
-	setRoomOwner: async (roomId: string, newOwnerId: string) => {
-		await Redis.json.set(REDIS.JSON_PATHS.room(roomId), "$.ownerId", newOwnerId);
+	canManageRoom: async (userId: string) => {
+		const res = await prisma.peer.findUnique({ where: { userId }, select: { role: true } });
+		return res?.role === "creator";
+	},
+	delete: async (id: string) => await prisma.room.delete({ where: { id } }),
+	setRoomOwner: async (id: string, newOwnerUserId: string) => {
+		//Only one creator can exist
+		await prisma.peer.updateMany({
+			where: {
+				roomId: id,
+				role: "creator",
+			},
+			data: {
+				role: "member",
+			},
+		});
+
+		await prisma.peer.update({
+			where: { userId: newOwnerUserId, roomId: id },
+			data: {
+				role: "creator",
+			},
+		});
 	},
 };

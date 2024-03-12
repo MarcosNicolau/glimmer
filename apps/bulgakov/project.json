@@ -50,6 +50,18 @@
 					"buildTarget": "bulgakov:build:production"
 				}
 			}
+		},
+		"prisma:generate": {
+			"command": "prisma generate --schema apps/bulgakov/prisma/schema.prisma"
+		},
+		"prisma:migrate": {
+			"command": "prisma migrate dev --schema apps/bulgakov/prisma/schema.prisma"
+		},
+		"prisma:reset": {
+			"command": "prisma migrate reset --schema apps/bulgakov/prisma/schema.prisma"
+		},
+		"prisma:watch": {
+			"command": "nodemon -w ./prisma -e .prisma -x 'nx prisma:generate bulgakov'"
 		}
 	},
 	"tags": []

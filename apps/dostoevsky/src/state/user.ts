@@ -16,6 +16,7 @@ export const useUserStore = create<State & Actions>()((set) => ({
 	image: "",
 	links: [],
 	isLoaded: false,
+	roomId: null,
 	setIsLoaded: (isLoaded) => set(() => ({ isLoaded })),
 	setUser: (user) => set((_user) => ({ ..._user, ...user })),
 }));

@@ -68,7 +68,7 @@ export type OutgoingActionsPayload = Omit<GogolMsgData, "@room:created"> & {
 	};
 	"@room:details": {
 		roomId: string;
-		room: Pick<Room, "users" | "id">;
+		room: Pick<Room, "peers" | "id">;
 	};
 	"@room:new-user": {
 		roomId: string;
