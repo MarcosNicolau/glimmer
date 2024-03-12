@@ -36,6 +36,7 @@ export default {
 			red: "rgb(var(--color-red) / <alpha-value>)",
 			white: "rgb(var(--color-white) / <alpha-value>)",
 			black: "rgb(var(--color-black) / <alpha-value>)",
+			"modal-overlay": "var(--color-modal-overlay)",
 			background: "rgb(var(--color-bg) / <alpha-value>)",
 			accent: {
 				100: "rgb(var(--color-accent-100) / <alpha-value>)",

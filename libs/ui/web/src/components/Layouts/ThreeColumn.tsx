@@ -16,7 +16,7 @@ export const ThreeColumnLayout: React.FC<Props> = ({
 	const { isTablet, isMobile, isBigDesktop } = useScreenType();
 
 	return (
-		<div className="flex h-full justify-between">
+		<div className="flex h-full overflow-hidden justify-between">
 			{!isTablet && !isMobile && (
 				<aside className="only-big-desktop:w-[20%] w-[10%]">
 					{isBigDesktop ? leftComponent : leftSideBar}
