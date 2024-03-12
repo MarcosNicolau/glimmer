@@ -9,23 +9,23 @@ import { Users } from "./../../services/user";
 import { buildHttpHandler } from "@glimmer/http";
 
 export const wsBehaviour: uws.WebSocketBehavior<Required<Pick<User, "id">>> = {
-	message(ws, message) {
+	async message(ws, message) {
 		const myWs = buildSocket(ws);
 		const parsedMessage: IncomingWsMessage<IncomingActions> = JSON.parse(
 			new TextDecoder().decode(message)
 		);
 		try {
 			//@ts-expect-error payload actually matches action
-			socketHandlers(myWs)[parsedMessage.action](parsedMessage.payload);
+			await socketHandlers(myWs)[parsedMessage.action](parsedMessage.payload);
 		} catch (err) {
-			console.error("error while handling socket message", err);
+			console.error("error while handling socket message", parsedMessage, err);
 		}
 	},
-	open(ws) {
+	async open(ws) {
 		const user = ws.getUserData();
 		ws.subscribe(SOCKET_TOPICS.USER(user.id));
 		console.log("new connection open id", user.id);
-		Users.create(user);
+		await Users.create({ id: user.id });
 	},
 	upgrade: async (res, req, context) => {
 		buildHttpHandler(res, req);
@@ -37,12 +37,12 @@ export const wsBehaviour: uws.WebSocketBehavior<Required<Pick<User, "id">>> = {
 		const succeeded = await authMiddleware(req, res);
 		if (!succeeded) return;
 		const user: SocketData = res.user;
-		//@ts-expect-error complains about the spread, but it works
+		//@ts-expect-error complains about the spread, but it is legal
 		res.cork(() => res.upgrade<SocketData>(user, ...headers, context));
 	},
-	close(ws) {
+	async close(ws) {
 		const { id } = ws.getUserData();
-		Users.remove(id);
+		console.log("closed connection id", id);
+		await Users.remove(id);
 	},
-	sendPingsAutomatically: true,
 };
