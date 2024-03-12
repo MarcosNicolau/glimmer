@@ -1,16 +1,17 @@
 import { User } from "apps/dostoevsky/src/types/user";
 import { create } from "zustand";
 
-type State = Omit<User, "id"> & {
+type State = User & {
 	isLoaded: boolean;
 };
 
 type Actions = {
-	setUser: (user: Partial<Omit<User, "id">>) => void;
+	setUser: (user: Partial<User>) => void;
 	setIsLoaded: (isLoaded: boolean) => void;
 };
 
 export const useUserStore = create<State & Actions>()((set) => ({
+	id: "",
 	name: "",
 	description: "",
 	image: "",

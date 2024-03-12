@@ -12,13 +12,16 @@ export const Auth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 		mutationFn: defaultMutationFn<GetTokenRes, GetTokenReqBody>("/auth/token"),
 		onSuccess(data) {
 			setToken(data.token);
+			const tokenPayload = JSON.parse(atob(data.token.split(".")[1]));
 			localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, data.token);
+			localStorage.setItem(LOCAL_STORAGE_KEYS.USER_ID, tokenPayload.id);
 		},
 	});
 
 	useEffect(() => {
 		const token = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
-		if (!token) return mutate({});
+		const userId = localStorage.getItem(LOCAL_STORAGE_KEYS.USER_ID);
+		if (!token || !userId) return mutate({});
 		setToken(token);
 	}, [mutate]);
 

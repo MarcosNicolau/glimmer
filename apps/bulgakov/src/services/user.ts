@@ -1,10 +1,10 @@
-import { prisma } from "apps/bulgakov/src/config/prisma";
-import { Prisma, User } from "@prisma/client";
+import { prisma } from "../config/prisma";
+import { Prisma } from "@prisma/client";
 import { GetOnlineUsers } from "@glimmer/bulgakov";
 
 export const Users = {
 	create: async (user: Partial<Omit<Prisma.UserCreateArgs["data"], "peer" | "peerId">>) => {
-		const userExists = await prisma.user.findUnique({ where: { id: user.id }, select: {} });
+		const userExists = await prisma.user.findUnique({ where: { id: user.id } });
 		if (userExists) return;
 		return prisma.user.create({
 			data: {
@@ -15,7 +15,7 @@ export const Users = {
 			},
 		});
 	},
-	remove: (id: string) => prisma.user.delete({ where: { id } }),
+	remove: (id: string) => prisma.user.deleteMany({ where: { id } }),
 	get: async <T extends Prisma.UserSelect>(
 		id: string,
 		select: Prisma.Subset<T, Prisma.UserSelect>
@@ -27,12 +27,15 @@ export const Users = {
 		if (!user) return null;
 		return user;
 	},
-	update: async (id: string, data: Partial<Omit<User, "peerId" | "createdAt">>) =>
-		prisma.user.update({ where: { id }, data }),
+	update: async (
+		id: string,
+		data: Partial<Omit<Prisma.UserCreateArgs["data"], "peer" | "peerId">>
+	) => prisma.user.update({ where: { id }, data }),
 	count: () => prisma.user.count(),
 	getOnlineUsers: async (take: number, cursor: string): Promise<GetOnlineUsers> => {
+		const isCursor = cursor != "0";
 		const query = await prisma.user.findMany({
-			cursor: cursor
+			cursor: isCursor
 				? {
 						id: cursor,
 					}
@@ -54,8 +57,8 @@ export const Users = {
 					},
 				},
 			},
-			orderBy: { createdAt: "desc" },
-			skip: cursor ? 1 : 0,
+			orderBy: { createdAt: "asc" },
+			skip: isCursor ? 1 : 0,
 		});
 		const users = query.map<GetOnlineUsers["users"][0]>((val) => ({
 			id: val.id,
@@ -71,7 +74,7 @@ export const Users = {
 		}));
 		return {
 			users,
-			nextCursor: users[users.length - 1].id,
+			nextCursor: users[users.length - 1]?.id,
 		};
 	},
 };

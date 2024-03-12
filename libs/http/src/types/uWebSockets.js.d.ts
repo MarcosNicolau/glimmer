@@ -9,6 +9,7 @@ declare module "uWebSockets.js" {
 		 */
 		body: <Body extends object = object>() => Promise<Body>;
 		headers: Record<string, string>;
+		params: any;
 	}
 
 	export interface HttpResponse extends uws.HttpResponse {

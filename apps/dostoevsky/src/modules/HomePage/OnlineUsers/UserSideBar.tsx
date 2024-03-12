@@ -14,16 +14,13 @@ export const UserSideBar: React.FC<Props> = ({ image, name, room, id }) => {
 
 	return (
 		<>
-			<UserProfile id={id} open={open} setOpen={setOpen} />
-			<div
-				className="flex gap-1 items-center relative"
-				onMouseLeave={() => setIsHovering(false)}
-			>
+			{open && <UserProfile id={id} open={open} setOpen={setOpen} />}
+			<div className="flex gap-1 items-center" onMouseLeave={() => setIsHovering(false)}>
 				<Image
 					className={clsx("transition cursor-pointer rounded-[100%]", {
 						"translate-x-1": isHovering,
 					})}
-					src={image}
+					src={image || "/profile.png"}
 					alt="profile image"
 					height={50}
 					width={50}
@@ -31,22 +28,29 @@ export const UserSideBar: React.FC<Props> = ({ image, name, room, id }) => {
 					onMouseEnter={() => setIsHovering(true)}
 				/>
 				{isHovering && (
-					<div className="absolute bg-contrast-100 left-[65px] gap-2 shadow p-3 rounded z-20 flex">
-						<div className="max-w-[200px]">
+					<div className="absolute bg-contrast-100 left-[110px] gap-4 border-contrast-300 border p-3 rounded z-20 flex">
+						<div className="max-w-[200px] gap-1 flex flex-col">
 							<p
 								onClick={toggleOpen}
-								className="text-text-100 whitespace-nowrap mb-1 text-ellipsis cursor-pointer"
+								className="text-text-100 whitespace-nowrap text-ellipsis cursor-pointer"
 							>
 								{name}
 							</p>
-							<p className="small whitespace-nowrap text-ellipsis  overflow-hidden hover:underline cursor-pointer">
-								{room?.name}
-							</p>
+							{room && (
+								<p className="small whitespace-nowrap text-ellipsis overflow-hidden hover:underline cursor-pointer">
+									{room?.name}
+								</p>
+							)}
 						</div>
-						<div className="flex gap-1 justify-center items-end">
-							<p className="small text-text-100 font-bold">{room?.connectedUsers}</p>
-							<FilledCircleIcon className="fill-red h-[21px] w-[12px]" />
-						</div>
+
+						{room && (
+							<div className="flex gap-1 justify-center items-end">
+								<p className="small text-text-100 font-bold">
+									{room?.connectedUsers}
+								</p>
+								<FilledCircleIcon className="fill-red h-[21px] w-[12px]" />
+							</div>
+						)}
 					</div>
 				)}
 			</div>

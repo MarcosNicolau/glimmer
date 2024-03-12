@@ -33,13 +33,15 @@ export const buildHttpHandler = (res: HttpResponse, req: HttpRequest) => {
 	res.send = ({ status, message, result = {} }) =>
 		// Sure we are corking babe
 		res.cork(() => {
-			res.writeStatus(status.toString()).end(
-				JSON.stringify({
-					code: status,
-					message: message || getReasonPhrase(status),
-					result,
-				})
-			);
+			res.writeStatus(status.toString())
+				.writeHeader("content-type", "application/json")
+				.end(
+					JSON.stringify({
+						status,
+						message: message || getReasonPhrase(status),
+						result,
+					})
+				);
 		});
 
 	req.body = () =>
@@ -59,6 +61,18 @@ export const buildHttpHandler = (res: HttpResponse, req: HttpRequest) => {
 				}
 			});
 		});
+	const getParams = () => {
+		const params: Record<string, string> = {};
+		req
+			.getQuery()
+			?.split("&")
+			.forEach((query) => {
+				const [key, value] = query.split("=");
+				params[key] = value;
+			});
+		return params;
+	};
+	req.params = getParams();
 	const headers: Record<string, string> = {};
 	req.forEach((key, value) => {
 		headers[key] = value;

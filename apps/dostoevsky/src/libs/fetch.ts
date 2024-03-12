@@ -7,5 +7,6 @@ export const APIBaseFetch = async <ResponseResult extends object>(
 	path: string
 ) => {
 	const res = await axios[method]<APIResponse<ResponseResult>>(`${API_URL}${path}`);
+	if (res.data.status !== 200) throw new Error(res.data.message);
 	return res.data.result;
 };
