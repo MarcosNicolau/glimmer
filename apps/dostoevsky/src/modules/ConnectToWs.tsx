@@ -19,10 +19,13 @@ export const ConnectToWs: React.FC<{ children: React.ReactNode }> = ({ children 
 			ws.onopen = () => {
 				setSocket(ws);
 				setConnState("opened");
-				ws.sendJson({ action: "@user:send-profile", payload: { user } });
+				console.log("connection opened");
+				setTimeout(() => {
+					ws.sendJson({ action: "@user:send-profile", payload: { user } });
+				}, 1000);
 			};
 			ws.onerror = () => setConnState("error");
-
+			ws.onclose = () => setConnState("idle");
 			return () => {
 				socket?.close();
 			};
