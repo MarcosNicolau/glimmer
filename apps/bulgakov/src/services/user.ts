@@ -30,7 +30,12 @@ export const Users = {
 	update: async (
 		id: string,
 		data: Partial<Omit<Prisma.UserCreateArgs["data"], "peer" | "peerId">>
-	) => prisma.user.update({ where: { id }, data }),
+	) => {
+		// if it provided new links to create then remove the already created ones
+		if (data.links?.createMany)
+			await prisma.userSocialLink.deleteMany({ where: { userId: id } });
+		return prisma.user.update({ where: { id }, data });
+	},
 	count: () => prisma.user.count(),
 	getOnlineUsers: async (take: number, cursor: string): Promise<GetOnlineUsers> => {
 		const isCursor = cursor != "0";

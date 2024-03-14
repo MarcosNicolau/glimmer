@@ -1,6 +1,5 @@
-import { Card, Modal } from "@glimmer/ui/web/components";
+import { Card, Modal, SocialLink } from "@glimmer/ui/web/components";
 import { useGetUser } from "apps/dostoevsky/src/hooks/useGetUser";
-import { SocialLink } from "apps/dostoevsky/src/modules/UserProfile/SocialLink";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 
@@ -28,7 +27,7 @@ export const UserProfile: React.FC<Props> = ({ open, setOpen, id }) => {
 					<div className="flex flex-col justify-center items-center">
 						<div className="flex flex-col items-center mb-3">
 							<Image
-								src={"/profile.png"}
+								src={data.image}
 								alt="user-img"
 								width={50}
 								height={50}

@@ -17,7 +17,7 @@ export const ThemeSwitcher = () => {
 		return null;
 	}
 	return (
-		<div className="relative">
+		<div className="relative flex justify-center">
 			<Select
 				onChange={(theme) => setTheme(theme)}
 				options={[

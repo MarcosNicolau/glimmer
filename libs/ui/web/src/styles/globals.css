@@ -47,7 +47,7 @@
 		--color-text-contrast-200: 114 106 125;
 		--color-text-link: 128 76 199;
 		--color-modal-overlay: 128 76 199;
-		--color-modal-overlay: hsla(0, 0%, 0%, 0.6);
+		--color-modal-overlay: hsla(0, 0%, 0%, 0.5);
 	}
 
 	html {
@@ -56,7 +56,7 @@
 	}
 
 	body {
-		@apply bg-background font-common font-medium text-md text-text-100 !important;
+		@apply bg-background font-common text-md text-text-100 font-medium !important;
 		margin: 0;
 	}
 

@@ -136,8 +136,19 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 		"@room:mute-speaker": () => {},
 		"@user:send-profile": async ({ user }) => {
 			const { id } = ws.getUserData();
-			const _user = await User.omit({ id: true, room: true }).parseAsync(user);
-			Users.update(id, _user);
+			const { links, ...rest } = await User.omit({
+				id: true,
+				room: true,
+				roomId: true,
+			}).parseAsync(user);
+			await Users.update(id, {
+				...rest,
+				links: {
+					createMany: {
+						data: links,
+					},
+				},
+			});
 		},
 	};
 };

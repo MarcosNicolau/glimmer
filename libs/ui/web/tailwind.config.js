@@ -25,8 +25,12 @@ export default {
 			"max-tablet": { max: "1024px" },
 			"min-tablet": { min: "768px" },
 
-			"only-mobile": { max: "767px" },
+			"only-mobile": { max: "767px", min: "361px" },
+			"max-mobile": { max: "767px" },
 			"min-mobile": { min: "767px" },
+
+			"only-small-mobile": { max: "360px" },
+			"min-small-mobile": { min: "360px" },
 		},
 		colors: {
 			none: "none",

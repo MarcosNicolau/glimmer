@@ -10,8 +10,10 @@
 	},
 	"forms": {
 		"min-field": "{field} es muy corto",
-		"submit-btn": "Aceptar",
-		"cancel-btn": "Cancelar"
+		"submit": "Aceptar",
+		"cancel": "Cancelar",
+		"edit": "Editar",
+		"confirm": "Confirmar"
 	},
 	"load-user-modal": {
 		"title": "Y Vos... ¿quién Sos?",
@@ -21,5 +23,11 @@
 	"online-users": {
 		"header": "Personas online",
 		"subtitle": "{num} personas conectadas..."
+	},
+	"edit-profile": {
+		"header": "Perfil",
+		"add-social-link": "Agregar link social",
+		"field-updated-toast": "Actualizaste tu {field}",
+		"description-placeholder": "Escribí tu descripción"
 	}
 }

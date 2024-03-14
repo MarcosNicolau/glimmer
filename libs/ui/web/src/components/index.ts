@@ -6,3 +6,4 @@ export * from "./Icons";
 export * from "./Layouts";
 export * from "./Modal";
 export * from "./Drawer";
+export * from "./SocialLink";

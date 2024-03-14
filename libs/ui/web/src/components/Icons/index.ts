@@ -11,3 +11,4 @@ export * from "./Computer";
 export * from "./Cross";
 export * from "./FilledCircle";
 export * from "./SocialMedia";
+export * from "./Plus";

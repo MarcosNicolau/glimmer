@@ -5,3 +5,4 @@ export * from "./useModal";
 export * from "./useOnClickOutside";
 export * from "./useScreenType";
 export * from "./useToggle";
+export * from "./useComponentDimensions";

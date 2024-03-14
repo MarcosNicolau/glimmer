@@ -1,4 +1,9 @@
-import { RecognizedSocialLinksIcon } from "@glimmer/ui/web/components";
+import { SocialMediaIcon, RecognizedSocialLinksIcon } from "./Icons";
+import React from "react";
+
+type Props = {
+	url: string;
+};
 
 export const getSocialMediaFromLink = (url: string): RecognizedSocialLinksIcon => {
 	const socialMediaDomains: { [key: string]: RecognizedSocialLinksIcon } = {
@@ -25,3 +30,12 @@ export const getSocialMediaFromLink = (url: string): RecognizedSocialLinksIcon =
 
 	return socialMediaDomains[domain] || "";
 };
+
+export const SocialLink: React.FC<Props> = ({ url }) => (
+	<a href={url} rel="noreferrer" target="_blank">
+		<SocialMediaIcon
+			media={getSocialMediaFromLink(url)}
+			className="hover:fill-accent-100 fill-accent-200 cursor-pointer"
+		/>
+	</a>
+);

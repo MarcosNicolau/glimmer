@@ -10,8 +10,10 @@
 	},
 	"forms": {
 		"min-field": "{field} is too short",
-		"submit-btn": "Enter",
-		"cancel-btn": "Cancel"
+		"enter": "Enter",
+		"cancel": "Cancel",
+		"edit": "Edit",
+		"confirm": "Confirm"
 	},
 	"load-user-modal": {
 		"title": "Who are you?",
@@ -21,5 +23,11 @@
 	"online-users": {
 		"header": "Online people",
 		"subtitle": "{num} currently hanging around..."
+	},
+	"edit-profile": {
+		"header": "Profile",
+		"add-social-link": "Add social link",
+		"field-updated-toast": "You have updated your {field}",
+		"description-placeholder": "Write your description"
 	}
 }

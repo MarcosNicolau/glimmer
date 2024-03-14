@@ -5,15 +5,15 @@ import {
 	IconBtn,
 	ArrowIcon,
 	LogoIcon,
-	MoonIcon,
 	SearchIcon,
 	UserGroupIcon,
-	UserIcon,
 } from "@glimmer/ui/web/components";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { OnlineUsers } from "./OnlineUsers";
+import { UserProfile } from "apps/dostoevsky/src/modules/Nav/UserProfile";
+import { ThemeSwitcher } from "apps/dostoevsky/src/modules/Nav/ThemeSwitcher";
 
 export const MobileNavContent: React.FC = () => {
 	const [isSearch, toggleIsSearch] = useToggle(false);
@@ -33,17 +33,17 @@ export const MobileNavContent: React.FC = () => {
 	return (
 		<>
 			<OnlineUsers open={isOnlineUsers} setOpen={setIsOnlineUsers} />
-			<div className="flex gap-6">
+			<div className="flex gap-5">
 				<IconBtn icon={UserGroupIcon} onClick={toggleOnlineUsers} />
 				<Link href="/">
 					<LogoIcon height={28} width={28} />
 				</Link>
 			</div>
-			<div className="flex gap-6">
+			<div className="flex gap-5">
 				<IconBtn icon={SearchIcon} onClick={toggleIsSearch} />
-				<IconBtn icon={MoonIcon} />
-				<IconBtn icon={UserIcon} />
+				<ThemeSwitcher />
 				<LanguageSwitcher />
+				<UserProfile />
 			</div>
 		</>
 	);

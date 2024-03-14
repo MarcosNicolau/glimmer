@@ -2,7 +2,7 @@ import { Spinner } from "../Loaders";
 import clsx from "clsx";
 
 type Props = React.ComponentProps<"button"> & {
-	variant?: "accent-fill" | "text" | "no-fill";
+	variant?: "accent-fill" | "text" | "text-inverse" | "text-underlined" | "no-fill";
 	isLoading?: boolean;
 };
 
@@ -20,8 +20,12 @@ export const Button: React.FC<Props> = ({
 			{
 				"bg-accent-100 text-text-contrast-100 enabled:hover:bg-accent-100/90 px-8 py-4":
 					variant === "accent-fill",
+				"tex-text-100 font-medium underline enabled:hover:no-underline":
+					variant === "text-underlined",
 				"text-text-100 enabled:hover:text-text-200 bg-transparent": variant === "text",
-				"text-text-100 enabled:hover:text-text-200 bg-transparent  px-8 py-4":
+				"text-text-contrast-100 enabled:hover:text-text-contrast-200 bg-transparent":
+					variant === "text-inverse",
+				"text-text-100 enabled:hover:text-text-200 bg-transparent px-8 py-4":
 					variant === "no-fill",
 				"text-text-100/50": (disabled || isLoading) && variant !== "accent-fill",
 				"bg-accent-100/50": (disabled || isLoading) && variant === "accent-fill",

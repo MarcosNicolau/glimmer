@@ -6,3 +6,4 @@ export const LOCAL_STORAGE_KEYS = {
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const WS_URL = process.env.NEXT_PUBLIC_WS_URL;
+export const NUM_AVATAR_IMGS = 20;

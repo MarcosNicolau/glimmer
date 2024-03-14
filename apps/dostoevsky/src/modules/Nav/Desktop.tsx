@@ -8,16 +8,16 @@ import {
 	GithubIcon,
 	LogoIcon,
 	SearchIcon,
-	UserIcon,
 } from "@glimmer/ui/web/components";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { UserProfile } from "apps/dostoevsky/src/modules/Nav/UserProfile";
 
 export const DesktopNavContent: React.FC = () => {
-	const { isTablet } = useScreenType();
+	const { isBigDesktop } = useScreenType();
 	const t = useTranslations();
 
 	return (
@@ -29,7 +29,7 @@ export const DesktopNavContent: React.FC = () => {
 			</div>
 			<div
 				className={clsx(
-					"flex items-stretch justify-between gap-2 only-big-desktop:w-1/2 max-big-desktop:w-[70%]"
+					"only-big-desktop:w-1/2 max-big-desktop:w-[70%] flex items-stretch justify-between gap-2"
 				)}
 			>
 				<div className="flex-1">
@@ -37,11 +37,11 @@ export const DesktopNavContent: React.FC = () => {
 				</div>
 				<Button>{t("nav.create-room")}</Button>
 			</div>
-			<div className="flex flex-1 justify-end flex-row items-center gap-5">
+			<div className="max-big-desktop:gap-4 flex flex-1 flex-row items-center justify-end gap-5">
 				<ThemeSwitcher />
 				<IconBtn icon={GithubIcon} />
 				<LanguageSwitcher />
-				{isTablet && <IconBtn icon={UserIcon} />}
+				{!isBigDesktop && <UserProfile />}
 			</div>
 		</>
 	);

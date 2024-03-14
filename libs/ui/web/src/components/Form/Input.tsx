@@ -6,37 +6,63 @@ type Props = React.ComponentProps<"input"> & {
 	icon?: React.FC<SvgProps>;
 	variant?: "primary" | "secondary";
 	error?: string | boolean;
+	textArea?: Omit<React.ComponentProps<"textarea">, keyof React.ComponentProps<"input">>;
+	RightButton?: React.ReactNode;
 };
 
 // We are using react hooks form, which passes a ref to the input component when registering it
 export const Input = forwardRef(
 	(
-		{ className, icon: Icon, variant = "primary", error, ...props }: Props,
-		ref: LegacyRef<HTMLInputElement> | undefined
+		{
+			className,
+			icon: Icon,
+			variant = "primary",
+			error,
+			textArea,
+			RightButton,
+			...props
+		}: Props,
+		ref: LegacyRef<HTMLInputElement | HTMLTextAreaElement> | undefined
 	) => {
+		const styles = clsx(
+			"placeholder:text-text-200 text-text-100 border-contrast-300 w-full rounded-s border p-4 text-sm",
+			{
+				"pl-10": !!Icon,
+				"bg-contrast-100": variant === "primary",
+				"bg-contrast-300": variant === "secondary",
+				"border-red": error,
+				"pr-8": !!RightButton,
+			},
+			className
+		);
 		return (
 			<div className="w-full">
 				<div className="relative">
 					{Icon && (
-						<div className="absolute inset-y-0 left-0 flex items-center pl-3">
+						<div className="absolute top-0 left-0 flex pt-4 pl-3">
 							<Icon width={20} className="fill-text-200" />
 						</div>
 					)}
-					<input
-						type="text"
-						className={clsx(
-							"placeholder:text-text-200 text-text-100 border-contrast-300 w-full rounded-s border p-4 text-sm",
-							{
-								"pl-10": !!Icon,
-								"bg-contrast-100": variant === "primary",
-								"bg-contrast-300": variant === "secondary",
-								"border-red": error,
-							},
-							className
-						)}
-						ref={ref}
-						{...props}
-					/>
+					{textArea ? (
+						<textarea
+							className={clsx(styles, className)}
+							//@ts-expect-error cant make the ref type works for both at the same time
+							ref={ref}
+							{...textArea}
+							{...props}
+						></textarea>
+					) : (
+						<input
+							type="text"
+							className={clsx(styles, className)}
+							//@ts-expect-error cant make the ref type works for both at the same time
+							ref={ref}
+							{...props}
+						/>
+					)}
+					{RightButton && (
+						<div className="absolute top-0 right-0 flex pt-4 pr-3">{RightButton}</div>
+					)}
 				</div>
 				{error?.toString() && <p className="small text-red mt-1">{error}</p>}
 			</div>
