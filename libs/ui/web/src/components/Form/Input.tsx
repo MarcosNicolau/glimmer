@@ -39,7 +39,7 @@ export const Input = forwardRef(
 			<div className="w-full">
 				<div className="relative">
 					{Icon && (
-						<div className="absolute top-0 left-0 flex pt-4 pl-3">
+						<div className="absolute left-0 top-0 flex pl-3 pt-4">
 							<Icon width={20} className="fill-text-200" />
 						</div>
 					)}
@@ -61,7 +61,7 @@ export const Input = forwardRef(
 						/>
 					)}
 					{RightButton && (
-						<div className="absolute top-0 right-0 flex pt-4 pr-3">{RightButton}</div>
+						<div className="absolute right-0 top-0 flex pr-3 pt-4">{RightButton}</div>
 					)}
 				</div>
 				{error?.toString() && <p className="small text-red mt-1">{error}</p>}

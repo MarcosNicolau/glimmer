@@ -44,11 +44,11 @@ export const Modal: React.FC<Props> = ({
 
 	if (!open) return null;
 	return createPortal(
-		<div className="p-10 mobile:p-6 h-full w-full bg-modal-overlay inset-0 absolute z-20">
-			<div className="flex items-center justify-center h-full w-full">
+		<div className="mobile:p-6 bg-modal-overlay absolute inset-0 z-20 h-full w-full p-10">
+			<div className="flex h-full w-full items-center justify-center">
 				<div ref={ref} className="content relative">
 					{showCloseButton && (
-						<div className="absolute right-5 top-5 cursor-pointer z-30">
+						<div className="absolute right-5 top-5 z-30 cursor-pointer">
 							<IconBtn icon={CrossIcon} onClick={() => setOpen(false)} />
 						</div>
 					)}

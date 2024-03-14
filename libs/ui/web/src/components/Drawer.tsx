@@ -33,11 +33,11 @@ export const Drawer: React.FC<Props> = ({ open, children }) => {
 	if (hide) return null;
 	return createPortal(
 		<animated.div
-			className="mobile:p-6 h-full w-full bg-black/20 inset-0 absolute"
+			className="mobile:p-6 absolute inset-0 h-full w-full bg-black/20"
 			style={enter}
 			suppressHydrationWarning
 		>
-			<animated.div style={side} className="h-full w-[300px] bg-contrast-100">
+			<animated.div style={side} className="bg-contrast-100 h-full w-[300px]">
 				{children}
 			</animated.div>
 		</animated.div>,

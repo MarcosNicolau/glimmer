@@ -50,12 +50,12 @@ export const Select: React.FC<Props> = ({
 	}, [selectedOption]);
 
 	return (
-		<div ref={parentRef} className="flex flex-col relative justify-center items-center">
+		<div ref={parentRef} className="relative flex flex-col items-center justify-center">
 			{/* wait till the width has been set to prevent a weird flash */}
 			{(matchOptionsWidth ? optsWidth : true) && (
 				<div
 					ref={selectedRef}
-					className={clsx("cursor-pointer flex justify-center gap-4 items-center", {
+					className={clsx("flex cursor-pointer items-center justify-center gap-4", {
 						"bg-contrast-300 rounded-s p-2": variant === "filled",
 						"justify-between": showArrow,
 					})}
@@ -86,9 +86,9 @@ export const Select: React.FC<Props> = ({
 			)}
 			<div
 				className={clsx(
-					"transition bg-contrast-100 opacity-100 visible z-10 mt-2 max-tablet:mt-4 border-contrast-300 absolute max-h-[150px] flex flex-wrap overflow-auto rounded border",
+					"bg-contrast-100 max-tablet:mt-4 border-contrast-300 visible absolute z-10 mt-2 flex max-h-[150px] flex-wrap overflow-auto rounded border opacity-100 transition",
 					{
-						"opacity-[0] invisible": !showOptions,
+						"invisible opacity-[0]": !showOptions,
 						"flex-col": !horizontal,
 					},
 					optionsParentClassName

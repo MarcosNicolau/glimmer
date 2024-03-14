@@ -9,7 +9,7 @@ export const Spinner: React.FC<Props> = ({ className, invertColors, ...props }) 
 	<svg
 		aria-hidden="true"
 		role="status"
-		className={clsx("inline text-white animate-spin", className)}
+		className={clsx("inline animate-spin text-white", className)}
 		viewBox="0 0 100 101"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"

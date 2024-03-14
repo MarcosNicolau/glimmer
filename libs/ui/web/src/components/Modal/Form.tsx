@@ -37,7 +37,7 @@ export const ModalForm: React.FC<Props> = ({
 				<p>{description}</p>
 			</div>
 			<form onSubmit={onSubmit}>
-				<div className="flex flex-col items-center gap-6  mb-8">{children}</div>
+				<div className="mb-8 flex flex-col items-center  gap-6">{children}</div>
 				<div className="flex">
 					{showCancelBtn && (
 						<Button variant="text" className="w-1/2" onClick={() => setOpen(false)}>

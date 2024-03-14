@@ -21,7 +21,7 @@ export const Option: React.FC<Props> = ({
 }) => (
 	<div
 		className={clsx(
-			"rounded  fill-accent-200  text-text-200 flex cursor-pointer gap-4 px-4  py-2 transition",
+			"fill-accent-200  text-text-200  flex cursor-pointer gap-4 rounded px-4  py-2 transition",
 			{
 				"bg-contrast-200": isSelected,
 				"hover:bg-contrast-200 hover:text-text-100 hover:fill-accent-100": !isSelected,
