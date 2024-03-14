@@ -1,4 +1,4 @@
-import { Card } from "@glimmer/ui/web/components";
+import { Card } from "@glimmer/ui/web";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {

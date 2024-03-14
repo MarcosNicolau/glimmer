@@ -1,6 +1,6 @@
 import { GetOnlineUsers } from "@glimmer/bulgakov";
 import { useModal } from "@glimmer/hooks";
-import { FilledCircleIcon } from "@glimmer/ui/web/components";
+import { FilledCircleIcon } from "@glimmer/ui/web";
 import { UserProfile } from "apps/dostoevsky/src/modules/UserProfile";
 import clsx from "clsx";
 import Image from "next/image";
@@ -15,9 +15,9 @@ export const UserSideBar: React.FC<Props> = ({ image, name, room, id }) => {
 	return (
 		<>
 			{open && <UserProfile id={id} open={open} setOpen={setOpen} />}
-			<div className="flex gap-1 items-center" onMouseLeave={() => setIsHovering(false)}>
+			<div className="flex items-center gap-1" onMouseLeave={() => setIsHovering(false)}>
 				<Image
-					className={clsx("transition cursor-pointer rounded-[100%]", {
+					className={clsx("cursor-pointer rounded-[100%] transition", {
 						"translate-x-1": isHovering,
 					})}
 					src={image}
@@ -28,23 +28,23 @@ export const UserSideBar: React.FC<Props> = ({ image, name, room, id }) => {
 					onMouseEnter={() => setIsHovering(true)}
 				/>
 				{isHovering && (
-					<div className="absolute bg-contrast-100 left-[110px] gap-4 border-contrast-300 border p-3 rounded z-20 flex">
-						<div className="max-w-[200px] gap-1 flex flex-col">
+					<div className="bg-contrast-100 border-contrast-300 absolute left-[110px] z-20 flex gap-4 rounded border p-3">
+						<div className="flex max-w-[200px] flex-col gap-1">
 							<p
 								onClick={toggleOpen}
-								className="text-text-100 whitespace-nowrap text-ellipsis cursor-pointer"
+								className="text-text-100 cursor-pointer text-ellipsis whitespace-nowrap"
 							>
 								{name}
 							</p>
 							{room && (
-								<p className="small whitespace-nowrap text-ellipsis overflow-hidden hover:underline cursor-pointer">
+								<p className="small cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap hover:underline">
 									{room?.name}
 								</p>
 							)}
 						</div>
 
 						{room && (
-							<div className="flex gap-1 justify-center items-end">
+							<div className="flex items-end justify-center gap-1">
 								<p className="small text-text-100 font-bold">
 									{room?.connectedUsers}
 								</p>

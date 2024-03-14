@@ -1,4 +1,4 @@
-import { Card, Modal, SocialLink } from "@glimmer/ui/web/components";
+import { Card, Modal, SocialLink } from "@glimmer/ui/web";
 import { useGetUser } from "apps/dostoevsky/src/hooks/useGetUser";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
@@ -20,12 +20,12 @@ export const UserProfile: React.FC<Props> = ({ open, setOpen, id }) => {
 			shouldCloseOnEsc
 			shouldCloseOnOutsideClick
 		>
-			<Card className="w-[350px] py-[60px] p-10">
+			<Card className="w-[350px] p-10 py-[60px]">
 				{!data || isLoading ? (
 					<h5>Loading...</h5>
 				) : (
-					<div className="flex flex-col justify-center items-center">
-						<div className="flex flex-col items-center mb-3">
+					<div className="flex flex-col items-center justify-center">
+						<div className="mb-3 flex flex-col items-center">
 							<Image
 								src={data.image}
 								alt="user-img"
@@ -35,8 +35,8 @@ export const UserProfile: React.FC<Props> = ({ open, setOpen, id }) => {
 							/>
 							<h5>{data.name}</h5>
 						</div>
-						<p className="text-center mb-8">{data.description}</p>
-						<div className="flex items-center justify-center gap-5 flex-wrap">
+						<p className="mb-8 text-center">{data.description}</p>
+						<div className="flex flex-wrap items-center justify-center gap-5">
 							{data.links.map((link, idx) => (
 								<SocialLink key={idx} {...link} />
 							))}

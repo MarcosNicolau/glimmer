@@ -4,7 +4,7 @@ import { User } from "@glimmer/bulgakov";
 import { useModal } from "@glimmer/hooks";
 import { LOCAL_STORAGE_KEYS, NUM_AVATAR_IMGS } from "apps/dostoevsky/src/libs/constants";
 import { useUserStore } from "apps/dostoevsky/src/state";
-import { Input, Modal, ModalForm } from "@glimmer/ui/web/components";
+import { Input, Modal, ModalForm } from "@glimmer/ui/web";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";

@@ -1,5 +1,5 @@
 "use client";
-import { Card, Spinner } from "@glimmer/ui/web/components";
+import { Card, Spinner } from "@glimmer/ui/web";
 import { useElementOnView } from "apps/dostoevsky/src/hooks/useElementOnView";
 import { useOnlineUsers, useOnlineUsersCount } from "apps/dostoevsky/src/hooks/useOnlineUsers";
 import { OnlineUser } from "apps/dostoevsky/src/modules/OnlineUser";
@@ -14,7 +14,7 @@ export const LeftComponent = () => {
 	}, {});
 
 	return (
-		<Card className="p-6 h-full overflow-auto">
+		<Card className="h-full overflow-auto p-6">
 			<div className="mb-8">
 				<h5 className="mb-1">{t("online-users.header")}</h5>
 				<p className="small">
@@ -24,11 +24,11 @@ export const LeftComponent = () => {
 			{isLoading ? (
 				<h4>Loading...</h4>
 			) : (
-				<div className="flex flex-col max-big-desktop:items-center gap-7">
+				<div className="max-big-desktop:items-center flex flex-col gap-7">
 					{users.map((user) => (
 						<OnlineUser key={user.id} {...user} />
 					))}
-					<div ref={ref} className="flex-1 flex items-center justify-center">
+					<div ref={ref} className="flex flex-1 items-center justify-center">
 						{isFetchingNextPage && <Spinner />}
 					</div>
 				</div>

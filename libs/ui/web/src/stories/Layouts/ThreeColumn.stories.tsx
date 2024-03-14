@@ -1,4 +1,4 @@
-import { Card, ThreeColumnLayout } from "@glimmer/ui/web/components";
+import { Card, ThreeColumnLayout } from "@glimmer/ui/web";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {

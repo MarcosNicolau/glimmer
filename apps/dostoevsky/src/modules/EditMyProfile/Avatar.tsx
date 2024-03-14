@@ -1,4 +1,4 @@
-import { Select } from "@glimmer/ui/web/components";
+import { Select } from "@glimmer/ui/web";
 import { NUM_AVATAR_IMGS } from "apps/dostoevsky/src/libs/constants";
 import { EditMyProfileForm, OnSubmitProp } from "apps/dostoevsky/src/modules/EditMyProfile/types";
 import { useUserStore } from "apps/dostoevsky/src/state";

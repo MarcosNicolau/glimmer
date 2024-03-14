@@ -1,13 +1,6 @@
 "use client";
 import { useToggle } from "@glimmer/hooks";
-import {
-	Input,
-	IconBtn,
-	ArrowIcon,
-	LogoIcon,
-	SearchIcon,
-	UserGroupIcon,
-} from "@glimmer/ui/web/components";
+import { Input, IconBtn, ArrowIcon, LogoIcon, SearchIcon, UserGroupIcon } from "@glimmer/ui/web";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import Link from "next/link";
 import { useTranslations } from "next-intl";

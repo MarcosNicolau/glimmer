@@ -2,7 +2,7 @@
 
 import { GetOnlineUsers } from "@glimmer/bulgakov";
 import { useModal } from "@glimmer/hooks";
-import { FilledCircleIcon } from "@glimmer/ui/web/components";
+import { FilledCircleIcon } from "@glimmer/ui/web";
 import { UserProfile } from "apps/dostoevsky/src/modules/UserProfile";
 import Image from "next/image";
 import { MouseEventHandler } from "react";
@@ -21,7 +21,7 @@ export const OnlineUser: React.FC<Props> = ({ name, image, id, room }) => {
 		<>
 			{open && <UserProfile open={open} setOpen={setOpen} id={id} />}
 			<div className="flex justify-between">
-				<div className="w-[85%] flex gap-4 items-center justify-center">
+				<div className="flex w-[85%] items-center justify-center gap-4">
 					<Image
 						className="cursor-pointer rounded-[100%]"
 						src={image}
@@ -35,7 +35,7 @@ export const OnlineUser: React.FC<Props> = ({ name, image, id, room }) => {
 							{name}
 						</p>
 						{room && (
-							<p className="small cursor-pointer hover:underline whitespace-nowrap overflow-hidden text-ellipsis">
+							<p className="small cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap hover:underline">
 								{room.name}
 							</p>
 						)}
@@ -43,7 +43,7 @@ export const OnlineUser: React.FC<Props> = ({ name, image, id, room }) => {
 				</div>
 
 				{room && (
-					<div className="flex gap-2 justify-center items-end">
+					<div className="flex items-end justify-center gap-2">
 						<p className="small text-text-100 font-bold">{room?.connectedUsers}</p>
 						<FilledCircleIcon className="fill-red h-[21px] w-[12px]" />
 					</div>

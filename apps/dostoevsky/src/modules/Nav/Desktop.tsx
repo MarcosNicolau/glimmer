@@ -1,14 +1,7 @@
 "use client";
 
 import { useScreenType } from "@glimmer/hooks";
-import {
-	IconBtn,
-	Button,
-	Input,
-	GithubIcon,
-	LogoIcon,
-	SearchIcon,
-} from "@glimmer/ui/web/components";
+import { IconBtn, Button, Input, GithubIcon, LogoIcon, SearchIcon } from "@glimmer/ui/web";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import clsx from "clsx";

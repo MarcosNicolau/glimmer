@@ -1,6 +1,6 @@
 import { locales, localesFlagEmoji } from "apps/dostoevsky/src/libs/i18n";
 import { usePathname, useRouter } from "apps/dostoevsky/src/libs/navigation";
-import { Select } from "@glimmer/ui/web/components";
+import { Select } from "@glimmer/ui/web";
 import { useLocale } from "next-intl";
 
 export const LanguageSwitcher = () => {

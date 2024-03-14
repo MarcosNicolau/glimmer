@@ -1,4 +1,4 @@
-import { IconBtn, Select, MoonIcon, SunIcon, ComputerIcon } from "@glimmer/ui/web/components";
+import { IconBtn, Select, MoonIcon, SunIcon, ComputerIcon } from "@glimmer/ui/web";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Input as component } from "../../components/Form/Input";
-import { SearchIcon } from "@glimmer/ui/web/components";
+import { SearchIcon } from "@glimmer/ui/web";
 
 const meta: Meta = {
 	component,

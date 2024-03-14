@@ -6,7 +6,7 @@ import {
 	SocialLink,
 	SocialMediaIcon,
 	getSocialMediaFromLink,
-} from "@glimmer/ui/web/components";
+} from "@glimmer/ui/web";
 import { EditMyProfileForm, OnSubmitProp } from "apps/dostoevsky/src/modules/EditMyProfile/types";
 import { useUserStore } from "apps/dostoevsky/src/state";
 import { useTranslations } from "next-intl";

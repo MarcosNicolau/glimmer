@@ -1,4 +1,4 @@
-import { Input } from "@glimmer/ui/web/components";
+import { Input } from "@glimmer/ui/web";
 import { EditAvatar } from "apps/dostoevsky/src/modules/EditMyProfile/Avatar";
 import { EditSocialLinks } from "apps/dostoevsky/src/modules/EditMyProfile/EditSocialLinks";
 import { EditMyProfileForm } from "apps/dostoevsky/src/modules/EditMyProfile/types";

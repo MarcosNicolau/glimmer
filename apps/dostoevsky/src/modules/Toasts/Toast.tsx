@@ -1,7 +1,7 @@
 "use client";
 
 import { useToggle } from "@glimmer/hooks";
-import { Button } from "@glimmer/ui/web/components";
+import { Button } from "@glimmer/ui/web";
 import { useSpring, animated } from "@react-spring/web";
 import { Toast as Props, useToastsStore } from "apps/dostoevsky/src/state";
 import { useEffect, useState } from "react";

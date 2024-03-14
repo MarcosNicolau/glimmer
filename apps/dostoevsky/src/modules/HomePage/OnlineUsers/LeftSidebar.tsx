@@ -1,6 +1,6 @@
 "use client";
 
-import { Spinner } from "@glimmer/ui/web/components";
+import { Spinner } from "@glimmer/ui/web";
 import { useElementOnView } from "apps/dostoevsky/src/hooks/useElementOnView";
 import { useOnlineUsers } from "apps/dostoevsky/src/hooks/useOnlineUsers";
 import { UserSideBar } from "apps/dostoevsky/src/modules/HomePage/OnlineUsers/UserSideBar";
@@ -18,7 +18,7 @@ export const LeftSidebar = () => {
 			</div>
 			<div
 				ref={ref}
-				className="flex-1 items-center justify-center flex"
+				className="flex flex-1 items-center justify-center"
 				style={{ width: 50 }}
 			>
 				{isFetchingNextPage && <Spinner />}

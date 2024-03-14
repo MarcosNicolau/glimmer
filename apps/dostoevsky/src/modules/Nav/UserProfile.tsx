@@ -1,5 +1,5 @@
 import { useOnClickOutside, useOnKeyDown, useToggle } from "@glimmer/hooks";
-import { Card } from "@glimmer/ui/web/components";
+import { Card } from "@glimmer/ui/web";
 import { EditMyProfile } from "apps/dostoevsky/src/modules/EditMyProfile";
 import { useUserStore } from "apps/dostoevsky/src/state";
 import Image from "next/image";

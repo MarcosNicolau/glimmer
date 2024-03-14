@@ -1,4 +1,4 @@
-import { Button } from "@glimmer/ui/web/components";
+import { Button } from "@glimmer/ui/web";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta = {
