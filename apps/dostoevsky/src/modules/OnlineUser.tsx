@@ -24,7 +24,7 @@ export const OnlineUser: React.FC<Props> = ({ name, image, id, room }) => {
 				<div className="w-[85%] flex gap-4 items-center justify-center">
 					<Image
 						className="cursor-pointer rounded-[100%]"
-						src={image || ""}
+						src={image}
 						alt="profile image"
 						height={42}
 						width={42}

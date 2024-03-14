@@ -20,7 +20,7 @@ export const UserSideBar: React.FC<Props> = ({ image, name, room, id }) => {
 					className={clsx("transition cursor-pointer rounded-[100%]", {
 						"translate-x-1": isHovering,
 					})}
-					src={image || "/profile.png"}
+					src={image}
 					alt="profile image"
 					height={50}
 					width={50}

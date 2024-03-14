@@ -16,7 +16,11 @@ export const LeftSidebar = () => {
 			<div className="flex flex-col gap-5">
 				{users?.map((user) => <UserSideBar key={user.id} {...user} />)}
 			</div>
-			<div ref={ref} className="flex-1 flex items-center justify-center">
+			<div
+				ref={ref}
+				className="flex-1 items-center justify-center flex"
+				style={{ width: 50 }}
+			>
 				{isFetchingNextPage && <Spinner />}
 			</div>
 		</>
