@@ -31,25 +31,26 @@ export const ModalForm: React.FC<Props> = ({
 	children,
 }) => {
 	return (
-		<Card className="min-w-[600px]">
-			<div className="mb-8">
+		<Card>
+			<div className="mb-10">
 				<h5 className="mb-6">{title}</h5>
-				<p>{description}</p>
+				<p className="small">{description}</p>
 			</div>
 			<form onSubmit={onSubmit}>
-				<div className="mb-8 flex flex-col items-center  gap-6">{children}</div>
-				<div className="flex">
+				<div className="mb-8 flex flex-col items-center gap-6">{children}</div>
+				<div className="flex justify-end">
 					{showCancelBtn && (
 						<Button variant="text" className="w-1/2" onClick={() => setOpen(false)}>
 							{cancelBtnText}
 						</Button>
 					)}
+
 					<Button
 						isLoading={isLoading}
 						disabled={disabled}
-						className="w-full"
 						type="submit"
 						onClick={onSubmit}
+						className="w-full"
 					>
 						{btnText}
 					</Button>

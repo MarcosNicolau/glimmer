@@ -29,7 +29,7 @@ export const Input = forwardRef(
 			{
 				"pl-10": !!Icon,
 				"bg-contrast-100": variant === "primary",
-				"bg-contrast-300": variant === "secondary",
+				"bg-contrast-200": variant === "secondary",
 				"border-red": error,
 				"pr-8": !!RightButton,
 			},
