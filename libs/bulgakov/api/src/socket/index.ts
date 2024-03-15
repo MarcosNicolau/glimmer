@@ -5,7 +5,7 @@ import {
 	TransportDirection,
 	WebRtcTransportConnData,
 } from "@glimmer/gogol";
-import { User, Room } from "@glimmer/bulgakov";
+import { User, Room } from "../entities";
 
 export type IncomingActionsPayload = {
 	"@room:join": {

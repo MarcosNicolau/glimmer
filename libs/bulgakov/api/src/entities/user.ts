@@ -10,7 +10,6 @@ export const User = z.object({
 			url: z.string().max(75),
 		})
 	),
-	roomId: z.string().nullable(),
 });
 
 export type User = z.infer<typeof User>;

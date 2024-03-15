@@ -27,5 +27,5 @@ export const GetOnlineUsers = z.object({
 });
 export type GetOnlineUsers = z.infer<typeof GetOnlineUsers>;
 
-export const GetUser = User.omit({ roomId: true, id: true });
+export const GetUser = User.omit({ id: true });
 export type GetUser = z.infer<typeof GetUser>;
