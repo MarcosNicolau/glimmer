@@ -4994,6 +4994,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/ini@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/ini/-/ini-4.1.0.tgz#20e7327b3133627f84304210670d6406cceaba25"
+  integrity sha512-mTehMtc+xtnWBBvqizcqYCktKDBH2WChvx1GU3Sfe4PysFDXiNe+1YwtpVX1MDtCa4NQrSPw2+3HmvXHY3gt1w==
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.6.tgz#7739c232a1fee9b4d3ce8985f314c0c6d33549d7"
@@ -9283,10 +9288,10 @@ flat@^5.0.2:
   resolved "https://registry.yarnpkg.com/flat/-/flat-5.0.2.tgz#8ca6fe332069ffa9d324c327198c598259ceb241"
   integrity sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
 
-flatbuffers@^23.5.26:
-  version "23.5.26"
-  resolved "https://registry.yarnpkg.com/flatbuffers/-/flatbuffers-23.5.26.tgz#01358e272a61239f0faf3bfbe4e014f3ace9d746"
-  integrity sha512-vE+SI9vrJDwi1oETtTIFldC/o9GsVKRM+s6EL0nQgxXlYV1Vc4Tk30hj4xGICftInKQKj1F3up2n8UbIVobISQ==
+flatbuffers@^24.3.7:
+  version "24.3.7"
+  resolved "https://registry.yarnpkg.com/flatbuffers/-/flatbuffers-24.3.7.tgz#90077fb73eec19a9859dc8e622fa9d75dad23e7d"
+  integrity sha512-GB19A5cyEvOVeQw3D72zXG/5rWXhGo+BhQj5YbXwOi9tV0IorjWKu1PyoW80FSNtii/YBAxHLuu54/ww0pPceQ==
 
 flatted@^3.2.9:
   version "3.3.1"
@@ -10309,6 +10314,11 @@ ini@^1.3.4, ini@~1.3.0:
   version "1.3.8"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
+
+ini@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/ini/-/ini-4.1.2.tgz#7f646dbd9caea595e61f88ef60bfff8b01f8130a"
+  integrity sha512-AMB1mvwR1pyBFY/nSevUX6y8nJWS63/SzUKD3JyQn97s4xgIdgQPT75IRouIiBAN4yLQBUShNYVW0+UG25daCw==
 
 inquirer@8.2.5:
   version "8.2.5"
@@ -12350,14 +12360,16 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==
 
-mediasoup@^3.13.19:
-  version "3.13.23"
-  resolved "https://registry.yarnpkg.com/mediasoup/-/mediasoup-3.13.23.tgz#c3d4e114317651e53ebfec9418aae36c9b10d364"
-  integrity sha512-bgAVwEq+1ds+S2zwcuBmOxSd66iH7hb2wyBi0JhWvDQ2LYI7en4ZHwA0kOYe1KhIPbirmQ7j0UO9xWOfNzv6iQ==
+mediasoup@^3.13.24:
+  version "3.13.24"
+  resolved "https://registry.yarnpkg.com/mediasoup/-/mediasoup-3.13.24.tgz#c18e327263529a7992eb75a8b16b35b66e38c19a"
+  integrity sha512-7kAJP/4YIoK+UaioekQfyLEzJF7ngcVgog4TI3E08QOYS3WPR8Njx0Xsde7bkQZ/NoAy+6diTFN1vuC3GztCnQ==
   dependencies:
+    "@types/ini" "^4.1.0"
     debug "^4.3.4"
-    flatbuffers "^23.5.26"
+    flatbuffers "^24.3.7"
     h264-profile-level-id "^2.0.0"
+    ini "^4.1.2"
     node-fetch "^3.3.2"
     supports-color "^9.4.0"
     tar "^6.2.0"

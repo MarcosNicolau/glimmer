@@ -9,7 +9,7 @@ export const shouldScaleRoom = () => {};
 export const scaleRoom = () => {};
 
 export const createRoom = async (id: string, worker: MyWorker): Promise<Room> => {
-	const router = await worker.createRouter({ ...mediasoupConfig.router });
+	const router = await worker?.createRouter({ ...mediasoupConfig.router });
 
 	console.log(`room created on worker ${worker.appData.id} and router ${router.id}`);
 

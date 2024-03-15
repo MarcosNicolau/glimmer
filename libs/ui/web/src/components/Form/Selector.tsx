@@ -22,7 +22,11 @@ type Props = {
 	children?: React.ReactNode;
 	selectedRender?: (selectedOption: Option) => React.ReactNode;
 	horizontal?: boolean;
-	optionsParentClassName?: string;
+	classNames?: {
+		options?: string;
+		container?: string;
+		select?: string;
+	};
 };
 
 export const Select: React.FC<Props> = ({
@@ -33,14 +37,15 @@ export const Select: React.FC<Props> = ({
 	matchOptionsWidth,
 	selectedRender,
 	horizontal,
-	optionsParentClassName,
+	classNames,
 }) => {
 	const [selectedOption, setSelectedOption] = useState(
 		options.find((option) => option.isSelected) || options[0]
 	);
 	const [showOptions, toggle, setShowOptions] = useToggle();
 	const [parentRef] = useOnClickOutside<HTMLDivElement>(() => setShowOptions(false));
-	const [selectedRef, { height: selectedHeight }] = useComponentDimensions<HTMLDivElement>();
+	const [selectedRef, { height: selectedHeight, width: selectedWidth }] =
+		useComponentDimensions<HTMLDivElement>();
 	const [optionsRef, { width: optsWidth }] = useComponentDimensions<HTMLDivElement>();
 	useOnKeyDown(({ key }) => key === "Escape" && setShowOptions(false));
 
@@ -50,17 +55,31 @@ export const Select: React.FC<Props> = ({
 	}, [selectedOption]);
 
 	return (
-		<div ref={parentRef} className="relative flex flex-col items-center justify-center">
+		<div
+			ref={parentRef}
+			className={clsx(
+				"relative flex flex-col items-center justify-center",
+				classNames?.container
+			)}
+		>
 			{/* wait till the width has been set to prevent a weird flash */}
 			{(matchOptionsWidth ? optsWidth : true) && (
 				<div
 					ref={selectedRef}
-					className={clsx("flex cursor-pointer items-center justify-center gap-4", {
-						"bg-contrast-300 rounded-s p-2": variant === "filled",
-						"justify-between": showArrow,
-					})}
-					// @ts-expect-error complains about optsWidth being null, but we are checking it above
-					style={{ width: matchOptionsWidth ? optsWidth : "auto" }}
+					className={clsx(
+						"flex cursor-pointer items-center justify-center gap-4",
+						{
+							"bg-contrast-300 rounded-s px-4 py-2": variant === "filled",
+							"justify-between": showArrow,
+						},
+						classNames?.select
+					)}
+					style={{
+						width:
+							matchOptionsWidth && selectedWidth && optsWidth > selectedWidth
+								? optsWidth
+								: "auto",
+					}}
 					onClick={toggle}
 				>
 					{selectedRender ? (
@@ -69,7 +88,7 @@ export const Select: React.FC<Props> = ({
 						<div className="flex items-center justify-center gap-2">
 							{selectedOption?.icon && <selectedOption.icon />}
 							{(selectedOption?.textWhenSelected || selectedOption?.text) && (
-								<p className="text-md text-text-100">
+								<p className="small text-text-100">
 									{selectedOption?.textWhenSelected || selectedOption?.text}
 								</p>
 							)}
@@ -91,9 +110,12 @@ export const Select: React.FC<Props> = ({
 						"invisible opacity-[0]": !showOptions,
 						"flex-col": !horizontal,
 					},
-					optionsParentClassName
+					classNames?.options
 				)}
-				style={{ top: selectedHeight || 0 }}
+				style={{
+					top: selectedHeight,
+					width: matchOptionsWidth && optsWidth < selectedWidth ? selectedWidth : "auto",
+				}}
 				ref={optionsRef}
 			>
 				{options.map((option, idx) => (

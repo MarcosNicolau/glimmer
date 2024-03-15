@@ -44,7 +44,7 @@ export const Modal: React.FC<Props> = ({
 
 	if (!open) return null;
 	return createPortal(
-		<div className="mobile:p-6 bg-modal-overlay absolute inset-0 z-20 h-full w-full p-10">
+		<div className="max-mobile:p-6 bg-modal-overlay absolute inset-0 z-20 h-full w-full p-10">
 			<div className="flex h-full w-full items-center justify-center">
 				<div ref={ref} className="content relative">
 					{showCloseButton && (

@@ -15,13 +15,10 @@ export type IncomingActionsPayload = {
 		roomId: string;
 	};
 	"@room:create": {
-		room: {
-			name: string;
-			description: string;
-			feat: string[];
-			tags: string[];
-			isPrivate: boolean;
-		};
+		name: string;
+		description: string;
+		tags: string[];
+		isPrivate: boolean;
 	};
 	"@room:delete": {
 		roomId: string;
@@ -65,6 +62,9 @@ export type OutgoingActionsPayload = Omit<GogolMsgData, "@room:created"> & {
 	};
 	"@room:created": {
 		roomId: string;
+	};
+	"@room:create-error": {
+		message: string;
 	};
 	"@room:details": {
 		roomId: string;

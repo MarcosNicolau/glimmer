@@ -50,7 +50,7 @@ export const RabbitService = (appId: string) => {
 			channel.consume(internalQueue, (msg) => {
 				if (msg?.properties.appId === appId) return;
 				let data: OutgoingWsMessage<
-					Exclude<OutgoingActions, "@auth:invalid-token" | "@auth:register" | "error">
+					Exclude<OutgoingActions, "@auth:invalid-token" | "@room:create-error" | "error">
 				> | null = null;
 				try {
 					data = JSON.parse(msg?.content.toString() || "{}");
@@ -61,7 +61,6 @@ export const RabbitService = (appId: string) => {
 				if (!data || !data.payload?.roomId || !data.action) return;
 				ws.broadcastToRoom(data.payload.roomId, data);
 			});
-
 			channel.consume(bulgakovQueue, async (msg) => {
 				let data: GogolMessage<GogolOperations> | null = null;
 				try {
@@ -70,6 +69,8 @@ export const RabbitService = (appId: string) => {
 					console.error(`Could not parse gogol msg. ${err}`);
 					return;
 				}
+				console.log("consuming bulgakov", data);
+
 				if (!data || !data.op) return;
 				try {
 					switch (data.op) {

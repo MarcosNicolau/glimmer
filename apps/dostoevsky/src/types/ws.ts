@@ -15,4 +15,6 @@ export interface MyWebSocket extends WebSocket {
 	listeners: {
 		[key in OutgoingActions]?: Listener<key>;
 	};
+	_removeEventListener: WebSocket["removeEventListener"];
+	removeEventListener: (action: OutgoingActions) => void;
 }

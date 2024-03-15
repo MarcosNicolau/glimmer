@@ -42,7 +42,7 @@ export const EditAvatar: React.FC<OnSubmitProp> = ({ onSubmit }) => {
 					/>
 				)}
 				onChange={changeImage}
-				optionsParentClassName="max-h-[220px] w-[300px]"
+				classNames={{ options: "max-h-[220px] !w-[300px]" }}
 				variant="no-fill"
 				horizontal
 			/>

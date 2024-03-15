@@ -1,3 +1,4 @@
+import { RABBIT } from "@glimmer/constants";
 import { ENV_VARS } from "./../config/env";
 import * as amqp from "amqplib";
 import { Send, OperationsHandlers } from "../types/operations";
@@ -23,6 +24,7 @@ const onMessage = <T extends BulgakovOperations>(
 		errBack();
 		return;
 	}
+
 	if (data && data.op) {
 		if (!handlers[data.op]) return;
 		try {
@@ -36,9 +38,11 @@ const onMessage = <T extends BulgakovOperations>(
 export const startRabbit = async (handlers: OperationsHandlers) => {
 	const res = await amqp.connect(ENV_VARS.RABBIT_URL || "");
 	const channel = await res.createChannel();
-	const generalVoiceQueue = await channel.assertQueue("gogol_queue");
-	const voiceServerQueue = await channel.assertQueue(`gogol_queue/${ENV_VARS.SERVER_ID}`);
-	const publishQueue = await channel.assertQueue("bulgakov_queue");
+	const generalVoiceQueue = await channel.assertQueue(RABBIT.QUEUES.GENERAL_VOICE_SERVER);
+	const voiceServerQueue = await channel.assertQueue(
+		RABBIT.QUEUES.VOICE_SERVER(ENV_VARS.SERVER_ID || "")
+	);
+	const publishQueue = await channel.assertQueue(RABBIT.QUEUES.BULGAKOV_SERVER);
 	channel.purgeQueue(voiceServerQueue.queue);
 	channel.prefetch(1);
 

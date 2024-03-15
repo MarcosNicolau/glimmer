@@ -9,7 +9,10 @@
 		}
 	},
 	"forms": {
-		"min-field": "{field} is too short",
+		"errors": {
+			"min": "{field} is too short",
+			"max": "{field} is too large"
+		},
 		"enter": "Enter",
 		"cancel": "Cancel",
 		"edit": "Edit",
@@ -29,5 +32,21 @@
 		"add-social-link": "Add social link",
 		"field-updated-toast": "You have updated your {field}",
 		"description-placeholder": "Write your description"
+	},
+	"feed": {
+		"header": "Your feed",
+		"create-room-btn": "Create room",
+		"create-room-form": {
+			"title": "Create room",
+			"description": "Specify your room settings.",
+			"name-placeholder": "Your room name",
+			"description-placeholder": "Your room description",
+			"selector": {
+				"public": "Public",
+				"private": "Private"
+			},
+			"add-tag": "Add tag",
+			"create-btn": "Create"
+		}
 	}
 }

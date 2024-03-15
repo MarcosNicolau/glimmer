@@ -2,7 +2,7 @@ import { Rooms, Rabbit, Users } from "../../services";
 import { SOCKET_TOPICS } from "../../constants";
 import { z } from "zod";
 import { WebSocket } from "uWebSockets.js";
-import { User, IncomingActions, IncomingActionsPayload } from "@glimmer/bulgakov";
+import { User, IncomingActions, IncomingActionsPayload, Room } from "@glimmer/bulgakov";
 
 type Handlers = (ws: WebSocket<User>) => {
 	[key in IncomingActions]: (payload: IncomingActionsPayload[key]) => void;
@@ -12,19 +12,25 @@ export const socketHandlers: Handlers = (ws: WebSocket<User>) => {
 	const validateRoom = async (roomId: string) => await z.string().parseAsync(roomId);
 
 	return {
-		"@room:create": async ({ room }) => {
+		"@room:create": async ({ ...room }) => {
 			const user = ws.getUserData();
-			await z
-				.object({
-					name: z.string(),
-					description: z.string(),
-					feat: z.array(z.string()),
-					tags: z.array(z.string()),
-					isPrivate: z.boolean(),
-				})
-				.parseAsync(room);
-			const roomId = await Rooms.createRoom(room, user.id);
-			Rabbit.publishToVoiceServer(null, { op: "@room:create", d: { roomId } });
+			try {
+				await Room.omit({
+					createdAt: true,
+					peers: true,
+					voiceServerId: true,
+					id: true,
+				}).parseAsync(room);
+				const roomId = await Rooms.createRoom(room, user.id);
+				Rabbit.publishToVoiceServer(null, { op: "@room:create", d: { roomId } });
+				ws.subscribe(SOCKET_TOPICS.ROOM(roomId));
+			} catch (err) {
+				console.error("error while creating room", err);
+				ws.broadcastToUser(user.id, {
+					action: "@room:create-error",
+					payload: { message: "error while creating room" },
+				});
+			}
 		},
 		"@room:join": async ({ roomId }) => {
 			const { id: userId } = ws.getUserData();

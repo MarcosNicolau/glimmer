@@ -38,7 +38,7 @@ export const Option: React.FC<Props> = ({
 		{image && image}
 		{text && (
 			<p
-				className={clsx("whitespace-nowrap  text-inherit transition", {
+				className={clsx("small whitespace-nowrap text-inherit transition", {
 					"text-text-100 font-bold": isSelected,
 				})}
 			>

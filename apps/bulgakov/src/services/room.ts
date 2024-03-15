@@ -1,4 +1,4 @@
-import { prisma } from "apps/bulgakov/src/config/prisma";
+import { prisma } from "../config/prisma";
 import { Prisma } from "@prisma/client";
 
 export const Rooms = {

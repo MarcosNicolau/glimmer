@@ -19,9 +19,10 @@ export const Room = z.object({
 	id: z.string(),
 	name: z.string(),
 	description: z.string(),
+	tags: z.string().array(),
 	voiceServerId: z.string().nullable(),
 	createdAt: z.number(),
-	private: z.boolean(),
+	isPrivate: z.boolean(),
 	peers: Peer.array(),
 });
 

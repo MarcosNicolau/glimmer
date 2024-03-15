@@ -1,7 +1,7 @@
 "use client";
 
 import { useScreenType } from "@glimmer/hooks";
-import { IconBtn, Button, Input, GithubIcon, LogoIcon, SearchIcon } from "@glimmer/ui/web";
+import { IconBtn, Input, GithubIcon, LogoIcon, SearchIcon } from "@glimmer/ui/web";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import clsx from "clsx";
@@ -28,7 +28,6 @@ export const DesktopNavContent: React.FC = () => {
 				<div className="flex-1">
 					<Input icon={SearchIcon} placeholder={t("nav.search-bar-placeholder")} />
 				</div>
-				<Button>{t("nav.create-room")}</Button>
 			</div>
 			<div className="max-big-desktop:gap-4 flex flex-1 flex-row items-center justify-end gap-5">
 				<ThemeSwitcher />

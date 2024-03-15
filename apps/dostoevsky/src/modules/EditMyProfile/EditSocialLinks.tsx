@@ -15,20 +15,18 @@ import { useFormContext } from "react-hook-form";
 export const EditSocialLinks: React.FC<OnSubmitProp> = ({ onSubmit }) => {
 	const { links, isLoaded } = useUserStore();
 	const [edit, toggleEdit] = useToggle(false);
-	const { register, setValue, getValues, watch, handleSubmit } =
-		useFormContext<EditMyProfileForm>();
+	const { register, setValue, watch, handleSubmit } = useFormContext<EditMyProfileForm>();
 	const linksForm = watch("links");
 	const t = useTranslations();
 
 	const insertNewSocialLink = () => {
-		setValue(`links.${getValues("links").length}.url`, "");
+		setValue(`links.${linksForm.length}.url`, "");
 	};
 
 	const deleteSocialLink = (idx: number) => {
-		const links = getValues("links");
 		setValue(
 			"links",
-			links.filter((_, _idx) => _idx !== idx)
+			linksForm.filter((_, _idx) => _idx !== idx)
 		);
 	};
 
@@ -64,6 +62,7 @@ export const EditSocialLinks: React.FC<OnSubmitProp> = ({ onSubmit }) => {
 					{linksForm.map((_, idx) => (
 						<Input
 							textArea={{ rows: 2 }}
+							autoFocus
 							icon={(props) => (
 								<SocialMediaIcon
 									key={idx}

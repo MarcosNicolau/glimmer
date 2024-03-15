@@ -14,13 +14,17 @@ export const getWebSocket = (
 		//@ts-expect-error idk but this works!
 		myWs.listeners[action] = listener;
 	};
-	myWs.addEventListener(
-		"message",
-		<T extends OutgoingActions>(e: MessageEvent<OutgoingWsMessage<T>>) => {
-			const listener = myWs.listeners[e.data?.action];
-			if (listener) listener(e.data.payload);
-		}
-	);
+	myWs.addEventListener("message", <T extends OutgoingActions>(e: MessageEvent) => {
+		const data: OutgoingWsMessage<T> = JSON.parse(e.data || "{]");
+		console.log(data);
+
+		const listener = myWs.listeners[data?.action];
+		if (listener) listener(data.payload || {});
+	});
+	myWs._removeEventListener = myWs.removeEventListener;
+	myWs.removeEventListener = (action: OutgoingActions) => {
+		delete myWs.listeners[action];
+	};
 
 	return myWs;
 };

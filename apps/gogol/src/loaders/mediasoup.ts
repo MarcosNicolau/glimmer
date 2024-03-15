@@ -20,6 +20,7 @@ export const createWorkers = async (numWorkers: number): Promise<MyWorker[]> => 
 
 				setTimeout(() => process.exit(1), 2000);
 			});
+			workers.push(worker);
 		} catch (err) {
 			console.error(err);
 			throw err;
