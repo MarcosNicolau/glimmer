@@ -54,6 +54,11 @@
 			"cache": true,
 			"dependsOn": ["^build"],
 			"inputs": ["default", "^default"]
+		},
+		"@nx/js:tsc": {
+			"cache": true,
+			"dependsOn": ["^build"],
+			"inputs": ["default", "^default"]
 		}
 	},
 	"nxCloudAccessToken": "Y2EzMmJkNzAtNGYzMS00MzAyLThmZTEtMTZhM2M0ODhmYTA5fHJlYWQtd3JpdGU=",
