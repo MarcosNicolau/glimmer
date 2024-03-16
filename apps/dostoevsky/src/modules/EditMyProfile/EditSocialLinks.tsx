@@ -7,6 +7,7 @@ import {
 	SocialMediaIcon,
 	getSocialMediaFromLink,
 } from "@glimmer/ui/web";
+import { useRouting } from "apps/dostoevsky/src/hooks/useRouting";
 import { EditMyProfileForm, OnSubmitProp } from "apps/dostoevsky/src/modules/EditMyProfile/types";
 import { useUserStore } from "apps/dostoevsky/src/state";
 import { useTranslations } from "next-intl";
@@ -16,6 +17,7 @@ export const EditSocialLinks: React.FC<OnSubmitProp> = ({ onSubmit }) => {
 	const { links, isLoaded } = useUserStore();
 	const [edit, toggleEdit] = useToggle(false);
 	const { register, setValue, watch, handleSubmit } = useFormContext<EditMyProfileForm>();
+	const { openWindowAt } = useRouting();
 	const linksForm = watch("links");
 	const t = useTranslations();
 
@@ -50,7 +52,12 @@ export const EditSocialLinks: React.FC<OnSubmitProp> = ({ onSubmit }) => {
 			{!edit ? (
 				<div className="flex flex-wrap gap-2">
 					{links.map((link, idx) => (
-						<SocialLink key={idx} {...link} />
+						<SocialLink
+							key={idx}
+							{...link}
+							href={link.url}
+							onClick={openWindowAt(link.url)}
+						/>
 					))}
 
 					<Button onClick={onClick} variant="text-underlined" className="text-left">

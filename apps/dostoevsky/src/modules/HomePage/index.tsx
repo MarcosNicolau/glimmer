@@ -1,12 +1,15 @@
 import { ThreeColumnLayout } from "@glimmer/ui/web";
-import { LeftSidebar, LeftComponent } from "./OnlineUsers";
+import {
+	OnlineUsersLeftSidebar,
+	OnlineUsersLeftComponent,
+} from "apps/dostoevsky/src/modules/OnlineUsers";
 import { Profile } from "apps/dostoevsky/src/modules/HomePage/Profile";
 import { Feed } from "apps/dostoevsky/src/modules/HomePage/Feed";
 
 export const HomePage = () => (
 	<ThreeColumnLayout
-		leftComponent={<LeftComponent />}
-		leftSideBar={<LeftSidebar />}
+		leftComponent={<OnlineUsersLeftComponent />}
+		leftSideBar={<OnlineUsersLeftSidebar />}
 		rightComponent={<Profile />}
 	>
 		<Feed />

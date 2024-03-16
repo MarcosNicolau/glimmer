@@ -1,7 +1,7 @@
 import { SocialMediaIcon, RecognizedSocialLinksIcon } from "./Icons";
 import React from "react";
 
-type Props = {
+type Props = React.ComponentProps<"a"> & {
 	url: string;
 };
 
@@ -31,11 +31,11 @@ export const getSocialMediaFromLink = (url: string): RecognizedSocialLinksIcon =
 	return socialMediaDomains[domain] || "";
 };
 
-export const SocialLink: React.FC<Props> = ({ url }) => (
-	<a href={url} rel="noreferrer" target="_blank">
+export const SocialLink = React.forwardRef<HTMLAnchorElement, Props>(({ url, ...props }, ref) => (
+	<a {...props} ref={ref}>
 		<SocialMediaIcon
 			media={getSocialMediaFromLink(url)}
 			className="hover:fill-accent-100 fill-accent-200 cursor-pointer"
 		/>
 	</a>
-);
+));

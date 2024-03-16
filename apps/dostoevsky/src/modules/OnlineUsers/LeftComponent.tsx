@@ -2,10 +2,10 @@
 import { Card, InfiniteQueryLoader } from "@glimmer/ui/web";
 import { useElementOnView } from "apps/dostoevsky/src/hooks/useElementOnView";
 import { useOnlineUsers, useOnlineUsersCount } from "apps/dostoevsky/src/hooks/useOnlineUsers";
-import { OnlineUser } from "apps/dostoevsky/src/modules/OnlineUser";
+import { OnlineUser } from "./OnlineUser";
 import { useTranslations } from "next-intl";
 
-export const LeftComponent = () => {
+export const OnlineUsersLeftComponent = () => {
 	const t = useTranslations();
 	const { users, fetchNextPage, isFetchingNextPage, isLoading } = useOnlineUsers();
 	const { count, isLoading: userCountLoading } = useOnlineUsersCount();

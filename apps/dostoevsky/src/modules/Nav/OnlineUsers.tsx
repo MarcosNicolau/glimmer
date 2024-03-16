@@ -1,7 +1,7 @@
 import { Card, Drawer, IconBtn, InfiniteQueryLoader, UserGroupIcon } from "@glimmer/ui/web";
 import { useElementOnView } from "apps/dostoevsky/src/hooks/useElementOnView";
 import { useOnlineUsers, useOnlineUsersCount } from "apps/dostoevsky/src/hooks/useOnlineUsers";
-import { OnlineUser } from "apps/dostoevsky/src/modules/OnlineUser";
+import { OnlineUser } from "apps/dostoevsky/src/modules/OnlineUsers";
 import { useTranslations } from "next-intl";
 import { Dispatch } from "react";
 

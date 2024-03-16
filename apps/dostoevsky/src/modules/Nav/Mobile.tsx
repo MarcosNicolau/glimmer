@@ -2,16 +2,18 @@
 import { useToggle } from "@glimmer/hooks";
 import { Input, IconBtn, ArrowIcon, LogoIcon, SearchIcon, UserGroupIcon } from "@glimmer/ui/web";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { OnlineUsers } from "./OnlineUsers";
 import { UserProfile } from "apps/dostoevsky/src/modules/Nav/UserProfile";
 import { ThemeSwitcher } from "apps/dostoevsky/src/modules/Nav/ThemeSwitcher";
+import { useRouting } from "apps/dostoevsky/src/hooks/useRouting";
+import { ROUTES } from "apps/dostoevsky/src/libs/constants";
 
 export const MobileNavContent: React.FC = () => {
 	const [isSearch, toggleIsSearch] = useToggle(false);
 	const [isOnlineUsers, toggleOnlineUsers, setIsOnlineUsers] = useToggle(false);
 	const t = useTranslations();
+	const { pushRoute } = useRouting();
 
 	if (isSearch)
 		return (
@@ -28,9 +30,7 @@ export const MobileNavContent: React.FC = () => {
 			<OnlineUsers open={isOnlineUsers} setOpen={setIsOnlineUsers} />
 			<div className="flex gap-5">
 				<IconBtn icon={UserGroupIcon} onClick={toggleOnlineUsers} />
-				<Link href="/">
-					<LogoIcon height={28} width={28} />
-				</Link>
+				<LogoIcon height={28} width={28} onClick={pushRoute(ROUTES.HOME)} />
 			</div>
 			<div className="flex gap-5">
 				<IconBtn icon={SearchIcon} onClick={toggleIsSearch} />

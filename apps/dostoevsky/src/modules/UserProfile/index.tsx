@@ -1,5 +1,6 @@
 import { Card, Modal, SocialLink } from "@glimmer/ui/web";
 import { useGetUser } from "apps/dostoevsky/src/hooks/useGetUser";
+import { useRouting } from "apps/dostoevsky/src/hooks/useRouting";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 
@@ -11,6 +12,7 @@ type Props = {
 
 export const UserProfile: React.FC<Props> = ({ open, setOpen, id }) => {
 	const { data, isLoading } = useGetUser(id);
+	const { openWindowAt } = useRouting();
 
 	return (
 		<Modal
@@ -38,7 +40,12 @@ export const UserProfile: React.FC<Props> = ({ open, setOpen, id }) => {
 						<p className="mb-8 text-center">{data.description}</p>
 						<div className="flex flex-wrap items-center justify-center gap-5">
 							{data.links.map((link, idx) => (
-								<SocialLink key={idx} {...link} />
+								<SocialLink
+									key={idx}
+									{...link}
+									href={link.url}
+									onClick={openWindowAt(link.url)}
+								/>
 							))}
 						</div>
 					</div>

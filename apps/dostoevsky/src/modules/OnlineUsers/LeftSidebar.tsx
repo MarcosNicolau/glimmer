@@ -3,9 +3,9 @@
 import { InfiniteQueryLoader } from "@glimmer/ui/web";
 import { useElementOnView } from "apps/dostoevsky/src/hooks/useElementOnView";
 import { useOnlineUsers } from "apps/dostoevsky/src/hooks/useOnlineUsers";
-import { UserSideBar } from "apps/dostoevsky/src/modules/HomePage/OnlineUsers/UserSideBar";
+import { UserSideBar } from "./UserSideBar";
 
-export const LeftSidebar = () => {
+export const OnlineUsersLeftSidebar = () => {
 	const { users, isFetchingNextPage, fetchNextPage } = useOnlineUsers();
 	const [ref] = useElementOnView<HTMLDivElement>(() => {
 		fetchNextPage();
