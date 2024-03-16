@@ -32,6 +32,27 @@ export const Rooms = {
 		if (!room) return Promise.reject("room does not exist");
 		return room;
 	},
+	getRooms: async <T extends Prisma.RoomSelect>(
+		take: number,
+		cursor: string,
+		select: Prisma.Subset<T, Prisma.RoomSelect>
+	) => {
+		const isCursor = cursor !== "0";
+		const rooms = await prisma.room.findMany({
+			where: { isPrivate: false },
+			cursor: isCursor ? { id: cursor } : undefined,
+			take: take + 1,
+			select,
+			orderBy: { peers: { _count: "desc" } },
+			skip: isCursor ? 1 : 0,
+		});
+
+		return {
+			rooms: rooms,
+			//@ts-expect-error we are always querying the id
+			nextCursor: rooms[rooms.length - 1]?.id,
+		};
+	},
 	setVoiceServer: async ({ id, voiceServerId }: { voiceServerId: string; id: string }) =>
 		await prisma.room.update({ where: { id }, data: { voiceServerId } }),
 	joinRoom: async (id: string, userId: string) =>

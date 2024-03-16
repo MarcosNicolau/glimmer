@@ -67,16 +67,16 @@
 		@apply font-headers text-6xl;
 	}
 	h3 {
-		@apply font-headers text-5xl;
+		@apply font-headers max-mobile:text-4xl text-5xl;
 	}
 	h4 {
-		@apply font-headers text-3xl;
+		@apply font-headers max-mobile:text-2xl text-3xl;
 	}
 	h5 {
-		@apply font-headers text-2xl;
+		@apply font-headers max-mobile:text-xl text-2xl;
 	}
 	p {
-		@apply font-common text-md text-text-200 font-medium;
+		@apply font-common max-mobile:text-md text-text-200 font-medium;
 	}
 	p.small {
 		@apply text-sm;

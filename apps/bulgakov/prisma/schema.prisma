@@ -9,10 +9,10 @@ generator client {
 
 model User {
     id String @id @default(uuid())
+    createdAt DateTime @default(now())
 	name String
 	description String? 
 	image String
-    createdAt DateTime @default(now())
     links UserSocialLink[]
     peer Peer?
 }

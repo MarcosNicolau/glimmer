@@ -3,6 +3,7 @@
 import { useModal } from "@glimmer/hooks";
 import { Button } from "@glimmer/ui/web";
 import { CreateRoomFormModal } from "apps/dostoevsky/src/modules/HomePage/Feed/CreateRoom";
+import { Rooms } from "apps/dostoevsky/src/modules/HomePage/Feed/Rooms";
 import { useTranslations } from "next-intl";
 
 export const Feed = () => {
@@ -16,6 +17,7 @@ export const Feed = () => {
 				<h4>{t("header")}</h4>
 				<Button onClick={toggleOpen}>{t("create-room-btn")}</Button>
 			</div>
+			<Rooms />
 		</>
 	);
 };

@@ -16,13 +16,15 @@ export const ThreeColumnLayout: React.FC<Props> = ({
 	const { isTablet, isMobile, isBigDesktop } = useScreenType();
 
 	return (
-		<div className="flex h-full justify-between overflow-hidden px-10">
+		<div className="max-mobile:px-6 flex h-full justify-between overflow-hidden px-10">
 			{!isTablet && !isMobile && (
 				<aside className="only-big-desktop:w-[20%] w-[10%]">
 					{isBigDesktop ? leftComponent : leftSideBar}
 				</aside>
 			)}
-			<main className="only-big-desktop:w-[50%] max-tablet:w-[100%] w-[70%]">{children}</main>
+			<main className="only-big-desktop:w-[50%] max-tablet:w-[100%] h-full w-[70%] overflow-auto">
+				{children}
+			</main>
 			{!isTablet && !isMobile && (
 				<aside className="only-big-desktop:w-[20%] w-[10%]">
 					{isBigDesktop && rightComponent}

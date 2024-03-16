@@ -5,7 +5,7 @@ import { Button, CrossIcon, Input, Modal, ModalForm, Select } from "@glimmer/ui/
 import { ROUTES } from "apps/dostoevsky/src/libs/constants";
 import { useSocketStore, useToastsStore } from "apps/dostoevsky/src/state";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter } from "apps/dostoevsky/src/libs/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
