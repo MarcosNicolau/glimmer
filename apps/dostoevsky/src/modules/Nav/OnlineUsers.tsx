@@ -1,4 +1,4 @@
-import { Card, Drawer, IconBtn, Spinner, UserGroupIcon } from "@glimmer/ui/web";
+import { Card, Drawer, IconBtn, InfiniteQueryLoader, UserGroupIcon } from "@glimmer/ui/web";
 import { useElementOnView } from "apps/dostoevsky/src/hooks/useElementOnView";
 import { useOnlineUsers, useOnlineUsersCount } from "apps/dostoevsky/src/hooks/useOnlineUsers";
 import { OnlineUser } from "apps/dostoevsky/src/modules/OnlineUser";
@@ -33,9 +33,7 @@ export const OnlineUsers: React.FC<Props> = ({ open, setOpen }) => {
 				<div className="flex flex-col  gap-7">
 					{users?.map((user) => <OnlineUser key={user.id} {...user} />)}
 				</div>
-				<div ref={ref} className="flex flex-1 items-center justify-center">
-					{isFetchingNextPage && <Spinner />}
-				</div>
+				<InfiniteQueryLoader ref={ref} isFetching={isFetchingNextPage} />
 			</Card>
 		</Drawer>
 	);

@@ -1,6 +1,8 @@
 import { GetOnlineUsers } from "@glimmer/bulgakov";
 import { useModal } from "@glimmer/hooks";
 import { FilledCircleIcon } from "@glimmer/ui/web";
+import { ROUTES } from "apps/dostoevsky/src/libs/constants";
+import { useRouter } from "apps/dostoevsky/src/libs/navigation";
 import { UserProfile } from "apps/dostoevsky/src/modules/UserProfile";
 import clsx from "clsx";
 import Image from "next/image";
@@ -11,6 +13,9 @@ type Props = GetOnlineUsers["users"][0];
 export const UserSideBar: React.FC<Props> = ({ image, name, room, id }) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const { setOpen, toggleOpen, open } = useModal(false);
+	const router = useRouter();
+
+	const goToRoom = () => router.push(ROUTES.ROOM(room?.id || ""));
 
 	return (
 		<>
@@ -37,7 +42,10 @@ export const UserSideBar: React.FC<Props> = ({ image, name, room, id }) => {
 								{name}
 							</p>
 							{room && (
-								<p className="small cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap hover:underline">
+								<p
+									onClick={goToRoom}
+									className="small cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap hover:underline"
+								>
 									{room?.name}
 								</p>
 							)}

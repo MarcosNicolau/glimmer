@@ -2,7 +2,9 @@
 
 import { GetOnlineUsers } from "@glimmer/bulgakov";
 import { useModal } from "@glimmer/hooks";
-import { FilledCircleIcon } from "@glimmer/ui/web";
+import { ViewersCount } from "@glimmer/ui/web";
+import { ROUTES } from "apps/dostoevsky/src/libs/constants";
+import { useRouter } from "apps/dostoevsky/src/libs/navigation";
 import { UserProfile } from "apps/dostoevsky/src/modules/UserProfile";
 import Image from "next/image";
 import { MouseEventHandler } from "react";
@@ -11,6 +13,9 @@ type Props = GetOnlineUsers["users"][0];
 
 export const OnlineUser: React.FC<Props> = ({ name, image, id, room }) => {
 	const { open, setOpen, toggleOpen } = useModal(false);
+	const router = useRouter();
+
+	const goToRoom = () => router.push(ROUTES.ROOM(room?.id || ""));
 
 	const onClick: MouseEventHandler<HTMLElement> = (e) => {
 		e.stopPropagation();
@@ -35,19 +40,17 @@ export const OnlineUser: React.FC<Props> = ({ name, image, id, room }) => {
 							{name}
 						</p>
 						{room && (
-							<p className="small cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap hover:underline">
+							<p
+								onClick={goToRoom}
+								className="small cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap hover:underline"
+							>
 								{room.name}
 							</p>
 						)}
 					</div>
 				</div>
 
-				{room && (
-					<div className="flex items-end justify-center gap-2">
-						<p className="small text-text-100 font-bold">{room?.connectedUsers}</p>
-						<FilledCircleIcon className="fill-red h-[21px] w-[12px]" />
-					</div>
-				)}
+				{room && <ViewersCount number={room?.connectedUsers} />}
 			</div>
 		</>
 	);

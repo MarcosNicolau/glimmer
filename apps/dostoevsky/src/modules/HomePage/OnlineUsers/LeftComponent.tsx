@@ -1,5 +1,5 @@
 "use client";
-import { Card, Spinner } from "@glimmer/ui/web";
+import { Card, InfiniteQueryLoader } from "@glimmer/ui/web";
 import { useElementOnView } from "apps/dostoevsky/src/hooks/useElementOnView";
 import { useOnlineUsers, useOnlineUsersCount } from "apps/dostoevsky/src/hooks/useOnlineUsers";
 import { OnlineUser } from "apps/dostoevsky/src/modules/OnlineUser";
@@ -28,9 +28,8 @@ export const LeftComponent = () => {
 					{users.map((user) => (
 						<OnlineUser key={user.id} {...user} />
 					))}
-					<div ref={ref} className="flex flex-1 items-center justify-center">
-						{isFetchingNextPage && <Spinner />}
-					</div>
+
+					<InfiniteQueryLoader ref={ref} isFetching={isFetchingNextPage} />
 				</div>
 			)}
 		</Card>

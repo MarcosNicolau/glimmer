@@ -9,7 +9,7 @@ export default () => {
 
 	return (
 		<nav
-			className="width-100 mb-[50px] flex flex-row items-center justify-between px-10"
+			className="width-100 max-mobile:px-6 mb-[50px] flex flex-row items-center justify-between px-10"
 			suppressHydrationWarning
 		>
 			{isMobile || isTablet ? <MobileNavContent /> : <DesktopNavContent />}
