@@ -24,6 +24,7 @@ const onMessage = <T extends BulgakovOperations>(
 		errBack();
 		return;
 	}
+	console.log(data);
 
 	if (data && data.op) {
 		if (!handlers[data.op]) return;
@@ -50,7 +51,7 @@ export const startRabbit = async (handlers: OperationsHandlers) => {
 		channel.sendToQueue(publishQueue.queue, Buffer.from(JSON.stringify(d)));
 	};
 
-	const errBack = () => () => {
+	const errBack = () => {
 		send({
 			op: "error",
 			d: {

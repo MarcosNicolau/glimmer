@@ -1,6 +1,5 @@
 import { mediasoupConfig } from "../config/mediasoup";
-import { MyWorker } from "../types/mediasoup";
-import { Room } from "../types/room";
+import { MyWorker, Room } from "@glimmer/gogol";
 
 export const workerCapability = () => {};
 

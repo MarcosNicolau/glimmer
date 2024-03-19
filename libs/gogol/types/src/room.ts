@@ -1,6 +1,8 @@
 import { Consumer, Producer, WebRtcTransport } from "mediasoup/node/lib/types";
 import { MyRouter, MyWorker } from "./mediasoup";
 
+export type ProducerKinds = "audio";
+
 export type Room = {
 	worker: MyWorker;
 	router: MyRouter;
@@ -11,8 +13,8 @@ export type PeerState = {
 	id: string;
 	recvTransport: WebRtcTransport;
 	sendTransport: WebRtcTransport | null;
-	producer: Record<"audio", Producer | null>;
-	consumers: Consumer[];
+	producer: Record<ProducerKinds, Producer | null>;
+	consumers: Consumer<{ peerId: string }>[];
 };
 
 export type RoomState = {

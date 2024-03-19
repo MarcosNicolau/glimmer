@@ -1,6 +1,6 @@
 import { createWorker } from "mediasoup";
 import { mediasoupConfig } from "../config/mediasoup";
-import { MyWorker } from "../types/mediasoup";
+import { MyWorker } from "@glimmer/gogol";
 
 export const createWorkers = async (numWorkers: number): Promise<MyWorker[]> => {
 	const workers: MyWorker[] = [];

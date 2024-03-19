@@ -1,7 +1,7 @@
 import { mediasoupConfig } from "./config/mediasoup";
 import { createWorkers, startRabbit } from "./loaders";
-import { Room } from "./types/room";
-import { handlers } from "./opHandlers";
+import { Room } from "@glimmer/gogol";
+import { handlers } from "./handlers";
 
 export const main = async () => {
 	const rooms: Record<string, Room> = {};

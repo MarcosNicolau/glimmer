@@ -1,3 +1,4 @@
+import { ProducerKinds } from "libs/gogol/types/src/room";
 import {
 	ConsumerType,
 	DtlsParameters,
@@ -12,7 +13,7 @@ import {
 
 export type TransportDirection = "recv" | "send";
 
-export type MyWebRtcTransport = WebRtcTransport<{ direction: TransportDirection; userId: string }>;
+export type MyWebRtcTransport = WebRtcTransport<{ direction: TransportDirection; peerId: string }>;
 
 export type WebRtcTransportConnData = {
 	id: string;
@@ -28,7 +29,9 @@ export type ConsumeParams = {
 	kind: MediaKind;
 	rtpParameters: RtpParameters;
 	type: ConsumerType;
-	producerPaused: boolean;
+	appData: {
+		peerId: string;
+	};
 };
 
 export type BulgakovMsgData = {
@@ -40,24 +43,23 @@ export type BulgakovMsgData = {
 	};
 	"@room:join": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 		willProduce: boolean;
 	};
 	"@room:leave": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 	};
 	"@room:connect-webRtcTransport": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 		direction: TransportDirection;
 		dtlsParameters: WebRtcTransport["dtlsParameters"];
 	};
 	"@room:send-track": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 		produceParams: {
-			id: string;
 			kind: MediaKind;
 			rtpParameters: RtpParameters;
 			paused: boolean;
@@ -65,38 +67,42 @@ export type BulgakovMsgData = {
 	};
 	"@room:get-recv-tracks": {
 		roomId: string;
-		userId: string;
+		peerId: string;
+		rtpCapabilities: RtpCapabilities;
 	};
 	"@room:close-consumer": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 		consumerId: string;
 	};
 	"@room:pause-consumer": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 		consumerId: string;
 	};
 	"@room:resume-consumer": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 		consumerId: string;
 	};
 	"@room:add-producer": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 	};
 	"@room:close-producer": {
 		roomId: string;
-		userId: string;
+		peerId: string;
+		kindsToClose: Record<ProducerKinds, boolean>;
 	};
 	"@room:pause-producer": {
 		roomId: string;
-		userId: string;
+		peerId: string;
+		kind: ProducerKinds;
 	};
 	"@room:resume-producer": {
 		roomId: string;
-		userId: string;
+		peerId: string;
+		kind: ProducerKinds;
 	};
 };
 
@@ -107,35 +113,55 @@ export type GogolMsgData = {
 		roomId: string;
 		serverId: string;
 	};
+	"@room:deleted": {
+		roomId: string;
+	};
 	"@room:you-joined": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 		rtpCapabilities: RtpCapabilities;
 		recvTransport: WebRtcTransportConnData;
 		sendTransport: WebRtcTransportConnData | null;
 		consumers: ConsumeParams[];
 	};
-	"@room:you-are-a-speaker": {
+	"@room:send-track-done": {
 		roomId: string;
-		userId: string;
-		rtpCapabilities: RtpCapabilities;
-		sendTransport: WebRtcTransportConnData;
+		peerId: string;
+		producerId: string;
 	};
 	"@room:get-recv-tracks-done": {
 		roomId: string;
-		userId: string;
+		peerId: string;
 		consumers: ConsumeParams[];
 	};
-	"@room:new-track":
-		| {
-				roomId: string;
-				userId: string;
-				consumerParams: ConsumeParams;
-		  }
-		| { roomId: string; userId: string; error: string };
-	"@room:speaker-closed": {
+	"@room:send-transport-connected": {
 		roomId: string;
-		producerId: string;
+		peerId: string;
+	};
+	"@room:recv-transport-connected": {
+		roomId: string;
+		peerId: string;
+	};
+	"@room:new-track": {
+		roomId: string;
+		peerId: string;
+		consumerParams?: ConsumeParams;
+		error?: string;
+	};
+	"@room:producer-added": {
+		roomId: string;
+		peerId: string;
+		rtpCapabilities: RtpCapabilities;
+		sendTransport: WebRtcTransportConnData;
+	};
+	"@room:producer-closed": {
+		roomId: string;
+		producerIds: Record<ProducerKinds, string>;
+		peerId: string;
+	};
+	"@room:doesn't-exist": {
+		roomId: string;
+		peerId: string;
 	};
 	error: {
 		message: "server-closed" | "unexpected-error";
@@ -156,21 +182,28 @@ export type BulgakovMessage<T extends BulgakovOperations> = {
 };
 
 // the gogol operations that bulgakov should broadcast to the whole room
-export type BroadcastToRoomOps = Extract<GogolOperations, "@room:speaker-closed">;
+export type BroadcastToRoomOps = Extract<GogolOperations, "@room:producer-closed">;
 
 // the gogol operations that bulgakov should sent to the a individual user inside a room
 export type BroadcastToUserOps = Extract<
 	GogolOperations,
 	| "@room:new-track"
+	| "@room:new-track-err"
 	| "@room:get-recv-tracks-done"
-	| "@room:you-are-a-speaker"
+	| "@room:producer-added"
 	| "@room:you-joined"
+	| "@room:send-track-done"
+	| "@room:send-transport-connected"
+	| "@room:recv-transport-connected"
 >;
 
-export const broadcastToRoomOps: BroadcastToRoomOps[] = ["@room:speaker-closed"];
+export const broadcastToRoomOps: BroadcastToRoomOps[] = ["@room:producer-closed"];
 export const broadcastToUserOps: BroadcastToUserOps[] = [
 	"@room:new-track",
 	"@room:get-recv-tracks-done",
-	"@room:you-are-a-speaker",
+	"@room:producer-added",
 	"@room:you-joined",
+	"@room:send-track-done",
+	"@room:send-transport-connected",
+	"@room:recv-transport-connected",
 ];

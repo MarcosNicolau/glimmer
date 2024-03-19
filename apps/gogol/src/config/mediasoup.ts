@@ -42,15 +42,15 @@ export const mediasoupConfig = {
 	// run anywhere but on localhost
 	webRtcTransport: {
 		listenInfos: [
-			{
-				ip: ENV_VARS.WEBRTC_LISTEN_IP || "192.168.42.68",
-				announcedIp: ENV_VARS.WEBRTC_ANNOUNCEMENT_IP || null,
-			},
-			// { ip: '127.0.0.1', announcedIp: '192.168.65.1' },
-			// { ip: '172.17.0.1', announcedIp: undefined },
-			// { ip: '127.0.0.1', announcedIp: '192.168.1.34' },
+			{ ip: "192.168.1.126", announcedIp: "192.168.1.126" },
+			// {
+			// 	ip: ENV_VARS.WEBRTC_LISTEN_IP || "192.168.42.68",
+			// 	announcedIp: ENV_VARS.WEBRTC_ANNOUNCEMENT_IP || null,
+			// },
+			// { ip: "172.17.0.1", announcedIp: undefined },
+			// { ip: "127.0.0.1", announcedIp: "192.168.1.34" },
 			// { ip: "192.168.42.68", announcedIp: null },
-			// { ip: '10.10.23.101', announcedIp: null },
+			// { ip: "10.10.23.101", announcedIp: null },
 		],
 		enableUdp: true,
 		enableTcp: true,

@@ -3,21 +3,22 @@ import { mediasoupConfig } from "../config/mediasoup";
 import {
 	ConsumeParams,
 	MyWebRtcTransport,
+	ProducerKinds,
 	TransportDirection,
 	WebRtcTransportConnData,
 } from "@glimmer/gogol";
 import { WebRtcTransport } from "mediasoup/node/lib/WebRtcTransport";
-import { Room } from "../types/room";
-import { MyRouter } from "../types/mediasoup";
+import { Room, MyRouter } from "@glimmer/gogol";
+import { Send } from "../types/operations";
 
 export const createTransport = async (
 	router: MyRouter,
-	userId: string,
+	peerId: string,
 	direction: TransportDirection
 ): Promise<MyWebRtcTransport> => {
-	return await router.createWebRtcTransport({
+	return router.createWebRtcTransport({
 		...mediasoupConfig.webRtcTransport,
-		appData: { direction, userId: userId },
+		appData: { direction, peerId },
 	});
 };
 
@@ -32,56 +33,77 @@ export const getTransportConnData = (transport: WebRtcTransport): WebRtcTranspor
 	};
 };
 
-export const closePeer = async (room: Room, userId: string) => {
-	const peer = room.state.peers[userId];
+export const signalProducerClosed = (
+	roomId: string,
+	peerId: string,
+	ids: Record<ProducerKinds, string>,
+	send: Send
+) => {
+	send({
+		op: "@room:producer-closed",
+		d: { roomId, producerIds: ids, peerId },
+	});
+};
+
+export const closePeer = (room: Room, peerId: string, send: Send) => {
+	const peer = room.state.peers[peerId];
 	if (!peer) return;
-	delete room.state.peers[userId];
-	peer.consumers?.forEach((consumer) => consumer.close());
+	const audioId = room.state.peers[peerId].producer.audio?.id;
 	peer.recvTransport?.close();
 	// When the producer closes also do its associated consumers.
 	peer.sendTransport?.close();
-	// In theory, the producer gets closed when its associated transport is closed (sendTransport).
-	// The same logic goes for the consumers and the recvTransport
-	peer.producer.audio?.close();
+	// If it was a producer, signal that it has been closed
+	audioId && signalProducerClosed(room.state.id, peerId, { audio: audioId }, send);
+	delete room.state.peers[peerId];
 };
 
 export const createConsumer = async (
 	room: Room,
-	userId: string,
+	peerId: string,
 	{
 		producerId,
 		rtpCapabilities,
-		producerPaused,
 	}: { producerId: string; rtpCapabilities: RtpCapabilities; producerPaused: boolean }
 ): Promise<ConsumeParams | null> => {
-	const peer = room.state.peers[userId];
-	if (room.router.canConsume({ producerId, rtpCapabilities })) {
+	const peer = room.state.peers[peerId];
+	if (!room.router.canConsume({ producerId, rtpCapabilities })) {
 		console.log("client cannot consume");
 		return null;
 	}
-	const consumer = await peer.recvTransport.consume({ producerId, rtpCapabilities });
+	const consumer = await peer.recvTransport.consume({
+		producerId,
+		rtpCapabilities,
+		paused: true,
+		appData: {
+			peerId,
+		},
+	});
 	peer.consumers.push(consumer);
-	const { id, kind, rtpParameters, type } = consumer;
+	const { id, kind, rtpParameters, type, appData } = consumer;
 
 	return {
 		id,
 		kind,
 		producerId,
-		producerPaused,
 		rtpParameters,
 		type,
+		appData,
 	};
 };
 
-export const getAllConsumers = async (userId: string, room: Room) => {
+export const getAllConsumers = async (
+	peerId: string,
+	room: Room,
+	rtpCapabilities: RtpCapabilities
+) => {
 	const consumers: ConsumeParams[] = [];
 
 	for await (const _peer of Object.values(room.state.peers)) {
-		if (userId === _peer.id || !_peer.producer.audio) continue;
-		const consumer = await createConsumer(room, userId, {
+		if (peerId === _peer.id || !_peer.producer.audio) continue;
+		const consumer = await createConsumer(room, peerId, {
 			producerId: _peer.producer.audio.id,
 			producerPaused: _peer.producer.audio.paused,
-			rtpCapabilities: room.router.rtpCapabilities,
+			rtpCapabilities: rtpCapabilities,
 		});
 		if (!consumer) continue;
 		consumers.push(consumer);
