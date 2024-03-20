@@ -69,7 +69,11 @@ export type OutgoingActionsPayload = Omit<
 	};
 	"@room:deleted": object;
 	"@room:error": {
-		type: "room-not-found" | "could-not-create-room" | "voice-server-down";
+		type:
+			| "room-not-found"
+			| "could-not-create-room"
+			| "voice-server-down"
+			| "basic-profile-not-setup";
 		message: string;
 	};
 	"@room:state": {
@@ -90,7 +94,13 @@ export type OutgoingActionsPayload = Omit<
 		peerId: string;
 		role: Peer["role"];
 	};
+	"@room:you-have-a-new-role": {
+		role: Peer["role"];
+	};
 	"@auth:invalid-token": {
+		message: string;
+	};
+	"@user:profile-loaded": {
 		message: string;
 	};
 	error: {

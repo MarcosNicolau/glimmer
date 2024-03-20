@@ -67,6 +67,15 @@ export const socketHandlers: Handlers = (ws, app) => {
 			// Maybe wants to re-stablish connection so he is already in the room
 			let peer = await Peers.get(userId, select.peers.joinRoom);
 			if (!peer) peer = await Peers.joinRoom(roomId, userId, select.peers.joinRoom);
+			if (!peer.user.image || !peer.user.name)
+				return ws.sendJson({
+					action: "@room:error",
+					payload: {
+						type: "basic-profile-not-setup",
+						message:
+							"You must send your basic profile (name, image) before joining to the room",
+					},
+				});
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:join",
 				d: { roomId, willProduce: peer.isSpeaker, peerId: userId },
@@ -248,6 +257,7 @@ export const socketHandlers: Handlers = (ws, app) => {
 				action: "@room:peer-role-changed",
 				payload: { peerId, role },
 			});
+			app.broadcastToUser(peerId, { action: "@room:you-have-a-new-role", payload: { role } });
 		},
 		"@room:kick-out": async ({ peerId }) => {
 			const user = ws.getUserData();
@@ -280,6 +290,10 @@ export const socketHandlers: Handlers = (ws, app) => {
 						data: links,
 					},
 				},
+			});
+			ws.sendJson({
+				action: "@user:profile-loaded",
+				payload: { message: "profile loaded, now you can join rooms" },
 			});
 		},
 	};

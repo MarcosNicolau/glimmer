@@ -14,9 +14,16 @@ export const getWebSocket = (
 		//@ts-expect-error idk but this works!
 		myWs.listeners[action] = listener;
 	};
+	myWs.sendAndWaitForRes = (message, actionToWaitFor) =>
+		new Promise((resolve) => {
+			myWs.sendJson(message);
+			myWs.on(actionToWaitFor, (payload) => {
+				myWs.removeEventListener(actionToWaitFor);
+				resolve(payload);
+			});
+		});
 	myWs.addEventListener("message", <T extends OutgoingActions>(e: MessageEvent) => {
-		const data: OutgoingWsMessage<T> = JSON.parse(e.data || "{]");
-		console.log(data);
+		const data: OutgoingWsMessage<T> = JSON.parse(e.data || "{}");
 
 		const listener = myWs.listeners[data?.action];
 		if (listener) listener(data.payload || {});

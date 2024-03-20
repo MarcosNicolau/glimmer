@@ -48,5 +48,14 @@
 			"add-tag": "Agregar tag",
 			"create-btn": "Crear"
 		}
+	},
+	"room": {
+		"toasts": {
+			"microphone-not-allowed": "Si querés hablar tenes que permitir acceso a tu micrófono",
+			"unexpected-error-while-sending-audio": "Ocurrió un error inesperado al enviar tu audio, volvé a intentar refrescando la página",
+			"unexpected-error-while-consuming-audio": "Ocurrió un error inesperado al consumir un audio, volvé a intentar refrescando la página",
+			"room-deleted": "El dueño eliminó el cuarto, redireccionando al home...",
+			"new-role": "Tu rol cambio a {role, select, member {MIEMBRO} mod {ADMIN} creator {DUEÑO} other {}}"
+		}
 	}
 }

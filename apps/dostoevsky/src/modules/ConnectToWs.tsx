@@ -16,13 +16,14 @@ export const ConnectToWs: React.FC<{ children: React.ReactNode }> = ({ children 
 			// See more here https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api
 			const ws = getWebSocket(WS_URL || "", [`Bearer-${token}`]);
 			setConnState("loading");
-			ws.onopen = () => {
+			ws.onopen = async () => {
 				setSocket(ws);
-				setConnState("opened");
 				console.log("connection opened");
-				setTimeout(() => {
-					ws.sendJson({ action: "@user:send-profile", payload: { user } });
-				}, 1000);
+				await ws.sendAndWaitForRes(
+					{ action: "@user:send-profile", payload: { user } },
+					"@user:profile-loaded"
+				);
+				setConnState("opened");
 			};
 			ws.onerror = () => setConnState("error");
 			ws.onclose = () => setConnState("idle");

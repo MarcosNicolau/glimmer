@@ -22,7 +22,8 @@ export const LoadUser: React.FC<{ children: React.ReactNode }> = ({ children }) 
 		// delete in case it has garbage
 		localStorage.removeItem(LOCAL_STORAGE_KEYS.USER);
 		localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(generateRndUser()));
-	}, [setUser]);
+		setIsLoaded(true);
+	}, [setUser, setIsLoaded]);
 
 	return children;
 };
