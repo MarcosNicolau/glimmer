@@ -248,7 +248,7 @@ export const socketHandlers: Handlers = (ws, app) => {
 		"@room:change-peer-role": async ({ peerId, role }) => {
 			const user = ws.getUserData();
 			// can't change role to itself
-			// this is to prevent bugs, such as a creator making himself a member without setting another peer as a creator
+			// this is to prevent bugs, such as a owner making himself a member without setting another peer as a owner
 			if (user.id === peerId) return Promise.reject();
 			await z.string().parseAsync(peerId);
 			await Peer.pick({ role: true }).parseAsync(role);

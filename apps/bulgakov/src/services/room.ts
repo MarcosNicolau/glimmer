@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 export const Rooms = {
 	create: async ({ ...room }: Omit<Prisma.RoomCreateArgs["data"], "ownerId">, userId: string) => {
 		// users can have only one room at a time!
-		await prisma.room.deleteMany({ where: { peers: { some: { role: "creator", userId } } } });
+		await prisma.room.deleteMany({ where: { peers: { some: { role: "owner", userId } } } });
 		const res = await prisma.room.create({
 			data: {
 				...room,
@@ -13,7 +13,7 @@ export const Rooms = {
 				peers: {
 					create: {
 						userId,
-						role: "creator",
+						role: "owner",
 						isDeafened: false,
 						isMuted: false,
 						isSpeaker: true,

@@ -55,7 +55,7 @@
 			"unexpected-error-while-sending-audio": "There has been an unexpected error while sending your audio, try refreshing the page",
 			"unexpected-error-while-consuming-audio": "There has been an unexpected error while consuming an audio, try refreshing the page",
 			"room-deleted": "The owner has deleted the room, redirecting to home page...",
-			"new-role": "Your role in the room has changed to {role, select, member {MEMBER} mod {MOD} creator {OWNER} other {}}"
+			"new-role": "Your role in the room has changed to {role, select, member {MEMBER} mod {MOD} owner {OWNER} other {}}"
 		}
 	}
 }

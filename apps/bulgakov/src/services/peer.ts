@@ -51,8 +51,8 @@ export const Peers = {
 				room: roomSelect ? { select: roomSelect } : undefined,
 			},
 		});
-		// transfer ownership if the creator left without deleting the room
-		if (role === "creator") {
+		// transfer ownership if the owner left without deleting the room
+		if (role === "owner") {
 			const firstJoined = await prisma.peer.findMany({
 				// mods take priory
 				where: { OR: [{ role: "mod", roomId }, { roomId }] },
@@ -64,7 +64,7 @@ export const Peers = {
 			if (firstJoined[0])
 				await prisma.peer.update({
 					where: { userId: firstJoined[0].userId },
-					data: { role: "creator" },
+					data: { role: "owner" },
 				});
 		}
 
@@ -109,7 +109,7 @@ export const Peers = {
 				room: {
 					peers: {
 						some: {
-							AND: [{ userId }, { OR: [{ role: "creator" }, { role: "mod" }] }],
+							AND: [{ userId }, { OR: [{ role: "owner" }, { role: "mod" }] }],
 						},
 					},
 				},
@@ -130,8 +130,8 @@ export const Peers = {
 					peers: {
 						some: {
 							userId,
-							// make sure only creator can transfer ownerships
-							role: role === "creator" ? "creator" : { in: ["mod", "creator"] },
+							// make sure only owner can transfer ownerships
+							role: role === "owner" ? "owner" : { in: ["mod", "owner"] },
 						},
 					},
 				},
@@ -140,7 +140,7 @@ export const Peers = {
 				role,
 				room:
 					// transfer room ownership
-					role === "creator"
+					role === "owner"
 						? {
 								update: {
 									where: {
@@ -156,7 +156,7 @@ export const Peers = {
 			select,
 		});
 		// there can be only one owner per room
-		if (role === "creator")
+		if (role === "owner")
 			await prisma.peer.update({
 				where: {
 					userId: userId,

@@ -37,7 +37,7 @@ model Room {
 }
 
 enum Role {
-    creator
+    owner
     mod
     member
 }

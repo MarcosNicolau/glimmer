@@ -6,7 +6,7 @@ export const Peer = z.object({
 		name: z.string(),
 		image: z.string().nullable(),
 	}),
-	role: z.enum(["creator", "mod", "member"]),
+	role: z.enum(["owner", "mod", "member"]),
 	isDeafened: z.boolean(),
 	isMuted: z.boolean(),
 	isSpeaker: z.boolean(),
