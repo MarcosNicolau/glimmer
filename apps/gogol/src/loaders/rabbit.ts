@@ -36,13 +36,11 @@ const onMessage = <T extends BulgakovOperations>(
 	}
 };
 
-export const startRabbit = async (handlers: OperationsHandlers) => {
+export const startRabbit = async (handlers: OperationsHandlers, serverId: string) => {
 	const res = await amqp.connect(ENV_VARS.RABBIT_URL || "");
 	const channel = await res.createChannel();
 	const generalVoiceQueue = await channel.assertQueue(RABBIT.QUEUES.GENERAL_VOICE_SERVER);
-	const voiceServerQueue = await channel.assertQueue(
-		RABBIT.QUEUES.VOICE_SERVER(ENV_VARS.SERVER_ID || "")
-	);
+	const voiceServerQueue = await channel.assertQueue(RABBIT.QUEUES.VOICE_SERVER(serverId));
 	const publishQueue = await channel.assertQueue(RABBIT.QUEUES.BULGAKOV_SERVER);
 	channel.purgeQueue(voiceServerQueue.queue);
 	channel.prefetch(1);
@@ -56,6 +54,7 @@ export const startRabbit = async (handlers: OperationsHandlers) => {
 			op: "error",
 			d: {
 				message: "unexpected-error",
+				serverId,
 				description:
 					"Unexpected error encountered. This probably means that the server went down and now is up again, please try again",
 			},
@@ -70,6 +69,18 @@ export const startRabbit = async (handlers: OperationsHandlers) => {
 	// All subsequent room related request should come to this one
 	channel.consume(voiceServerQueue.queue, (msg) => onMessage(msg, handlers, send, errBack), {
 		noAck: true,
+	});
+
+	process.on("exit", () => {
+		send({
+			op: "error",
+			d: {
+				message: "server-closed",
+				serverId,
+				description:
+					"the server exited and all rooms in this server have been deleted, we are about to redeploy now",
+			},
+		});
 	});
 
 	return channel;

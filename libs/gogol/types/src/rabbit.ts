@@ -117,7 +117,6 @@ export type GogolMsgData = {
 		roomId: string;
 	};
 	"@room:you-joined": {
-		roomId: string;
 		peerId: string;
 		rtpCapabilities: RtpCapabilities;
 		recvTransport: WebRtcTransportConnData;
@@ -125,47 +124,38 @@ export type GogolMsgData = {
 		consumers: ConsumeParams[];
 	};
 	"@room:send-track-done": {
-		roomId: string;
 		peerId: string;
 		producerId: string;
 	};
 	"@room:get-recv-tracks-done": {
-		roomId: string;
 		peerId: string;
 		consumers: ConsumeParams[];
 	};
 	"@room:send-transport-connected": {
-		roomId: string;
 		peerId: string;
 	};
 	"@room:recv-transport-connected": {
-		roomId: string;
 		peerId: string;
 	};
 	"@room:new-track": {
-		roomId: string;
 		peerId: string;
 		consumerParams?: ConsumeParams;
 		error?: string;
 	};
 	"@room:producer-added": {
-		roomId: string;
 		peerId: string;
 		rtpCapabilities: RtpCapabilities;
 		sendTransport: WebRtcTransportConnData;
 	};
 	"@room:producer-closed": {
 		roomId: string;
+		peerId: string;
 		producerIds: Record<ProducerKinds, string>;
-		peerId: string;
-	};
-	"@room:doesn't-exist": {
-		roomId: string;
-		peerId: string;
 	};
 	error: {
 		message: "server-closed" | "unexpected-error";
 		description: string;
+		serverId: string;
 	};
 };
 
@@ -182,13 +172,15 @@ export type BulgakovMessage<T extends BulgakovOperations> = {
 };
 
 // the gogol operations that bulgakov should broadcast to the whole room
-export type BroadcastToRoomOps = Extract<GogolOperations, "@room:producer-closed">;
+export type BroadcastToRoomOps = Extract<
+	GogolOperations,
+	"@room:producer-closed" | "@room:deleted"
+>;
 
 // the gogol operations that bulgakov should sent to the a individual user inside a room
 export type BroadcastToUserOps = Extract<
 	GogolOperations,
 	| "@room:new-track"
-	| "@room:new-track-err"
 	| "@room:get-recv-tracks-done"
 	| "@room:producer-added"
 	| "@room:you-joined"
@@ -197,7 +189,7 @@ export type BroadcastToUserOps = Extract<
 	| "@room:recv-transport-connected"
 >;
 
-export const broadcastToRoomOps: BroadcastToRoomOps[] = ["@room:producer-closed"];
+export const broadcastToRoomOps: BroadcastToRoomOps[] = ["@room:deleted"];
 export const broadcastToUserOps: BroadcastToUserOps[] = [
 	"@room:new-track",
 	"@room:get-recv-tracks-done",

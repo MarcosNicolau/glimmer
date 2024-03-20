@@ -10,10 +10,12 @@ import {
 } from "../utils/peers";
 import { MyWorker, Room } from "@glimmer/gogol";
 import { createRoom } from "../utils/rooms";
-import { ENV_VARS } from "../config/env";
-import { sendRoomNotExist } from "./helpers";
 
-export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): OperationsHandlers => {
+export const handlers = (
+	rooms: Record<string, Room>,
+	workers: MyWorker[],
+	serverId: string
+): OperationsHandlers => {
 	let workerIdx = 0;
 
 	const getWorker = () => {
@@ -28,7 +30,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			rooms[d.roomId] = await createRoom(d.roomId, getWorker());
 			send({
 				op: "@room:created",
-				d: { roomId: d.roomId, serverId: ENV_VARS.SERVER_ID || "" },
+				d: { roomId: d.roomId, serverId },
 			});
 		},
 		"@room:delete": (d) => {
@@ -39,20 +41,21 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 		},
 		"@room:connect-webRtcTransport": async (
 			{ dtlsParameters, peerId, roomId, direction },
-			send
+			send,
+			errBack
 		) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			const transport = direction === "recv" ? peer?.recvTransport : peer?.sendTransport;
 			if (peer && transport) {
 				await transport.connect({ dtlsParameters });
-				send({ op: `@room:${direction}-transport-connected`, d: { peerId, roomId } });
+				send({ op: `@room:${direction}-transport-connected`, d: { peerId } });
 			}
 		},
-		"@room:join": async ({ roomId, peerId, willProduce }, send) => {
+		"@room:join": async ({ roomId, peerId, willProduce }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			// If the peer is already in the room, we close it to restart its connection
 			if (room.state.peers[peerId]) closePeer(room, peerId, send);
 			const recvTransport = await createTransport(room.router, peerId, "recv");
@@ -76,7 +79,6 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			send({
 				op: "@room:you-joined",
 				d: {
-					roomId,
 					peerId,
 					recvTransport: getTransportConnData(recvTransport),
 					sendTransport: sendTransport && getTransportConnData(sendTransport),
@@ -97,7 +99,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 		},
 		"@room:send-track": async ({ peerId, produceParams, roomId }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			if (!peer) return errBack();
 			const kind = produceParams.kind;
@@ -107,7 +109,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			if (!peer.sendTransport)
 				return send({
 					op: "@room:new-track",
-					d: { roomId, peerId, error: "you need to create a send transport first" },
+					d: { peerId, error: "you need to create a send transport first" },
 				});
 
 			if (peer.producer[kind]) {
@@ -127,7 +129,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			peer.producer[kind] = producer;
 			send({
 				op: "@room:send-track-done",
-				d: { roomId, peerId, producerId: producer.id },
+				d: { peerId, producerId: producer.id },
 			});
 			// We need to add tell each peer to consume the new producer
 			for await (const _peer of Object.values(room.state.peers)) {
@@ -142,29 +144,29 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 				if (!consumerParams)
 					return send({
 						op: "@room:new-track",
-						d: { roomId, peerId: _peer.id, error: "cant consume track" },
+						d: { peerId: _peer.id, error: "cant consume track" },
 					});
 				// Now the client needs to create the consumer as well
 				// So we signal the required data to that peer
 				send({
 					op: "@room:new-track",
-					d: { roomId, peerId: _peer.id, consumerParams },
+					d: { peerId: _peer.id, consumerParams },
 				});
 			}
 		},
 		"@room:get-recv-tracks": async ({ peerId, roomId, rtpCapabilities }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			if (!peer) return errBack();
 
 			const consumers = await getAllConsumers(peerId, room, rtpCapabilities);
 
-			send({ op: "@room:get-recv-tracks-done", d: { consumers, peerId, roomId } });
+			send({ op: "@room:get-recv-tracks-done", d: { consumers, peerId } });
 		},
 		"@room:close-consumer": ({ consumerId, peerId, roomId }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			if (!peer) return errBack();
 			peer.consumers.find((consumer) => consumer.id === consumerId)?.close();
@@ -176,16 +178,16 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 			if (!peer) return;
 			peer.consumers.find((consumer) => consumer.id === consumerId)?.pause();
 		},
-		"@room:resume-consumer": ({ peerId, roomId, consumerId }, send) => {
+		"@room:resume-consumer": ({ peerId, roomId, consumerId }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			if (!peer) return;
 			peer.consumers.find((consumer) => consumer.id === consumerId)?.resume();
 		},
 		"@room:add-producer": async ({ peerId, roomId }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			if (!peer) return errBack();
 			if (peer.sendTransport) peer.sendTransport.close();
@@ -194,7 +196,6 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 				op: "@room:producer-added",
 				d: {
 					peerId,
-					roomId,
 					rtpCapabilities: room.router.rtpCapabilities,
 					sendTransport: getTransportConnData(sendTransport),
 				},
@@ -202,7 +203,7 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 		},
 		"@room:close-producer": ({ roomId, peerId, kindsToClose }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			if (!peer) return errBack();
 			const audioProducer = kindsToClose.audio ? peer.producer.audio : null;
@@ -215,14 +216,14 @@ export const handlers = (rooms: Record<string, Room>, workers: MyWorker[]): Oper
 		},
 		"@room:pause-producer": ({ roomId, peerId, kind }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			if (!peer) return errBack();
 			peer.producer[kind]?.pause();
 		},
 		"@room:resume-producer": ({ roomId, peerId, kind }, send, errBack) => {
 			const room = rooms[roomId];
-			if (!room) return sendRoomNotExist(roomId, peerId, send);
+			if (!room) return errBack();
 			const peer = room.state.peers[peerId];
 			if (!peer) return errBack();
 			peer.producer[kind]?.pause();
