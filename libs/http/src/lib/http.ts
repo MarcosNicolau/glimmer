@@ -5,6 +5,7 @@ import {
 	HttpRequest,
 	HttpResponse,
 	RecognizedString,
+	SSLApp,
 	TemplatedApp,
 	App as _App,
 } from "uWebSockets.js";
@@ -150,4 +151,7 @@ const buildApp = (app: TemplatedApp): TemplatedApp => {
 	return app;
 };
 
-export const App = (options?: AppOptions): TemplatedApp => buildApp(_App(options));
+export const App = (options?: AppOptions): TemplatedApp =>
+	// if any options are provided, its for https
+	// so we need to create an ssl app
+	options ? buildApp(SSLApp(options)) : buildApp(_App(options));

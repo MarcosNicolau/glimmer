@@ -27,6 +27,7 @@ model UserSocialLink {
 model Room {
     id String @id @default(uuid())
 	name String
+    ownerId String @unique
 	description String
     tags String[]
     isPrivate Boolean

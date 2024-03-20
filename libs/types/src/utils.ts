@@ -71,3 +71,10 @@ export type LiteralNumberUnion<T extends number> = T | (number & {}); // eslint-
 export type GenerateMappedNever<T> = {
 	[key in keyof T]: never;
 };
+
+/**
+ * Takes an object type  and maps all its keys to the provided value type
+ */
+export type MapKeysTo<T extends object, Value> = {
+	[key in keyof T]: Value;
+};

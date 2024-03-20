@@ -8,17 +8,26 @@ import { SocketData } from "../../types/socket";
 import { Users } from "./../../services/user";
 import { buildHttpHandler } from "@glimmer/http";
 
-export const wsBehaviour: uws.WebSocketBehavior<Required<Pick<User, "id">>> = {
+export const wsBehaviour = (
+	app: uws.TemplatedApp
+): uws.WebSocketBehavior<Required<Pick<User, "id">>> => ({
 	async message(ws, message) {
-		const myWs = buildSocket(ws);
+		buildSocket(ws);
 		const parsedMessage: IncomingWsMessage<IncomingActions> = JSON.parse(
 			new TextDecoder().decode(message)
 		);
 		try {
 			//@ts-expect-error payload actually matches action
-			await socketHandlers(myWs)[parsedMessage.action](parsedMessage.payload);
+			await socketHandlers(myWs, app)[parsedMessage.action](parsedMessage.payload);
 		} catch (err) {
 			console.error("error while handling socket message", parsedMessage, err);
+			ws.sendJson({
+				action: "error",
+				payload: {
+					message: "unexpected-error",
+					description: `there's been an unexpected error while handling the action: ${parsedMessage.action}`,
+				},
+			});
 		}
 	},
 	async open(ws) {
@@ -45,4 +54,4 @@ export const wsBehaviour: uws.WebSocketBehavior<Required<Pick<User, "id">>> = {
 		console.log("closed connection id", id);
 		await Users.remove(id);
 	},
-};
+});

@@ -2,11 +2,14 @@ import { prisma } from "../config/prisma";
 import { Prisma } from "@prisma/client";
 
 export const Rooms = {
-	createRoom: async ({ ...room }: Prisma.RoomCreateArgs["data"], userId: string) => {
+	create: async ({ ...room }: Omit<Prisma.RoomCreateArgs["data"], "ownerId">, userId: string) => {
+		// users can have only one room at a time!
+		await prisma.room.deleteMany({ where: { peers: { some: { role: "creator", userId } } } });
 		const res = await prisma.room.create({
 			data: {
 				...room,
 				voiceServerId: null,
+				ownerId: userId,
 				peers: {
 					create: {
 						userId,
@@ -21,7 +24,7 @@ export const Rooms = {
 		});
 		return res.id;
 	},
-	getRoom: async <T extends Prisma.RoomSelect>(
+	get: async <T extends Prisma.RoomSelect>(
 		id: string,
 		select: Prisma.Subset<T, Prisma.RoomSelect>
 	) => {
@@ -29,10 +32,9 @@ export const Rooms = {
 			where: { id },
 			select,
 		});
-		if (!room) return Promise.reject("room does not exist");
 		return room;
 	},
-	getRooms: async <T extends Prisma.RoomSelect>(
+	getWithCursor: async <T extends Prisma.RoomSelect>(
 		take: number,
 		cursor: string,
 		select: Prisma.Subset<T, Prisma.RoomSelect>
@@ -55,81 +57,7 @@ export const Rooms = {
 	},
 	setVoiceServer: async ({ id, voiceServerId }: { voiceServerId: string; id: string }) =>
 		await prisma.room.update({ where: { id }, data: { voiceServerId } }),
-	joinRoom: async (id: string, userId: string) =>
-		await prisma.peer.create({
-			data: {
-				userId,
-				isDeafened: false,
-				isSpeaker: false,
-				askedToSpeak: false,
-				isMuted: false,
-				roomId: id,
-			},
-			select: {
-				askedToSpeak: true,
-				isDeafened: true,
-				isMuted: true,
-				isSpeaker: true,
-				role: true,
-				user: {
-					select: {
-						id: true,
-						name: true,
-						image: true,
-					},
-				},
-			},
-		}),
-
-	leaveRoom: async (userId: string) => await prisma.peer.delete({ where: { userId } }),
-	getPeer: async (userId: string) => {
-		const peer = await prisma.peer.findUnique({
-			where: { userId },
-			select: {
-				user: {
-					select: {
-						id: true,
-						image: true,
-						name: true,
-					},
-				},
-				askedToSpeak: true,
-				isDeafened: true,
-				isMuted: true,
-				isSpeaker: true,
-				role: true,
-			},
-		});
-		return peer;
-	},
-	addSpeaker: async (userId: string) => {
-		await prisma.peer.update({ where: { userId }, data: { isSpeaker: true } });
-	},
-	setAskedToSpeaker: async (userId: string, askedToSpeak: boolean) => {
-		await prisma.peer.update({ where: { userId }, data: { askedToSpeak } });
-	},
-	canManageRoom: async (userId: string) => {
-		const res = await prisma.peer.findUnique({ where: { userId }, select: { role: true } });
-		return res?.role === "creator";
-	},
 	delete: async (id: string) => await prisma.room.delete({ where: { id } }),
-	setRoomOwner: async (id: string, newOwnerUserId: string) => {
-		//Only one creator can exist
-		await prisma.peer.updateMany({
-			where: {
-				roomId: id,
-				role: "creator",
-			},
-			data: {
-				role: "member",
-			},
-		});
-
-		await prisma.peer.update({
-			where: { userId: newOwnerUserId, roomId: id },
-			data: {
-				role: "creator",
-			},
-		});
-	},
+	deleteMany: async (where: Prisma.RoomDeleteManyArgs["where"]) =>
+		await prisma.room.deleteMany({ where }),
 };

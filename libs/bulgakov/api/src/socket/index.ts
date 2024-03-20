@@ -1,103 +1,107 @@
 import {
 	ConsumeParams,
 	GogolMsgData,
-	GogolOperations,
 	TransportDirection,
 	WebRtcTransportConnData,
 } from "@glimmer/gogol";
-import { User, Room } from "../entities";
+import { User, Room, Peer } from "../entities";
+import { RtpCapabilities } from "mediasoup-client/lib/RtpParameters";
 
 export type IncomingActionsPayload = {
 	"@room:join": {
 		roomId: string;
 	};
-	"@room:leave": {
-		roomId: string;
-	};
+	"@room:leave": object;
 	"@room:create": {
 		name: string;
 		description: string;
 		tags: string[];
 		isPrivate: boolean;
 	};
-	"@room:delete": {
-		roomId: string;
-	};
+	"@room:delete": object;
+	"@room:set-my-state": Partial<Pick<Peer, "askedToSpeak" | "isDeafened" | "isMuted">>;
 	"@room:add-speaker": {
-		speakerId: string;
-		roomId: string;
+		peerId: string;
 	};
-	"@room:deafened": {
-		roomId: string;
+	"@room:remove-speaker": {
+		peerId: string;
 	};
 	"@room:mute-speaker": {
-		userId: string;
+		peerId: string;
 		roomId: string;
 	};
-	"@room:mute-me": {
-		roomId: string;
+	"@room:change-peer-role": {
+		peerId: string;
+		role: Peer["role"];
+	};
+	"@room:resume-consumer": {
+		consumerId: string;
+	};
+	"@room:connect-webRtcTransport": {
+		direction: TransportDirection;
+		dtlsParameters: WebRtcTransportConnData["dtlsParameters"];
+	};
+	"@room:get-recv-tracks": {
+		rtpCapabilities: RtpCapabilities;
 	};
 	"@room:send-track": {
-		roomId: string;
 		produceParams: {
-			id: string;
 			kind: ConsumeParams["kind"];
 			rtpParameters: ConsumeParams["rtpParameters"];
 			paused: boolean;
 		};
 	};
-	"@room:connect-webRtcTransport": {
-		roomId: string;
-		direction: TransportDirection;
-		dtlsParameters: WebRtcTransportConnData["dtlsParameters"];
+	"@room:kick-out": {
+		peerId: string;
 	};
 	"@user:send-profile": {
 		user: Partial<Omit<User, "id">>;
 	};
 };
 
-export type OutgoingActionsPayload = Omit<GogolMsgData, "@room:created"> & {
-	"@room:deleted": {
-		roomId: string;
-	};
+export type OutgoingActionsPayload = Omit<
+	// error message are internal only communication
+	// the peerId and the roomId should not be sent to the user
+	{ [key in Exclude<keyof GogolMsgData, "error">]: Omit<GogolMsgData[key], "roomId" | "peerId"> },
+	"@room:created"
+> & {
 	"@room:created": {
 		roomId: string;
 	};
-	"@room:create-error": {
+	"@room:error": {
+		type: "room-not-found" | "could-not-create-room" | "voice-server-down";
 		message: string;
 	};
-	"@room:details": {
-		roomId: string;
-		room: Pick<Room, "peers" | "id">;
+	"@room:state": {
+		room: Pick<Room, "name" | "description" | "tags" | "peers">;
 	};
-	"@room:new-user": {
-		roomId: string;
-		userId: string;
+	"@room:new-peer": {
+		peer: Room["peers"][0];
 	};
-	"@room:new-speaker": {
-		roomId: string;
-		userId: string;
+	"@room:peer-state-changed": Partial<
+		Pick<Peer, "askedToSpeak" | "isDeafened" | "isMuted" | "isSpeaker">
+	> & {
+		peerId: string;
 	};
-	"@room:user-deafened": {
-		roomId: string;
-		userId: string;
+	"@room:peer-left": {
+		peerId: string;
 	};
-	"@room:user-muted": {
-		roomId: string;
-		userId: string;
-	};
-	"@room:user-left": {
-		roomId: string;
-		userId: string;
+	"@room:peer-role-changed": {
+		peerId: string;
+		role: Peer["role"];
 	};
 	"@auth:invalid-token": {
 		message: string;
+	};
+	error: {
+		message: string;
+		description: string;
 	};
 };
 
 export type IncomingActions = keyof IncomingActionsPayload;
 
-export type OutgoingActions = keyof OutgoingActionsPayload | GogolOperations;
+export type OutgoingActions = keyof OutgoingActionsPayload;
 
 export type IncomingWsMessage<T extends IncomingActions> = {
 	action: T;

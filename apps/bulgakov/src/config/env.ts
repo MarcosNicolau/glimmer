@@ -9,5 +9,7 @@ export const ENV_VARS = {
 	PORT: Number(process.env.PORT),
 	JWT_PUBLIC_KEY: process.env.JWT_PUBLIC_KEY,
 	JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY,
+	LOCAL_SSL_CERT_FILE_NAME: process.env.LOCAL_SSL_CERT_FILE_NAME,
+	LOCAL_SSL_KEY_FILE_NAME: process.env.LOCAL_SSL_KEY_FILE_NAME,
 	NODE_ENV: process.env.NODE_ENV,
 } as const;

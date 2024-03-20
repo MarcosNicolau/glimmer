@@ -78,7 +78,7 @@ export const getRooms: HttpHandler = async (res, req) => {
 	if (err) return res.send({ status: 400, message: err.message });
 
 	try {
-		const { rooms, nextCursor } = await Rooms.getRooms(Number(size), cursor, {
+		const { rooms, nextCursor } = await Rooms.getWithCursor(Number(size), cursor, {
 			id: true,
 			name: true,
 			description: true,
@@ -128,7 +128,7 @@ export const getRoom: HttpHandler = async (res, req) => {
 	if (!id)
 		return res.send({ status: 400, message: "you must provide the room id in the url query" });
 	try {
-		const room = await Rooms.getRoom(id, {
+		const room = await Rooms.get(id, {
 			id: true,
 			name: true,
 			description: true,
@@ -146,6 +146,7 @@ export const getRoom: HttpHandler = async (res, req) => {
 				},
 			},
 		});
+		if (!room) return res.send({ status: 404, message: "room not found" });
 		return res.send<GetRoom>({
 			status: 200,
 			result: {
@@ -158,8 +159,6 @@ export const getRoom: HttpHandler = async (res, req) => {
 			},
 		});
 	} catch (err: any) {
-		if (err.message === "room does not exist")
-			return res.send({ status: 404, message: err.message });
 		console.error("error while getting room feed", err);
 		return res.send({ status: 500 });
 	}
