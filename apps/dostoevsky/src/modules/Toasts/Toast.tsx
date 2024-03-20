@@ -4,11 +4,13 @@ import { useToggle } from "@glimmer/hooks";
 import { Button } from "@glimmer/ui/web";
 import { useSpring, animated } from "@react-spring/web";
 import { Toast as Props, useToastsStore } from "apps/dostoevsky/src/state";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 export const Toast: React.FC<Props> = ({
 	id,
 	title,
+	type,
 	timerInMs,
 	onTimerEnd,
 	buttonText,
@@ -44,23 +46,40 @@ export const Toast: React.FC<Props> = ({
 			// The timeout runs every 16ms, so the total time that it passes is: 16*62.5=1000
 			setProgress((prev) => prev + 16 / timerInMs);
 		}, 16);
-	}, [progress, paused]);
+	}, [progress, paused, onTimerEnd, timerInMs]);
 
 	return (
 		<animated.div
+			id="toast"
 			onMouseEnter={togglePaused}
 			onMouseLeave={togglePaused}
 			onClick={() => setHide(true)}
-			className="bg-accent-100 relative flex min-w-[300px] cursor-pointer items-center gap-10 rounded px-8 py-4"
+			className={clsx(
+				"relative flex min-w-[300px] cursor-pointer items-center gap-10 rounded px-8 py-4",
+				{
+					"bg-accent-100": type === "normal",
+					"bg-red": type === "error",
+				}
+			)}
 			style={{ ...springs }}
 		>
-			<p className="small text-text-contrast-100">{title}</p>
+			<p
+				className={clsx("small text-center", {
+					"text-text-contrast-100": type === "normal",
+					"text-white": type === "error",
+				})}
+			>
+				{title}
+			</p>
 
 			{buttonText && (
 				<div className="flex items-center justify-center gap-4">
 					<Button
 						variant="text"
-						className="!text-contrast-300 hover:!text-contrast-200 font-bold"
+						className={clsx("font-bold", {
+							"!text-contrast-300 hover:!text-contrast-200": type === "normal",
+							"!text-white hover:!text-white/85": type === "error",
+						})}
 						onClick={onClick}
 					>
 						{buttonText}
@@ -69,7 +88,10 @@ export const Toast: React.FC<Props> = ({
 			)}
 			{/* Progress bar */}
 			<div
-				className="bg-contrast-300 absolute bottom-0 left-0 h-1 transition"
+				className={clsx("absolute bottom-0 left-0 h-1 transition", {
+					"bg-contrast-300": type === "normal",
+					"bg-white": type === "error",
+				})}
 				style={{ width: `${progress * 100}%` }}
 			></div>
 		</animated.div>

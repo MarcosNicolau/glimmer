@@ -46,12 +46,14 @@ export const Modal: React.FC<Props> = ({
 	return createPortal(
 		<div className="max-mobile:p-6 bg-modal-overlay absolute inset-0 z-20 h-full w-full p-10">
 			<div className="flex h-full w-full items-center justify-center">
-				<div ref={ref} className="content relative">
-					{showCloseButton && (
-						<div className="absolute right-5 top-5 z-30 cursor-pointer">
-							<IconBtn icon={CrossIcon} onClick={() => setOpen(false)} />
-						</div>
-					)}
+				<div ref={ref} className="content">
+					<div className="relative">
+						{showCloseButton && (
+							<div className="absolute right-5 top-5 z-30 cursor-pointer">
+								<IconBtn icon={CrossIcon} onClick={() => setOpen(false)} />
+							</div>
+						)}
+					</div>
 					{children}
 				</div>
 			</div>

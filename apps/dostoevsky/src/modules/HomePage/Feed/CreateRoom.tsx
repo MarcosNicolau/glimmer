@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "apps/dostoevsky/src/libs/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { ToastContainer } from "apps/dostoevsky/src/modules/Toasts";
 
 type Props = Omit<ReturnType<typeof useModal>, "toggleOpen">;
 
@@ -23,7 +24,7 @@ export const CreateRoomFormModal: React.FC<Props> = ({ open, setOpen }) => {
 		},
 		mode: "onTouched",
 	});
-	const { addToast } = useToastsStore();
+	const { addToast, setActiveToastId } = useToastsStore();
 	const t = useTranslations();
 	const [isLoading, setIsLoading] = useState(false);
 	const { socket, connState } = useSocketStore();
@@ -32,6 +33,7 @@ export const CreateRoomFormModal: React.FC<Props> = ({ open, setOpen }) => {
 	const isPrivate = watch("isPrivate");
 	const description = watch("description");
 	const router = useRouter();
+	const toastContainerId = 1;
 
 	const insertNewTag = () => {
 		setValue(`tags.${tagsField.length}`, "");
@@ -55,11 +57,13 @@ export const CreateRoomFormModal: React.FC<Props> = ({ open, setOpen }) => {
 	};
 
 	useEffect(() => {
+		if (open) setActiveToastId(toastContainerId);
 		return () => {
+			setActiveToastId(null);
 			reset();
 			setIsLoading(false);
 		};
-	}, [open]);
+	}, [open, setActiveToastId, setIsLoading, reset]);
 
 	useEffect(() => {
 		socket?.on("@room:created", ({ roomId }) => {
@@ -67,22 +71,24 @@ export const CreateRoomFormModal: React.FC<Props> = ({ open, setOpen }) => {
 			router.push(ROUTES.ROOM(roomId));
 		});
 
-		socket?.on("@room:create-error", () => {
+		socket?.on("@room:error", () => {
 			setIsLoading(false);
 			addToast({
 				title: "There's been an err while creating the room, try again",
+				type: "error",
 				timerInMs: 2000,
 			});
 		});
 
 		return () => {
 			socket?.removeEventListener("@room:created");
-			socket?.removeEventListener("@room:create-error");
+			socket?.removeEventListener("@room:error");
 		};
-	}, [socket]);
+	}, [socket, addToast, setIsLoading, router]);
 
 	return (
 		<Modal open={open} setOpen={setOpen} showCloseButton shouldCloseOnEsc={false}>
+			<ToastContainer id={toastContainerId} />
 			<ModalForm
 				title={t("feed.create-room-form.title")}
 				description={t("feed.create-room-form.description")}
