@@ -25,12 +25,13 @@ export const handlers = (
 	};
 
 	return {
-		"@room:create": async (d, send) => {
-			if (rooms[d.roomId]) return;
-			rooms[d.roomId] = await createRoom(d.roomId, getWorker());
+		"@room:create": async ({ roomId }, send) => {
+			if (rooms[roomId]) return;
+			rooms[roomId] = await createRoom(roomId, getWorker());
 			send({
 				op: "@room:created",
-				d: { roomId: d.roomId, serverId },
+				d: { roomId: roomId, serverId },
+				to: { roomId: roomId },
 			});
 		},
 		"@room:delete": (d) => {
@@ -50,7 +51,11 @@ export const handlers = (
 			const transport = direction === "recv" ? peer?.recvTransport : peer?.sendTransport;
 			if (peer && transport) {
 				await transport.connect({ dtlsParameters });
-				send({ op: `@room:${direction}-transport-connected`, d: { peerId } });
+				send({
+					op: `@room:${direction}-transport-connected`,
+					d: { peerId },
+					to: { peerId },
+				});
 			}
 		},
 		"@room:join": async ({ roomId, peerId, willProduce }, send, errBack) => {
@@ -79,12 +84,12 @@ export const handlers = (
 			send({
 				op: "@room:you-joined",
 				d: {
-					peerId,
 					recvTransport: getTransportConnData(recvTransport),
 					sendTransport: sendTransport && getTransportConnData(sendTransport),
 					rtpCapabilities: room.router.rtpCapabilities,
 					consumers,
 				},
+				to: { peerId },
 			});
 		},
 		"@room:leave": async ({ peerId, roomId }, send) => {
@@ -93,8 +98,10 @@ export const handlers = (
 			if (room.state.peers[peerId]) closePeer(room, peerId, send);
 			// If no more peers are in the room, delete the room
 			if (!Object.values(room.state.peers).length) {
+				console.log(`room ${roomId} deleted`);
 				room.router.close();
 				delete rooms[roomId];
+				send({ op: "@room:deleted", d: { roomId }, to: {} });
 			}
 		},
 		"@room:send-track": async ({ peerId, produceParams, roomId }, send, errBack) => {
@@ -109,7 +116,8 @@ export const handlers = (
 			if (!peer.sendTransport)
 				return send({
 					op: "@room:new-track",
-					d: { peerId, error: "you need to create a send transport first" },
+					d: { error: "you need to create a send transport first" },
+					to: { peerId },
 				});
 
 			if (peer.producer[kind]) {
@@ -117,6 +125,7 @@ export const handlers = (
 					op: "@room:producer-closed",
 					// @ts-expect-error complains about possibly being null, but we are actually checking that in the if
 					d: { producerId: peer.producer[kind].id, roomId, peerId },
+					to: { roomId },
 				});
 				peer.producer[kind]?.close();
 			}
@@ -129,7 +138,8 @@ export const handlers = (
 			peer.producer[kind] = producer;
 			send({
 				op: "@room:send-track-done",
-				d: { peerId, producerId: producer.id },
+				d: { producerId: producer.id },
+				to: { peerId },
 			});
 			// We need to add tell each peer to consume the new producer
 			for await (const _peer of Object.values(room.state.peers)) {
@@ -144,13 +154,15 @@ export const handlers = (
 				if (!consumerParams)
 					return send({
 						op: "@room:new-track",
-						d: { peerId: _peer.id, error: "cant consume track" },
+						d: { error: "cant consume track" },
+						to: { peerId: _peer.id },
 					});
 				// Now the client needs to create the consumer as well
 				// So we signal the required data to that peer
 				send({
 					op: "@room:new-track",
-					d: { peerId: _peer.id, consumerParams },
+					d: { consumerParams },
+					to: { peerId: _peer.id },
 				});
 			}
 		},
@@ -162,7 +174,7 @@ export const handlers = (
 
 			const consumers = await getAllConsumers(peerId, room, rtpCapabilities);
 
-			send({ op: "@room:get-recv-tracks-done", d: { consumers, peerId } });
+			send({ op: "@room:get-recv-tracks-done", d: { consumers }, to: { peerId } });
 		},
 		"@room:close-consumer": ({ consumerId, peerId, roomId }, send, errBack) => {
 			const room = rooms[roomId];
@@ -193,12 +205,12 @@ export const handlers = (
 			if (peer.sendTransport) peer.sendTransport.close();
 			const sendTransport = await createTransport(room.router, peerId, "send");
 			send({
-				op: "@room:producer-added",
+				op: "@room:you-are-a-producer-now",
 				d: {
-					peerId,
 					rtpCapabilities: room.router.rtpCapabilities,
 					sendTransport: getTransportConnData(sendTransport),
 				},
+				to: { peerId },
 			});
 		},
 		"@room:close-producer": ({ roomId, peerId, kindsToClose }, send, errBack) => {

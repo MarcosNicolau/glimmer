@@ -58,6 +58,7 @@ export const startRabbit = async (handlers: OperationsHandlers, serverId: string
 				description:
 					"Unexpected error encountered. This probably means that the server went down and now is up again, please try again",
 			},
+			to: {},
 		});
 	};
 
@@ -72,6 +73,8 @@ export const startRabbit = async (handlers: OperationsHandlers, serverId: string
 	});
 
 	process.on("exit", () => {
+		console.log("exiting...");
+
 		send({
 			op: "error",
 			d: {
@@ -80,6 +83,7 @@ export const startRabbit = async (handlers: OperationsHandlers, serverId: string
 				description:
 					"the server exited and all rooms in this server have been deleted, we are about to redeploy now",
 			},
+			to: {},
 		});
 	});
 

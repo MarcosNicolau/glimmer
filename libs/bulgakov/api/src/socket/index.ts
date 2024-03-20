@@ -61,13 +61,13 @@ export type IncomingActionsPayload = {
 
 export type OutgoingActionsPayload = Omit<
 	// error message are internal only communication
-	// the peerId and the roomId should not be sent to the user
-	{ [key in Exclude<keyof GogolMsgData, "error">]: Omit<GogolMsgData[key], "roomId" | "peerId"> },
-	"@room:created"
+	{ [key in Exclude<keyof GogolMsgData, "error">]: GogolMsgData[key] },
+	"@room:created" | "@room:deleted"
 > & {
 	"@room:created": {
 		roomId: string;
 	};
+	"@room:deleted": object;
 	"@room:error": {
 		type: "room-not-found" | "could-not-create-room" | "voice-server-down";
 		message: string;

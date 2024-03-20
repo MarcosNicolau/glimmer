@@ -1,7 +1,7 @@
 {
-	"name": "rabbit",
+	"name": "gogol-types",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "libs/gogol/rabbit/src",
+	"sourceRoot": "libs/gogol/types/src",
 	"projectType": "library",
 	"targets": {},
 	"tags": []

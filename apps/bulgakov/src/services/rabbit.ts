@@ -6,18 +6,15 @@ import {
 	GogolMsgData,
 	GogolOperations,
 	GogolMessage,
-	broadcastToRoomOps,
-	BroadcastToRoomOps,
-	BroadcastToUserOps,
 } from "@glimmer/gogol";
 import { RABBIT } from "@glimmer/constants";
 import { Rooms } from "./room";
 import { TemplatedApp } from "uWebSockets.js";
 import { OutgoingActions } from "@glimmer/bulgakov";
 import { generateRandomString } from "../utils/crypto";
-import { prisma } from "apps/bulgakov/src/config/prisma";
-import { SOCKET_TOPICS } from "apps/bulgakov/src/constants";
-import { InternalBulgakovQueueData } from "apps/bulgakov/src/types/rabbit";
+import { prisma } from "../config/prisma";
+import { SOCKET_TOPICS } from "../constants";
+import { InternalBulgakovQueueData } from "../types/rabbit";
 
 export const RabbitService = (appId: string) => {
 	let channel: Channel | null = null;
@@ -82,19 +79,21 @@ export const RabbitService = (appId: string) => {
 					try {
 						switch (data.op) {
 							case "@room:created":
-								const { roomId, serverId } =
-									data.d as GogolMsgData["@room:created"];
-								await Rooms.setVoiceServer({ id: roomId, voiceServerId: serverId });
-								app.broadcastToRoom(roomId, {
+								const roomCreated = data.d as GogolMsgData["@room:created"];
+								await Rooms.setVoiceServer({
+									id: roomCreated.roomId,
+									voiceServerId: roomCreated.serverId,
+								});
+								app.broadcastToRoom(roomCreated.roomId, {
 									action: "@room:created",
-									payload: { roomId },
+									payload: { roomId: roomCreated.roomId },
 								});
 								break;
 							case "error":
-								const d = data.d as GogolMsgData["error"];
-								if (d.message === "server-closed") {
+								const error = data.d as GogolMsgData["error"];
+								if (error.message === "server-closed") {
 									const ids = await prisma.room.findMany({
-										where: { voiceServerId: d.serverId },
+										where: { voiceServerId: error.serverId },
 										select: { id: true },
 									});
 									ids.forEach(({ id }) => {
@@ -112,27 +111,26 @@ export const RabbitService = (appId: string) => {
 										});
 									});
 									await Rooms.deleteMany({
-										voiceServerId: d.serverId,
+										voiceServerId: error.serverId,
 									});
 								}
 								console.warn("Gogol error operation", data);
 								break;
+							case "@room:deleted":
+								const roomDeleted = data.d as GogolMsgData["@room:deleted"];
+								await Rooms.delete(roomDeleted.roomId);
+								break;
 							default:
-								const broadcastToRoom = broadcastToRoomOps.find(
-									(op) => op === data?.op
-								);
-								if (broadcastToRoom) {
-									const { roomId, ...rest } =
-										data.d as GogolMsgData[BroadcastToRoomOps];
-									app.broadcastToRoom(roomId, { action: data.op, payload: rest });
-								} else {
-									const { peerId, ...rest } =
-										data.d as GogolMsgData[BroadcastToUserOps];
-									app.broadcastToUser(peerId, {
+								if (data.to.peerId)
+									app.broadcastToUser(data.to.peerId, {
 										action: data.op,
-										payload: rest,
+										payload: data.d,
 									});
-								}
+								if (data.to.roomId)
+									app.broadcastToUser(data.to.roomId, {
+										action: data.op,
+										payload: data.d,
+									});
 								break;
 						}
 					} catch (err) {

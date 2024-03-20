@@ -3,7 +3,7 @@ import { ENV_VARS } from "./config/env";
 import { loadDB, loadRabbit } from "./loaders";
 import { wsBehaviour } from "./api/socket";
 import { App } from "./utils/uws";
-import { isProduction } from "apps/bulgakov/src/utils/isProd";
+import { isProduction } from "./utils/isProd";
 
 const startServer = async () => {
 	try {

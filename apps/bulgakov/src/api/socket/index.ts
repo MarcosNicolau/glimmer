@@ -5,7 +5,7 @@ import { authMiddleware } from "./middlewares";
 import { User, IncomingActions, IncomingWsMessage } from "@glimmer/bulgakov";
 import { buildSocket } from "../../utils/uws";
 import { SocketData } from "../../types/socket";
-import { Users } from "./../../services/user";
+import { Users, Peers } from "./../../services/";
 import { buildHttpHandler } from "@glimmer/http";
 
 export const wsBehaviour = (
@@ -18,7 +18,7 @@ export const wsBehaviour = (
 		);
 		try {
 			//@ts-expect-error payload actually matches action
-			await socketHandlers(myWs, app)[parsedMessage.action](parsedMessage.payload);
+			await socketHandlers(ws, app)[parsedMessage.action](parsedMessage.payload);
 		} catch (err) {
 			console.error("error while handling socket message", parsedMessage, err);
 			ws.sendJson({
@@ -52,6 +52,14 @@ export const wsBehaviour = (
 	async close(ws) {
 		const { id } = ws.getUserData();
 		console.log("closed connection id", id);
-		await Users.remove(id);
+		try {
+			await Users.remove(id);
+			await Peers.leaveRoom(id);
+		} catch (err: any) {
+			// this err code means that the records were not found
+			// which probably means that the users wasn't in any room, so there were no peer document associated to that user :)
+			if (err.code === "P2025") return;
+			console.log("there was an err while closing the connection", err);
+		}
 	},
 });

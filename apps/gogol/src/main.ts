@@ -2,7 +2,7 @@ import { mediasoupConfig } from "./config/mediasoup";
 import { createWorkers, startRabbit } from "./loaders";
 import { Room } from "@glimmer/gogol";
 import { handlers } from "./handlers";
-import { ENV_VARS } from "apps/gogol/src/config/env";
+import { ENV_VARS } from "./config/env";
 import { generateRandomString } from "@glimmer/utils";
 
 export const main = async () => {

@@ -1,4 +1,4 @@
-import { ProducerKinds } from "libs/gogol/types/src/room";
+import { ProducerKinds } from "@glimmer/gogol";
 import {
 	ConsumerType,
 	DtlsParameters,
@@ -117,38 +117,28 @@ export type GogolMsgData = {
 		roomId: string;
 	};
 	"@room:you-joined": {
-		peerId: string;
 		rtpCapabilities: RtpCapabilities;
 		recvTransport: WebRtcTransportConnData;
 		sendTransport: WebRtcTransportConnData | null;
 		consumers: ConsumeParams[];
 	};
 	"@room:send-track-done": {
-		peerId: string;
 		producerId: string;
 	};
 	"@room:get-recv-tracks-done": {
-		peerId: string;
 		consumers: ConsumeParams[];
 	};
-	"@room:send-transport-connected": {
-		peerId: string;
-	};
-	"@room:recv-transport-connected": {
-		peerId: string;
-	};
+	"@room:send-transport-connected": object;
+	"@room:recv-transport-connected": object;
 	"@room:new-track": {
-		peerId: string;
 		consumerParams?: ConsumeParams;
 		error?: string;
 	};
-	"@room:producer-added": {
-		peerId: string;
+	"@room:you-are-a-producer-now": {
 		rtpCapabilities: RtpCapabilities;
 		sendTransport: WebRtcTransportConnData;
 	};
 	"@room:producer-closed": {
-		roomId: string;
 		peerId: string;
 		producerIds: Record<ProducerKinds, string>;
 	};
@@ -164,38 +154,13 @@ export type GogolOperations = keyof GogolMsgData;
 export type GogolMessage<T extends GogolOperations> = {
 	op: T;
 	d: GogolMsgData[T];
+	to: {
+		peerId?: string;
+		roomId?: string;
+	};
 };
 
 export type BulgakovMessage<T extends BulgakovOperations> = {
 	op: T;
 	d: BulgakovMsgData[T];
 };
-
-// the gogol operations that bulgakov should broadcast to the whole room
-export type BroadcastToRoomOps = Extract<
-	GogolOperations,
-	"@room:producer-closed" | "@room:deleted"
->;
-
-// the gogol operations that bulgakov should sent to the a individual user inside a room
-export type BroadcastToUserOps = Extract<
-	GogolOperations,
-	| "@room:new-track"
-	| "@room:get-recv-tracks-done"
-	| "@room:producer-added"
-	| "@room:you-joined"
-	| "@room:send-track-done"
-	| "@room:send-transport-connected"
-	| "@room:recv-transport-connected"
->;
-
-export const broadcastToRoomOps: BroadcastToRoomOps[] = ["@room:deleted"];
-export const broadcastToUserOps: BroadcastToUserOps[] = [
-	"@room:new-track",
-	"@room:get-recv-tracks-done",
-	"@room:producer-added",
-	"@room:you-joined",
-	"@room:send-track-done",
-	"@room:send-transport-connected",
-	"@room:recv-transport-connected",
-];

@@ -5,7 +5,7 @@ import { z } from "zod";
 import { TemplatedApp, WebSocket } from "uWebSockets.js";
 import { User, IncomingActions, IncomingActionsPayload, Room, Peer } from "@glimmer/bulgakov";
 import { select } from "./helpers";
-import { prisma } from "apps/bulgakov/src/config/prisma";
+import { prisma } from "../../config/prisma";
 
 type Handlers = (
 	ws: WebSocket<User>,
@@ -58,6 +58,7 @@ export const socketHandlers: Handlers = (ws, app) => {
 				description: true,
 				tags: true,
 				peers: {
+					where: { userId: { not: userId } },
 					select: select.peers.joinRoom,
 				},
 			});
@@ -65,14 +66,16 @@ export const socketHandlers: Handlers = (ws, app) => {
 			const { voiceServerId, peers, name, description, tags } = room;
 			// Maybe wants to re-stablish connection so he is already in the room
 			let peer = await Peers.get(userId, select.peers.joinRoom);
-			if (!peer) peer = await Peers.joinRoom(userId, roomId, select.peers.joinRoom);
+			if (!peer) peer = await Peers.joinRoom(roomId, userId, select.peers.joinRoom);
 			Rabbit.publishToVoiceServer(voiceServerId, {
 				op: "@room:join",
 				d: { roomId, willProduce: peer.isSpeaker, peerId: userId },
 			});
 			ws.sendJson({
 				action: "@room:state",
-				payload: { room: { name, description, tags, peers } },
+				payload: {
+					room: { name, description, tags, peers },
+				},
 			});
 			await app.broadcastToRoom(roomId, {
 				action: "@room:new-peer",

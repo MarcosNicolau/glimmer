@@ -1,6 +1,6 @@
 import { Peer } from "@glimmer/bulgakov";
 import { Prisma } from "@prisma/client";
-import { prisma } from "apps/bulgakov/src/config/prisma";
+import { prisma } from "../config/prisma";
 
 export const Peers = {
 	get: <T extends Prisma.PeerSelect>(
@@ -32,7 +32,7 @@ export const Peers = {
 			data: {
 				userId,
 				isDeafened: false,
-				isSpeaker: true,
+				isSpeaker: false,
 				askedToSpeak: false,
 				isMuted: false,
 				roomId: id,
@@ -41,22 +41,16 @@ export const Peers = {
 		}),
 	leaveRoom: async <T extends Prisma.RoomSelect>(
 		userId: string,
-		roomSelect: Prisma.Subset<T, Prisma.RoomSelect>
+		roomSelect?: Prisma.Subset<T, Prisma.RoomSelect>
 	) => {
 		const { role, roomId, room } = await prisma.peer.delete({
 			where: { userId },
 			select: {
 				roomId: true,
 				role: true,
-				//@ts-expect-error prisma types are confusing, for some reason it does not allow to merge roomSelect with the count
-				room: { select: { ...roomSelect, _count: { select: { peers: true } } } },
+				room: roomSelect ? { select: roomSelect } : undefined,
 			},
 		});
-		//@ts-expect-error explained above
-		const { _count, ...selected } = room;
-		// delete room if no more peers are in
-		if (!_count?.peers) await prisma.room.delete({ where: { id: roomId } });
-
 		// transfer ownership if the creator left without deleting the room
 		if (role === "creator") {
 			const firstJoined = await prisma.peer.findMany({
@@ -67,14 +61,14 @@ export const Peers = {
 				orderBy: { joinedAt: "asc" },
 				select: { userId: true },
 			});
-
-			await prisma.peer.update({
-				where: { userId: firstJoined[0].userId },
-				data: { role: "creator" },
-			});
+			if (firstJoined[0])
+				await prisma.peer.update({
+					where: { userId: firstJoined[0].userId },
+					data: { role: "creator" },
+				});
 		}
 
-		return selected;
+		return room;
 	},
 	kickOutFromRoom: async <T extends Prisma.PeerSelect>(
 		userId: string,

@@ -41,7 +41,10 @@ export const signalProducerClosed = (
 ) => {
 	send({
 		op: "@room:producer-closed",
-		d: { roomId, producerIds: ids, peerId },
+		d: { producerIds: ids, peerId },
+		to: {
+			roomId,
+		},
 	});
 };
 
