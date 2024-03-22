@@ -22,9 +22,7 @@ export const Room: React.FC<Props> = ({ id, name, description, numOfPeers, tags,
 			</div>
 			<div className="only-small-mobile:flex-col flex flex-1 flex-wrap items-center justify-between gap-4 ">
 				<div className="flex flex-1 flex-wrap gap-3">
-					{tags.map((tag, idx) => (
-						<Tag key={idx} tag={tag} />
-					))}
+					{tags?.map((tag, idx) => <Tag key={idx} tag={tag} />)}
 				</div>
 				<div className="only-small-mobile:flex-1 flex items-center justify-end gap-4">
 					<div className="relative flex items-stretch">

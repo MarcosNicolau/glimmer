@@ -7,5 +7,5 @@ export const useToastContainer = (id: number) => {
 	useEffect(() => {
 		setActiveToastId(id);
 		return () => setActiveToastId(null);
-	}, []);
+	}, [setActiveToastId, id]);
 };

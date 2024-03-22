@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export const ConnectToWs: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const { setSocket, setConnState, socket, connState } = useSocketStore((state) => state);
-	const { setUser, isLoaded: userLoaded, ...user } = useUserStore();
+	const { isLoaded: userLoaded, ...user } = useUserStore();
 	const token = useTokenStore((state) => state.token);
 
 	useEffect(() => {
@@ -31,7 +31,7 @@ export const ConnectToWs: React.FC<{ children: React.ReactNode }> = ({ children 
 				socket?.close();
 			};
 		}
-	}, [setSocket, setConnState, connState, token, user, userLoaded]);
+	}, [setSocket, setConnState, connState, token, user, userLoaded, socket]);
 
 	return children;
 };

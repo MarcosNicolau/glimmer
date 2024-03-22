@@ -22,9 +22,9 @@ export const useElementOnView = <T extends HTMLElement>(
 	useEffect(() => {
 		return () => {
 			if (ref.current) observer.current.unobserve(ref.current);
-			observer.current?.disconnect();
+			observer.current.disconnect();
 		};
-	}, [setRef]);
+	}, []);
 
 	return [setRef];
 };

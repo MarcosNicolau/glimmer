@@ -9,7 +9,7 @@ const queryFn = ({ pageParam }: { pageParam: unknown }) =>
 	APIBaseFetch<GetOnlineUsers>("get", `/users/online?size=20&cursor=${pageParam}`);
 
 export const useOnlineUsers = () => {
-	const { id, isLoaded } = useUserStore((state) => state);
+	const { id } = useUserStore((state) => state);
 	const { data, ...rest } = useInfiniteQuery<GetOnlineUsers>({
 		queryKey: ["online-users"],
 		queryFn,
@@ -18,11 +18,8 @@ export const useOnlineUsers = () => {
 	});
 
 	const users = useMemo(
-		() =>
-			isLoaded
-				? data?.pages.flatMap((page) => page?.users).filter((user) => user?.id !== id) || []
-				: [],
-		[data]
+		() => data?.pages.flatMap((page) => page?.users).filter((user) => user?.id !== id),
+		[data, id]
 	);
 
 	return {

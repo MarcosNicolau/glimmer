@@ -25,9 +25,7 @@ export const OnlineUsersLeftComponent = () => {
 				<h4>Loading...</h4>
 			) : (
 				<div className="max-big-desktop:items-center flex flex-col gap-7">
-					{users.map((user) => (
-						<OnlineUser key={user.id} {...user} />
-					))}
+					{users?.map((user) => <OnlineUser key={user.id} {...user} />)}
 
 					<InfiniteQueryLoader ref={ref} isFetching={isFetchingNextPage} />
 				</div>

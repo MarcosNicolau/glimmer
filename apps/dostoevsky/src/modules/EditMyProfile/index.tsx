@@ -41,7 +41,7 @@ export const EditMyProfile = () => {
 					});
 			}
 		},
-		[setUser, user]
+		[setUser, user, addToast, t, form]
 	);
 
 	useEffect(() => {

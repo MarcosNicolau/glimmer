@@ -37,7 +37,11 @@ export const DesktopNavContent: React.FC = () => {
 			</div>
 			<div className="max-big-desktop:gap-4 flex flex-1 flex-row items-center justify-end gap-5">
 				<ThemeSwitcher />
-				<Link href={LINKS.GITHUB} onClick={openWindowAt(LINKS.GITHUB)}>
+				<Link
+					href={LINKS.GITHUB}
+					onClick={openWindowAt(LINKS.GITHUB)}
+					className="leading-none"
+				>
 					<IconBtn icon={GithubIcon} />
 				</Link>
 				<LanguageSwitcher />

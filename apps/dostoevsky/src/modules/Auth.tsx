@@ -23,7 +23,7 @@ export const Auth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 		const userId = localStorage.getItem(LOCAL_STORAGE_KEYS.USER_ID);
 		if (!token || !userId) return mutate({});
 		setToken(token);
-	}, [mutate]);
+	}, [mutate, setToken]);
 
 	//TODO loader
 	if (isPending || !token) return <h1>Loading...</h1>;
