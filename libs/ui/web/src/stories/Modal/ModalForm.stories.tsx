@@ -25,7 +25,6 @@ export const Primary: Story = {
 		btnText: "Enter",
 		cancelBtnText: "Cancel",
 		showCancelBtn: true,
-		showCloseBtn: true,
 		disabled: false,
 		isLoading: false,
 		children: (

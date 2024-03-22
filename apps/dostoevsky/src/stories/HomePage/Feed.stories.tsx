@@ -1,32 +1,31 @@
-import { GetOnlineUsers } from "@glimmer/bulgakov";
+import { GetRooms } from "@glimmer/bulgakov";
 import { APIResponse } from "@glimmer/http";
 import type { Meta, StoryObj } from "@storybook/react";
 import { API_URL } from "apps/dostoevsky/src/libs/constants";
-import { OnlineUsersLeftComponent } from "apps/dostoevsky/src/modules/OnlineUsers";
+import { Rooms } from "apps/dostoevsky/src/modules/HomePage/Feed/Rooms";
 import { HttpResponse, delay, http } from "msw";
 
 const meta: Meta = {
-	component: OnlineUsersLeftComponent,
+	component: Rooms,
 };
-
 export default meta;
 
-type Story = StoryObj<typeof OnlineUsersLeftComponent>;
+type Story = StoryObj<typeof Rooms>;
 
 export const Default: Story = {
 	args: {},
 };
 
-export const NoUsers: Story = {
+export const NoRooms: Story = {
 	args: {},
 	parameters: {
 		msw: {
 			handlers: [
-				http.get(`${API_URL}/users/online`, () =>
-					HttpResponse.json<APIResponse<GetOnlineUsers>>({
+				http.get(`${API_URL}/rooms`, () =>
+					HttpResponse.json<APIResponse<GetRooms>>({
 						status: 200,
 						message: "ok",
-						result: { users: [], nextCursor: "	" },
+						result: { rooms: [], nextCursor: "" },
 					})
 				),
 			],
@@ -38,7 +37,7 @@ export const LoadingState: Story = {
 	args: {},
 	parameters: {
 		msw: {
-			handlers: [http.get(`${API_URL}/users/online`, () => delay("infinite"))],
+			handlers: [http.get(`${API_URL}/rooms`, () => delay("infinite"))],
 		},
 	},
 };
