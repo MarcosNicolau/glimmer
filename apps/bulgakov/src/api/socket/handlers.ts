@@ -58,7 +58,6 @@ export const socketHandlers: Handlers = (ws, app) => {
 				description: true,
 				tags: true,
 				peers: {
-					where: { userId: { not: userId } },
 					select: select.peers.joinRoom,
 				},
 			});
