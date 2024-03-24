@@ -5,14 +5,18 @@ type Props = SvgProps & {
 	direction: "up" | "down" | "right" | "left";
 };
 
-export const ArrowIcon: React.FC<Props> = ({ direction, ...props }) => (
+export const ArrowIcon: React.FC<Props> = ({ direction, className, ...props }) => (
 	<AppSvg
-		className={clsx("transition", {
-			"rotate-180": direction === "up",
-			"rotate-90": direction === "right",
-			"-rotate-90": direction === "left",
-			"rotate-0": direction === "down",
-		})}
+		className={clsx(
+			"transition",
+			{
+				"-rotate-180": direction === "up",
+				"rotate-90": direction === "right",
+				"-rotate-90": direction === "left",
+				"rotate-0": direction === "down",
+			},
+			className
+		)}
 		{...props}
 	>
 		<path

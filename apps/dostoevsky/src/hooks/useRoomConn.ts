@@ -103,8 +103,6 @@ export const useHandleRoomConn = () => {
 				: null;
 
 			setTransports({ recv: recvTransport, send: sendTransport });
-
-			addToast({ title: t("new-role", { role: "mod" }) });
 			// Create client consumers
 			payload.consumers.forEach(async (consumer) => {
 				await createConsumer(consumer, recvTransport);

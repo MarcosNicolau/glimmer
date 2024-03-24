@@ -3,7 +3,7 @@ import { Card, ViewersCount } from "@glimmer/ui/web";
 import { useRouter } from "../../../libs/navigation";
 import { ROUTES } from "apps/dostoevsky/src/libs/constants";
 import { Speaker } from "apps/dostoevsky/src/modules/HomePage/Feed/Speaker";
-import { Tag } from "apps/dostoevsky/src/modules/HomePage/Feed/Tag";
+import { Tag } from "apps/dostoevsky/src/modules/Tag";
 
 type Props = GetRooms["rooms"][0];
 
