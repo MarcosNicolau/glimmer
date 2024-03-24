@@ -2,12 +2,11 @@
 
 ## Project structure
 
-| Name (Russian writers)               | Domain          |
-| ------------------------------------ | --------------- |
-| [bulgakov](./packages/bulgakov/)     | API (socket)    |
-| [dostoevsky](./packages/dostoevsky/) | Auth server     |
-| [gogol](./packages/gogol/)           | Voice server    |
-| [goncharov](./packages/goncharov/)   | React front-end |
+| Name (Russian writers)           | Domain         |
+| -------------------------------- | -------------- |
+| [bulgakov](./apps/bulgakov/)     | API (socket)   |
+| [dostoevsky](./apps/dostoevsky/) | Next front-end |
+| [gogol](./apps/gogol/)           | Voice server   |
 
 [Read docs](./docs/)
 
