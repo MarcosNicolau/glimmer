@@ -6,13 +6,25 @@ This is how the glimmer back end infrastructure will be composed
 
 ## Services
 
--   [Auth Server](#auth-server)
+-   [API](#API)
 -   [Voice server](#voice-server)
--   [Node API](#node-api) (rooms, users)
 
 ### Auth server
 
 This server handles token issuing, refreshing, rotation and token blacklist.
+
+### API
+
+This server will handle all the communication with the client. Most of it will be done trough websockets. For both the sockets and the rest API we'll be using [uWebsockets](https://github.com/uNetworking/uWebSockets) for a better performance.
+
+It is going to be responsible for:
+
+-   [Anonymous Auth](./auth.md)
+-   Save user profile and config
+-   Following and dms
+-   Room management
+
+About the user profiles, the users will actually have a minimal profile. Basically, the user will store its data locally and when connecting it'll send it to the server. We will store it on Redis and delete it when the users leaves the ws connection. To authenticate the user we'll use jwt tokens and attached a unique id which identifies him.
 
 ### Voice server
 
@@ -20,18 +32,6 @@ This server will handle the rooms creation and deal with all the producers(send 
 
 The room creation, deletion, etc, will be triggered from the api server trough rabbitmq.
 
-### Node API
+## Deployment and scale
 
-This server will handle all the communication with the client. Most of it will be done trough websockets using socket.io.
-
-It is going to be responsible for:
-
--   Save user profile and config
--   Following and dms
--   Room management
-
-## Deployment
-
-About the deployment, has been yet designed. We are thinking of using Kubernetes for the sake of practicing and learning the tool, but don't know yet.
-
-Another option is to use dokku.
+[go here](./scaling.md)
