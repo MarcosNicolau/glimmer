@@ -1,2 +1,2 @@
 CURRENT_BRANCH=`git branch --show-current`
-npx nx affected -t test --base=$CURRENT_BRANCH
+npx nx affected -t test --base=$CURRENT_BRANCH --passWithNoTests
