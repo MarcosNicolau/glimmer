@@ -9,9 +9,6 @@ This is how the glimmer back end infrastructure will be composed
 -   [API](#API)
 -   [Voice server](#voice-server)
 
-### Auth server
-
-This server handles token issuing, refreshing, rotation and token blacklist.
 
 ### API
 
