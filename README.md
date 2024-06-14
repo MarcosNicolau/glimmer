@@ -1,4 +1,4 @@
-~~This is yet another failed project... this one was pretty serious maybe i'll finish it someday~~
+~~This project is taking a nap right now...~~
 
 - - -
 
