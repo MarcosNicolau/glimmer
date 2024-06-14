@@ -20,5 +20,5 @@ All the common code and general abstractions go to -> `libs`.
 
 We are using [nx](https://github.com/nrwl/nx) to help us with the monorepo architecture.
 
-For more info: [read docs](./docs/)
+For more info: [read docs](./docs/glimmer.md)
 
