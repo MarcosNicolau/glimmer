@@ -4,9 +4,7 @@
 
 # Glimmer
 
-This apps aims to be THE PLACE to hangout online, with free speech, total privacy, no-telemetry, no authentication and open-source. We'll start with public voice rooms and then we'll move adding more features.
-
-“The fundamental act of friendship among programmers is the sharing of programs”
+This app aims to be THE PLACE to hang out online, with free speech, total privacy, no telemetry, no authentication, and open-source.
 
 ## Project structure
 
@@ -21,4 +19,5 @@ All the common code and general abstractions go to -> `libs`.
 We are using [nx](https://github.com/nrwl/nx) to help us with the monorepo architecture.
 
 For more info: [read docs](./docs/glimmer.md)
+
 
