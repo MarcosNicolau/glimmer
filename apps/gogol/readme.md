@@ -1,0 +1,3 @@
+## Gogol (Voice server)
+
+Nikolai Gogol was an acclaimed Russian-Ukranian author of the 19th century. He was born on March 31, 1809 in Sorochintsy in what is now Ukraine but was part of Russia then. He is known for writing very influential short stories and plays. He is also famous for his novel, "Dead Souls," which he wanted to write sequels for to explain some of his religious thoughts but died before they were completed. His most famous short stories include "The Nose," "The Overcoat," and "Christmas Eve."Gogol's biggest influence in life was most likely his friend and fellow writer, Alexander Pushkin. Pushkin helped Gogol become established as a writer and also inspired some of his work.

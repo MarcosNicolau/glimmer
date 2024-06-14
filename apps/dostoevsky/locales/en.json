@@ -1,0 +1,61 @@
+{
+	"nav": {
+		"create-room": "Create room",
+		"search-bar-placeholder": "Search for rooms, users, categories",
+		"theme-switcher": {
+			"dark": "Dark",
+			"light": "Light",
+			"system": "System"
+		}
+	},
+	"forms": {
+		"errors": {
+			"min": "{field} is too short",
+			"max": "{field} is too large"
+		},
+		"enter": "Enter",
+		"cancel": "Cancel",
+		"edit": "Edit",
+		"confirm": "Confirm"
+	},
+	"load-user-modal": {
+		"title": "Who are you?",
+		"description": "Before hanging out in the rooms, people need to know your name at least",
+		"name-input-placeholder": "My name is..."
+	},
+	"online-users": {
+		"header": "Online people",
+		"subtitle": "{num} currently hanging around..."
+	},
+	"edit-profile": {
+		"header": "Profile",
+		"add-social-link": "Add social link",
+		"field-updated-toast": "You have updated your {field}",
+		"description-placeholder": "Write your description"
+	},
+	"feed": {
+		"header": "Your feed",
+		"create-room-btn": "Create room",
+		"create-room-form": {
+			"title": "Create room",
+			"description": "Specify your room settings.",
+			"name-placeholder": "Your room name",
+			"description-placeholder": "Your room description",
+			"selector": {
+				"public": "Public",
+				"private": "Private"
+			},
+			"add-tag": "Add tag",
+			"create-btn": "Create"
+		}
+	},
+	"room": {
+		"toasts": {
+			"microphone-not-allowed": "If you wan't to talk you'll need to allow access to your mic",
+			"unexpected-error-while-sending-audio": "There has been an unexpected error while sending your audio, try refreshing the page",
+			"unexpected-error-while-consuming-audio": "There has been an unexpected error while consuming an audio, try refreshing the page",
+			"room-deleted": "The owner has deleted the room, redirecting to home page...",
+			"new-role": "Your role in the room has changed to {role, select, member {MEMBER} mod {MOD} owner {OWNER} other {}}"
+		}
+	}
+}

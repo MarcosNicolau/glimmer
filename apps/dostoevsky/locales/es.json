@@ -1,0 +1,61 @@
+{
+	"nav": {
+		"create-room": "Crear cuarto",
+		"search-bar-placeholder": "Buscar cuartos, usuarios, categorías",
+		"theme-switcher": {
+			"dark": "Oscuro",
+			"light": "Claro",
+			"system": "Sistema"
+		}
+	},
+	"forms": {
+		"errors": {
+			"min": "{field} es muy corto",
+			"max": "{field} is muy largo"
+		},
+		"enter": "Aceptar",
+		"cancel": "Cancelar",
+		"edit": "Editar",
+		"confirm": "Confirmar"
+	},
+	"load-user-modal": {
+		"title": "Y Vos... ¿quién Sos?",
+		"description": "Antes de pasar el rato en los cuartos, la gente tiene que por lo menos saber tu nombre",
+		"name-input-placeholder": "Mi nombre es..."
+	},
+	"online-users": {
+		"header": "Personas online",
+		"subtitle": "{num} personas conectadas..."
+	},
+	"edit-profile": {
+		"header": "Perfil",
+		"add-social-link": "Agregar link social",
+		"field-updated-toast": "Actualizaste tu {field}",
+		"description-placeholder": "Escribí tu descripción"
+	},
+	"feed": {
+		"header": "Tu feed",
+		"create-room-btn": "Crear cuarto",
+		"create-room-form": {
+			"title": "Crear cuarto",
+			"description": "Configurá tu cuarto.",
+			"name-placeholder": "El nombre de tu cuarto",
+			"description-placeholder": "La descripción tu cuarto",
+			"selector": {
+				"public": "Pública",
+				"private": "Privada"
+			},
+			"add-tag": "Agregar tag",
+			"create-btn": "Crear"
+		}
+	},
+	"room": {
+		"toasts": {
+			"microphone-not-allowed": "Si querés hablar tenes que permitir acceso a tu micrófono",
+			"unexpected-error-while-sending-audio": "Ocurrió un error inesperado al enviar tu audio, volvé a intentar refrescando la página",
+			"unexpected-error-while-consuming-audio": "Ocurrió un error inesperado al consumir un audio, volvé a intentar refrescando la página",
+			"room-deleted": "El dueño eliminó el cuarto, redireccionando al home...",
+			"new-role": "Tu rol cambio a {role, select, member {MIEMBRO} mod {ADMIN} owner {DUEÑO} other {}}"
+		}
+	}
+}

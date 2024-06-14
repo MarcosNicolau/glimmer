@@ -1,0 +1,56 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+    id String @id @default(uuid())
+    createdAt DateTime @default(now())
+	name String
+	description String? 
+	image String
+    links UserSocialLink[]
+    peer Peer?
+}
+
+model UserSocialLink {
+    id Int @id @default(autoincrement())
+    url String
+    userId String
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Room {
+    id String @id @default(uuid())
+	name String
+    ownerId String @unique
+	description String
+    tags String[]
+    isPrivate Boolean
+	createdAt DateTime @default(now())
+	voiceServerId String?
+    peers Peer[]
+}
+
+enum Role {
+    owner
+    mod
+    member
+}
+
+model Peer {
+    userId String @unique 
+    roomId String
+    joinedAt DateTime @default(now())
+    role Role @default(member)
+	isDeafened Boolean
+    askedToSpeak Boolean
+	isMuted Boolean
+	isSpeaker Boolean
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}

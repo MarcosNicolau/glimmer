@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	*,
+	::before,
+	::after {
+		box-sizing: border-box;
+		border-width: 0;
+		border-style: solid;
+	}
+
+	:root {
+		--color-red: 253 77 77;
+		--color-white: 255 255 255;
+		--color-black: 0 0 0;
+	}
+
+	:root[data-theme="light"] {
+		--color-bg: 245 233 189;
+		--color-accent-100: 46 40 54;
+		--color-accent-200: 88 83 94;
+		--color-accent-300: 35 31 41;
+		--color-contrast-100: 250 244 222;
+		--color-contrast-200: 248 236 192;
+		--color-contrast-300: 240 221 153;
+		--color-text-100: 46 40 54;
+		--color-text-200: 114 106 125;
+		--color-text-contrast-100: 255 255 255;
+		--color-text-contrast-200: 224 224 224;
+		--color-text-link: 128 76 199;
+		--color-modal-overlay: hsla(0, 0%, 0%, 0.5);
+	}
+
+	:root[data-theme="dark"] {
+		--color-bg: 35 31 41;
+		--color-accent-100: 245 233 189;
+		--color-accent-200: 255 255 255;
+		--color-accent-300: 240 221 153;
+		--color-contrast-100: 40 36 47;
+		--color-contrast-200: 35 31 41;
+		--color-contrast-300: 55 49 63;
+		--color-text-100: 255 255 255;
+		--color-text-200: 224 224 224;
+		--color-text-contrast-100: 46 40 54;
+		--color-text-contrast-200: 114 106 125;
+		--color-text-link: 128 76 199;
+		--color-modal-overlay: 128 76 199;
+		--color-modal-overlay: hsla(0, 0%, 0%, 0.5);
+	}
+
+	html {
+		tab-size: 4;
+		scroll-behavior: smooth;
+	}
+
+	body {
+		@apply bg-background font-common text-md text-text-100 font-medium !important;
+		margin: 0;
+	}
+
+	h1 {
+		@apply font-headers text-7xl;
+	}
+	h2 {
+		@apply font-headers text-6xl;
+	}
+	h3 {
+		@apply font-headers max-mobile:text-4xl text-5xl;
+	}
+	h4 {
+		@apply font-headers max-mobile:text-2xl text-3xl;
+	}
+	h5 {
+		@apply font-headers max-mobile:text-xl text-2xl;
+	}
+	p {
+		@apply font-common max-mobile:text-md text-text-200 font-medium;
+	}
+	p.small {
+		@apply text-sm;
+	}
+}

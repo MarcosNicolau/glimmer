@@ -1,0 +1,12 @@
+{
+	"name": "storybook-host",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/storybook-host/src",
+	"projectType": "library",
+	"tags": [],
+	"targets": {
+		"start": {
+			"command": "libs/storybook-host/start.sh"
+		}
+	}
+}

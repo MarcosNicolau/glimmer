@@ -1,16 +1,24 @@
+~~This is yet another failed project... this one was pretty serious maybe i'll finish it someday~~
+
+- - -
+
 # Glimmer
+
+This apps aims to be THE PLACE to hangout online, with free speech, total privacy, no-telemetry, no authentication and open-source. We'll start with public voice rooms and then we'll move adding more features.
+
+“The fundamental act of friendship among programmers is the sharing of programs”
 
 ## Project structure
 
-| Name (Russian writers)               | Domain          |
-| ------------------------------------ | --------------- |
-| [bulgakov](./packages/bulgakov/)     | API (socket)    |
-| [dostoevsky](./packages/dostoevsky/) | Auth server     |
-| [gogol](./packages/gogol/)           | Voice server    |
-| [goncharov](./packages/goncharov/)   | React front-end |
+| Name (Russian writers)           | Domain         |
+| -------------------------------- | -------------- |
+| [bulgakov](./apps/bulgakov/)     | API (socket)   |
+| [dostoevsky](./apps/dostoevsky/) | Next front-end |
+| [gogol](./apps/gogol/)           | Voice server   |
 
-[Read docs](./docs/)
+All the common code and general abstractions go to -> `libs`. 
 
-### Why monorepo?
+We are using [nx](https://github.com/nrwl/nx) to help us with the monorepo architecture.
 
-I hate monorepos, they bring more issues than possible benefits. But, in this case it might be useful to implement a monorepo for the sake of organization and having everything into one place.
+For more info: [read docs](./docs/glimmer.md)
+
